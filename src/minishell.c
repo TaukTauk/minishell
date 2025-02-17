@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 11:35:12 by talin             #+#    #+#             */
-/*   Updated: 2025/01/23 16:02:49 by talin            ###   ########.fr       */
+/*   Updated: 2025/02/17 16:47:50 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,17 +75,20 @@ int	main(int ac, char **av, char **env)
 				i++;
 			}
 			printf("........................................\n");
+			// tokenization done but need to handle for meta-characters
 			if (sanitize_tokens(lexer->tokens) != 0)
 			{
 				free_lexer(lexer);
 				return (0);
 			}
+			// sanitization done 
+			parameter_expansion(lexer, data.env);
 			data.commands = parse_tokens(lexer);
+			// parsing done
 			if (data.commands) {
-				parameter_expansion(data.commands, data.env);
 				print_commands(data.commands);
 				// free_commands(data.commands);
-		    }
+			}
 			if (!execute_commands(&data))
 				break ;
 		}

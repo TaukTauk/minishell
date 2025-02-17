@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 15:54:59 by talin             #+#    #+#             */
-/*   Updated: 2025/01/23 13:21:36 by talin            ###   ########.fr       */
+/*   Updated: 2025/02/17 16:46:15 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,21 +123,13 @@ void	expand_var(char **cmd, char **env)
 	}
 }
 
-void	parameter_expansion(t_command *commands, char **env)
+void	parameter_expansion(t_lexer *tokens, char **env)
 {
 	int		i;
 
-	while (commands)
+	i = -1;
+	while (tokens->tokens[++i])
 	{
-		if (commands->cmd)
-			expand_var(&(commands->cmd), env);
-		i = -1;
-		while (commands->args[++i])
-			expand_var(&(commands->args[i]), env);
-		if (commands->infile && commands->infile->file_name)
-			expand_var(&(commands->infile->file_name), env);
-		if (commands->outfile && commands->outfile->file_name)
-			expand_var(&(commands->outfile->file_name), env);
-		commands = commands->next;
+		expand_var(&(tokens->tokens[i]), env);
 	}
 }

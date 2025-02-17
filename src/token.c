@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 09:50:51 by talin             #+#    #+#             */
-/*   Updated: 2025/01/23 13:19:35 by talin            ###   ########.fr       */
+/*   Updated: 2025/02/17 14:22:02 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,36 @@ char	*ft_tokenize_two_token(int start, int *i, char *input)
 	char	*token;
 	char	*combined;
 	char	*temp;
+	int		in_quotes;
+	char	quote_char;
 
 	token = ft_strndup(input + start, *i - start + 1);
 	(*i)++;
 	start = *i;
-	while (input[*i] && !ft_isspace(input[*i]) && \
-	input[*i] != '|' && input[*i] != '<' && input[*i] != '>')
+	in_quotes = 0;
+	quote_char = '\0';
+	while (input[*i])
+	{
+		if ((input[*i] == '"' || input[*i] == '\'') && (!in_quotes || input[*i] == quote_char))
+		{
+			if (!in_quotes)
+			{
+				in_quotes = 1;
+				quote_char = input[*i];
+			}
+			else
+				in_quotes = 0;
+		}
+		else if (!in_quotes && (ft_isspace(input[*i]) || input[*i] == '|' || input[*i] == '>' || input[*i] == '<'))
+			break ;
 		(*i)++;
+	}
+	if (in_quotes)
+	{
+		perror("Unclosed quote");
+		free(token);
+		return (NULL);
+	}
 	if (start < *i)
 	{
 		combined = ft_strndup(input + start, *i - start);
@@ -97,6 +120,8 @@ int	ft_tokenize_two(t_lexer *lexer, char *input, int *i)
 	if (input[*i] == quote)
 	{
 		token = ft_tokenize_two_token(start, i, input);
+		if (!token)
+			return(free_lexer(lexer), 0);
 		add_token(lexer, token);
 	}
 	else
@@ -108,17 +133,44 @@ int	ft_tokenize_two(t_lexer *lexer, char *input, int *i)
 	return (1);
 }
 
-void	ft_tokenize_three(t_lexer *lexer, char *input, int *i)
+int	ft_tokenize_three(t_lexer *lexer, char *input, int *i)
 {
 	int		start;
 	char	*token;
+	int		in_quotes;
+	char	quote_char;
 
 	start = *i;
-	while (input[*i] && !ft_isspace(input[*i]) && \
-	input[*i] != '|' && input[*i] != '<' && input[*i] != '>')
+	in_quotes = 0;
+	quote_char = '\0';
+	while (input[*i])
+	{
+		if ((input[*i] == '"' || input[*i] == '\'') && (!in_quotes || input[*i] == quote_char))
+		{
+			if (!in_quotes)
+			{
+				in_quotes = 1;
+				quote_char = input[*i];
+			}
+			else
+				in_quotes = 0;
+		}
+		else if (!in_quotes && (ft_isspace(input[*i]) || input[*i] == '|' || input[*i] == '>' || input[*i] == '<'))
+			break ;
 		(*i)++;
-	token = ft_strndup(input + start, *i - start);
-	add_token(lexer, token);
+	}
+	if (in_quotes)
+	{
+		perror("Unclosed quote");
+		free_lexer(lexer);
+		return (0);
+	}
+	if (start < *i)
+	{
+		token = ft_strndup(input + start, *i - start);
+		add_token(lexer, token);
+	}
+	return (1);
 }
 
 int	ft_tokenize_four(t_lexer *lexer, char *input)
@@ -144,7 +196,8 @@ int	ft_tokenize_four(t_lexer *lexer, char *input)
 				return (0);
 			continue ;
 		}
-		ft_tokenize_three(lexer, input, &i);
+		if (!ft_tokenize_three(lexer, input, &i))
+			return (0);
 	}
 	return (1);
 }

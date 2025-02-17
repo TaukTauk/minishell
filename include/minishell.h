@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:38 by talin             #+#    #+#             */
-/*   Updated: 2025/01/23 16:02:34 by talin            ###   ########.fr       */
+/*   Updated: 2025/02/17 16:46:41 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ t_lexer		*tokenize(char *input);
 void		free_lexer(t_lexer *lexer);
 size_t		ft_strcspn(const char *str, const char *reject);
 int			ft_tokenize_four(t_lexer *lexer, char *input);
-void		ft_tokenize_three(t_lexer *lexer, char *input, int *i);
+int			ft_tokenize_three(t_lexer *lexer, char *input, int *i);
 int			ft_tokenize_two(t_lexer *lexer, char *input, int *i);
 int			ft_tokenize_one(t_lexer *lexer, char *input, int *i);
 void		free_commands(t_command *cmd);
@@ -106,6 +106,6 @@ int			ft_parse_cmd_arg(t_command **command_list, \
 t_command **current_cmd, char *token);
 int			parse_tokens_statement(t_command **command_list, \
 t_command **current_cmd, int *i, t_lexer *lexer);
-void		parameter_expansion(t_command *commands, char **env);
+void		parameter_expansion(t_lexer *tokens, char **env);
 int			execute_commands(t_data *data);
 #endif
