@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 10:40:15 by talin             #+#    #+#             */
-/*   Updated: 2025/01/16 10:37:53 by talin            ###   ########.fr       */
+/*   Updated: 2025/02/18 15:38:40 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	*ft_strndup(const char *s, size_t n)
 	if (s == NULL)
 		return (NULL);
 	len = ft_strnlen(s, n);
-	dup = malloc(sizeof(char) * len + 1);
+	dup = (char *)malloc((sizeof(char) * len) + 1);
 	if (!dup)
 		return (NULL);
 	ft_memcpy(dup, s, len);

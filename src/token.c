@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 09:50:51 by talin             #+#    #+#             */
-/*   Updated: 2025/02/17 14:22:02 by talin            ###   ########.fr       */
+/*   Updated: 2025/02/18 15:34:54 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ char	*ft_tokenize_two_token(int start, int *i, char *input)
 	char	quote_char;
 
 	token = ft_strndup(input + start, *i - start + 1);
+	if (!token)
+		return (NULL);
 	(*i)++;
 	start = *i;
 	in_quotes = 0;
@@ -97,11 +99,17 @@ char	*ft_tokenize_two_token(int start, int *i, char *input)
 	if (start < *i)
 	{
 		combined = ft_strndup(input + start, *i - start);
+		if (!combined)
+		{
+			free(token);
+			return (NULL);
+		}
 		temp = ft_strjoin(token, combined);
 		free(token);
 		free(combined);
 		token = temp;
 	}
+	token[ft_strlen(token)] = '\0';
 	return (token);
 }
 
@@ -168,6 +176,9 @@ int	ft_tokenize_three(t_lexer *lexer, char *input, int *i)
 	if (start < *i)
 	{
 		token = ft_strndup(input + start, *i - start);
+		if (!token)
+			return (free_lexer(lexer), 0);
+		token[ft_strlen(token)] = '\0';
 		add_token(lexer, token);
 	}
 	return (1);

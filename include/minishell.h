@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:38 by talin             #+#    #+#             */
-/*   Updated: 2025/02/17 16:46:41 by talin            ###   ########.fr       */
+/*   Updated: 2025/02/18 14:56:02 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,6 @@ int			ft_parse_cmd_arg(t_command **command_list, \
 t_command **current_cmd, char *token);
 int			parse_tokens_statement(t_command **command_list, \
 t_command **current_cmd, int *i, t_lexer *lexer);
-void		parameter_expansion(t_lexer *tokens, char **env);
+int			parameter_expansion(t_lexer *tokens, char **env);
 int			execute_commands(t_data *data);
 #endif
