@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 11:35:12 by talin             #+#    #+#             */
-/*   Updated: 2025/02/18 16:17:43 by talin            ###   ########.fr       */
+/*   Updated: 2025/02/24 16:02:56 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,26 @@ t_lexer	*tokenize(char *input)
 	lexer->tokens = new_tokens;
 	lexer->tokens[lexer->token_count] = NULL;
 	return (lexer);
+}
+
+void	free_data(t_data *data)
+{
+	int	i;
+
+	if (data)
+	{
+		if (data->commands)
+		{
+			free_commands(data->commands);
+		}
+		if (data->env)
+		{
+			i = -1;
+			while (data->env[++i])
+				free(data->env[i]);
+			free(data->env);
+		}
+	}
 }
 
 int	main(int ac, char **av, char **env)
@@ -67,14 +87,6 @@ int	main(int ac, char **av, char **env)
 		lexer = tokenize(input);
 		if (lexer)
 		{
-			printf("Tokens:\n");
-			i = 0;
-			while (lexer->tokens[i])
-			{
-				printf("[%s]\n", lexer->tokens[i]);
-				i++;
-			}
-			printf("........................................\n");
 			// tokenization done but need to handle for meta-characters
 			if (sanitize_tokens(lexer->tokens) != 0)
 			{
@@ -93,21 +105,31 @@ int	main(int ac, char **av, char **env)
 			}
 			// parameter expansion done
 			printf("........................................\n");
-			// data.commands = parse_tokens(lexer);
-			// // parsing done
-			// if (data.commands) {
-			// 	print_commands(data.commands);
-			// 	// free_commands(data.commands);
-			// }
-			// if (!execute_commands(&data))
-			// 	break ;
+			data.commands = parse_tokens(lexer);
+			// parsing done
+			if (data.commands) {
+				print_commands(data.commands);
+				i = 0;
+				t_command *cmd = data.commands;
+				while (cmd)
+				{
+					i++;
+					cmd = cmd->next;
+				}
+				data.cmd_count = i;
+				printf("count of commands ===> %d\n", data.cmd_count);
+				// free_commands(data.commands);
+			}
+			if (!execute_commands(&data))
+			{
+				free_lexer(lexer);
+				free(input);
+				free_data(&data);
+				break ;
+			}
 			free_lexer(lexer);
 		}
 		free(input);
 	}
-	i = -1;
-	while (data.env[++i])
-		free(data.env[i]);
-	free(data.env);
 	return (0);
 }

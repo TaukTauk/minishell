@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 15:54:59 by talin             #+#    #+#             */
-/*   Updated: 2025/02/18 16:43:29 by talin            ###   ########.fr       */
+/*   Updated: 2025/02/24 16:18:56 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,23 +108,12 @@ size_t	calculate_expanded_size(const char *input, char **env)
 	return (new_size);
 }
 
-void	ft_quote_handle(char **ptr, char **output_ptr, \
-int *inside_single_quote, int *inside_double_quote)
+void	ft_quote_handle(char **ptr, int *inside_single_quote, int *inside_double_quote)
 {
 	if (**ptr == '\'' && !(*inside_double_quote))
-	{
 		*inside_single_quote = !(*inside_single_quote);
-		**output_ptr = **ptr;
-		(*output_ptr)++;
-		(*ptr)++;
-	}
 	if (**ptr == '\"' && !(*inside_single_quote))
-	{
 		*inside_double_quote = !(*inside_double_quote);
-		**output_ptr = **ptr;
-		(*output_ptr)++;
-		(*ptr)++;
-	}
 }
 
 char	*expand_variable(char *input, char **env)
@@ -149,17 +138,19 @@ char	*expand_variable(char *input, char **env)
 	inside_double_quote = 0;
 	while (ptr && *ptr != '\0')
 	{
-		if (*ptr == '\'' || *ptr == '\"')
-			ft_quote_handle(&ptr, &output_ptr, \
-			&inside_single_quote, &inside_double_quote);
+		if (*ptr == '\'' || *ptr == '\"'){ 
+			ft_quote_handle(&ptr, &inside_single_quote, &inside_double_quote);
+		}
 		if (*ptr == '$' && !inside_single_quote)
 		{
 			get_value(&ptr, env, &output_ptr);
 			if (!ptr || !*ptr)
 				break ;
+			continue ;
 		}
-		else
+		if (*ptr) {
 			*output_ptr++ = *ptr++;
+		}
 	}
 	*output_ptr = '\0';
 	return (expanded_str);
@@ -180,6 +171,66 @@ int	expand_var(char **cmd, char **env)
 		return (0);
 }
 
+void remove_quote(char **str)
+{
+    char *clean_str;
+    int size;
+    int i;
+    int j;
+    char quote_char;
+    int in_quote;
+
+    size = 0;
+    i = 0;
+    in_quote = 0;
+    quote_char = 0;
+    while ((*str)[i])
+    {
+        if (((*str)[i] == '"' || (*str)[i] == '\'') && !in_quote)
+        {
+            in_quote = 1;
+            quote_char = (*str)[i];
+        }
+        else if ((*str)[i] == quote_char && in_quote)
+        {
+            in_quote = 0;
+            quote_char = 0;
+        }
+        else
+            size++;
+        i++;
+    }
+    clean_str = (char *)malloc(sizeof(char) * (size + 1));
+    if (!clean_str)
+        return;
+    i = 0;
+    j = 0;
+    in_quote = 0;
+    quote_char = 0;
+    while ((*str)[i])
+    {
+        if (((*str)[i] == '"' || (*str)[i] == '\'') && !in_quote)
+        {
+            in_quote = 1;
+            quote_char = (*str)[i];
+        }
+        else if ((*str)[i] == quote_char && in_quote)
+        {
+            in_quote = 0;
+            quote_char = 0;
+        }
+        else
+        {
+            clean_str[j] = (*str)[i];
+            j++;
+        }
+        i++;
+    }
+    clean_str[j] = '\0';
+    free(*str);
+    *str = clean_str;
+}
+
 int	parameter_expansion(t_lexer *tokens, char **env)
 {
 	int		i;
@@ -193,10 +244,9 @@ int	parameter_expansion(t_lexer *tokens, char **env)
 			return (0);
 	}
 	i = -1;
-	printf("after expandsion.....................\n");
 	while (tokens->tokens[++i])
 	{
-		printf("%s\n", tokens->tokens[i]);
+		remove_quote(&(tokens->tokens[i]));
 	}
 	return (1);
 }

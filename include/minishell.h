@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:38 by talin             #+#    #+#             */
-/*   Updated: 2025/02/18 14:56:02 by talin            ###   ########.fr       */
+/*   Updated: 2025/02/24 10:26:54 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ typedef struct s_data
 {
 	char		**env;
 	t_command	*commands;
+	int			cmd_count;
 }	t_data;
 
 int			ft_isspace(const char str);

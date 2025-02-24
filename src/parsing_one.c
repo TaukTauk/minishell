@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:36:53 by talin             #+#    #+#             */
-/*   Updated: 2025/01/20 13:37:04 by talin            ###   ########.fr       */
+/*   Updated: 2025/02/24 11:57:41 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ t_command	*create_command(void)
 	cmd->args = NULL;
 	cmd->infile = NULL;
 	cmd->outfile = NULL;
+	cmd->delimeter = NULL;
 	cmd->next = NULL;
 	return (cmd);
 }
