@@ -3,29 +3,46 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_one.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:36:53 by talin             #+#    #+#             */
-/*   Updated: 2025/02/24 11:57:41 by talin            ###   ########.fr       */
+/*   Updated: 2025/02/28 14:47:41 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-t_io_file	*create_io_file(char *file_name, int redirect_type)
+int	create_io_file(t_io_file **file_list, char *file_name, int redirect_type)
 {
-	t_io_file	*file;
+	t_io_file	*new_file;
+	t_io_file	*last;
 
 	if (!file_name)
-		return (NULL);
-	file = malloc(sizeof(t_io_file));
-	if (!file)
-		return (NULL);
-	file->file_name = ft_strdup(file_name);
-	if (!file->file_name)
-		return (free(file), NULL);
-	file->redirect_type = redirect_type;
-	return (file);
+		return (0);
+
+	new_file = malloc(sizeof(t_io_file));
+	if (!new_file)
+		return (0);
+	new_file->file_name = ft_strdup(file_name);
+	if (!new_file->file_name)
+	{
+		free(new_file);
+		return (0);
+	}
+	new_file->redirect_type = redirect_type;
+	new_file->content = NULL;
+	new_file->next = NULL;
+
+	if (!(*file_list))
+		*file_list = new_file;
+	else
+	{
+		last = *file_list;
+		while (last->next)
+			last = last->next;
+		last->next = new_file;
+	}
+	return (1);
 }
 
 t_command	*create_command(void)
@@ -39,7 +56,11 @@ t_command	*create_command(void)
 	cmd->args = NULL;
 	cmd->infile = NULL;
 	cmd->outfile = NULL;
+	cmd->outfileappend = NULL;
 	cmd->delimeter = NULL;
+	cmd->fd_in = STDIN_FILENO;
+	cmd->fd_out = STDOUT_FILENO;
+	cmd->builtin = 0;
 	cmd->next = NULL;
 	return (cmd);
 }
@@ -89,16 +110,14 @@ int	ft_parse_pipe(t_command **command_list, t_command **current_cmd)
 }
 
 int	ft_parse_in_red_two(t_command **command_list, \
-t_command **current_cmd, int *i, t_lexer *lexer)
+	t_command **current_cmd, int *i, t_lexer *lexer)
 {
 	char	*token;
 
 	token = lexer->tokens[*i];
 	if (ft_strcmp(token, "<") == 0)
 	{
-		(*current_cmd)->infile = create_io_file(lexer->tokens[++(*i)], \
-		REDIRECT_INPUT);
-		if (!(*current_cmd)->infile)
+		if (!create_io_file(&(*current_cmd)->infile, lexer->tokens[++(*i)], REDIRECT_INPUT))
 		{
 			perror("Error: malloc for input redirection file");
 			return (free_commands(*command_list), 0);
@@ -106,11 +125,9 @@ t_command **current_cmd, int *i, t_lexer *lexer)
 	}
 	else
 	{
-		(*current_cmd)->infile = create_io_file(lexer->tokens[++(*i)], \
-		REDIRECT_HEREDOC);
-		if (!(*current_cmd)->infile)
+		if (!create_io_file(&(*current_cmd)->delimeter, lexer->tokens[++(*i)], REDIRECT_HEREDOC))
 		{
-			perror("Error: malloc for input redirection file");
+			perror("Error: malloc for delimiter");
 			return (free_commands(*command_list), 0);
 		}
 	}

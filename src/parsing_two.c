@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_two.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:35:52 by talin             #+#    #+#             */
-/*   Updated: 2025/01/20 13:36:06 by talin            ###   ########.fr       */
+/*   Updated: 2025/02/28 14:47:14 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,7 @@ t_command **current_cmd, int *i, t_lexer *lexer)
 	token = lexer->tokens[*i];
 	if (ft_strcmp(token, ">") == 0)
 	{
-		(*current_cmd)->outfile = create_io_file(lexer->tokens[++(*i)], \
-		REDIRECT_OUTPUT);
-		if (!(*current_cmd)->outfile)
+		if (!create_io_file(&(*current_cmd)->outfile, lexer->tokens[++(*i)], REDIRECT_OUTPUT))
 		{
 			perror("Error: malloc for input redirection file");
 			return (free_commands(*command_list), 0);
@@ -56,9 +54,7 @@ t_command **current_cmd, int *i, t_lexer *lexer)
 	}
 	else
 	{
-		(*current_cmd)->outfile = create_io_file(lexer->tokens[++(*i)], \
-		REDIRECT_APPEND);
-		if (!(*current_cmd)->outfile)
+		if (!create_io_file(&(*current_cmd)->outfileappend, lexer->tokens[++(*i)], REDIRECT_APPEND))
 		{
 			perror("Error: malloc for input redirection file");
 			return (free_commands(*command_list), 0);
@@ -93,6 +89,20 @@ t_command **current_cmd, int *i, t_lexer *lexer)
 	return (1);
 }
 
+int	ft_check_builtin(char *cmd)
+{
+	const char	*builtin[] = {"env", "pwd", "echo", "export", "unset", "cd", "exit"};
+	int			i;
+
+	i = -1;
+	while (++i < 7)
+	{
+		if (ft_strcmp(cmd,builtin[i]) == 0)
+			return (1);
+	}
+	return (0);
+}
+
 int	ft_parse_cmd_arg(t_command **command_list, \
 t_command **current_cmd, char *token)
 {
@@ -109,6 +119,8 @@ t_command **current_cmd, char *token)
 	if (!(*current_cmd)->cmd)
 	{
 		(*current_cmd)->cmd = ft_strdup(token);
+		if (ft_check_builtin((*current_cmd)->cmd))
+			(*current_cmd)->builtin = 1;
 		if (!(*current_cmd)->cmd)
 			return (free_commands(*command_list), 0);
 		if (!add_argument(*current_cmd, token))

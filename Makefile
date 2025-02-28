@@ -6,16 +6,28 @@ LIBS        = ${LIBFT}/libft.a
 
 SRCS_DIR    = src/
 
-SRC         = token.c \
-				utils.c \
+SRC         = cleanup_pipe.c \
+				exec_pipe.c \
+				execute_builtin.c \
+				execute.c \
+				execute_external.c \
+				exit_status.c \
+				expansion.c \
+				free.c \
+				handle_err.c \
+				handle_redirections.c \
+				handle_redirections_one.c \
+				handle_redirections_two.c \
+				handle_redirections_three.c \
 				minishell.c \
 				parsing.c \
 				parsing_one.c \
 				parsing_two.c \
-				free.c \
+				pipes.c \
 				sanitize.c \
-				expansion.c \
-				execute.c
+				setup_redirection.c \
+				token.c \
+				utils.c 
 
 SRCS        = $(addprefix ${SRCS_DIR}, ${SRC})
 OBJS        = ${SRCS:.c=.o}
