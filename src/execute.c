@@ -6,7 +6,7 @@
 /*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:22:58 by talin             #+#    #+#             */
-/*   Updated: 2025/02/28 10:41:50 by rick             ###   ########.fr       */
+/*   Updated: 2025/02/28 19:40:11 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,12 @@ int execute_command(t_data *data)
 		data->status = 1;
 		return (0);
 	}
-	printf("hello before handling redirection\n");
 	if (handle_redirections(data->commands, data))
 		return (restore_std_fds(saved_stdin, saved_stdout), 0);
 	if (data->commands->builtin)
 		execute_builtin(data->commands, data);
 	else
-		execve_cmd(data->commands->cmd, data->commands->args, data->env);
+		execve_cmd(data->commands->cmd, data->commands->args, data->env, data);
 	restore_std_fds(saved_stdin, saved_stdout);
 	cleanup_redirections(data->commands);
 	return (1);

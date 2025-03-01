@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 10:38:39 by talin             #+#    #+#             */
-/*   Updated: 2025/02/24 11:58:03 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/01 21:05:02 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,14 @@ void free_commands(t_command *cmd)
 	}
 }
 
-void	free_lexer(t_lexer *lexer)
+void free_lexer(t_lexer *lexer)
 {
-	int	i;
-
-	i = -1;
-	while (++i < lexer->token_count)
-		free(lexer->tokens[i]);
-	free(lexer->tokens);
-	free(lexer);
+    int i;
+    
+    i = -1;
+    while (++i < lexer->token_count)
+        free(lexer->tokens[i]);
+    free(lexer->tokens);
+    lexer->tokens = NULL;
+    free(lexer);
 }

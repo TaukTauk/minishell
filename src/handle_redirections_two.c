@@ -6,7 +6,7 @@
 /*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:52:57 by rick              #+#    #+#             */
-/*   Updated: 2025/02/28 16:53:09 by rick             ###   ########.fr       */
+/*   Updated: 2025/02/28 17:08:53 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ int	handle_redirections(t_command *command, t_data *data)
 		return (1);
 	if (command->delimeter)
 	{
-		printf("before settingup delimeter\n");
 		if (setup_delimeter(command, data))
 			return (1);
 	}

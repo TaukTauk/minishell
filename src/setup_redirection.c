@@ -6,7 +6,7 @@
 /*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:44:06 by rick              #+#    #+#             */
-/*   Updated: 2025/02/28 11:44:25 by rick             ###   ########.fr       */
+/*   Updated: 2025/02/28 17:09:07 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ int	setup_delimeter(t_command *command, t_data *data)
 	pid_t	pid;
 	int		saved_stdin;
 
-	printf("before doing nothing\n");
 	if (!command || !command->delimeter)
 		return (1);
 	if (pipe(fd) == -1)
@@ -26,11 +25,8 @@ int	setup_delimeter(t_command *command, t_data *data)
 	pid = fork();
 	if (pid == -1)
 		return (close_err(fd[0], fd[1]), 1);
-	printf("after fork and pipe\n");
 	if (pid == 0) {
-		printf("before write pipe\n");
 		write_pipe(fd, command);
-		printf("after write-pipe\n");
 	}
 	else
 	{

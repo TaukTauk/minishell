@@ -6,7 +6,7 @@
 /*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:38 by talin             #+#    #+#             */
-/*   Updated: 2025/02/28 15:12:11 by rick             ###   ########.fr       */
+/*   Updated: 2025/02/28 21:02:45 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,16 +133,14 @@ void		close_both(int fd1, int fd2);
 void		write_pipe(int fd[2], t_command *command);
 void		execute_in_child(char *cmd_path, t_command *command, t_data *data);
 void		execute_piped_command(t_command *command, t_data *data);
-char		**realloc_env(char **env, int size);
-int 		is_valid_identifier(const char *str);
-void		export_env(char ***env, char *var);
-void		unset_env(char **env, char *var);
+void		export_env(t_envp **envp, char *arg, t_data **data);
+void		unset_env(t_envp **envp, char *key, t_data **data);
 int			execute_builtin(t_command *commands, t_data *data);
 void		ft_free_arr(char **arr);
 char		*ft_getenv(char *name, char **envp);
 int			ft_check_set_unset(char **envp);
 char		*ft_get_path(char *cmd, char **envp, int i);
-void		execve_cmd(char *cmd, char **s_cmd, char **envp);
+void		execve_cmd(char *cmd, char **s_cmd, char **envp, t_data *data);
 void		update_exit_status(pid_t pid, int fd[2], t_data *data);
 void		handle_execution_status(pid_t pid, t_data *data);
 void		print_err_nofile(char *filename, t_data *data);

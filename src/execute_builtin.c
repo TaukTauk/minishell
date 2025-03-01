@@ -6,134 +6,86 @@
 /*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:36:35 by rick              #+#    #+#             */
-/*   Updated: 2025/02/28 09:39:52 by rick             ###   ########.fr       */
+/*   Updated: 2025/02/28 21:02:03 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-char **realloc_env(char **env, int size)
+void	export_env(t_envp **envp, char *arg, t_data **data)
 {
-    char **new_env;
-    int i;
+    t_envp	*current;
+    t_envp	*new_node;
+    char	*equal_sign;
+    char	*key;
+    char	*value;
 
-    new_env = malloc(sizeof(char *) * (size + 1));
-    if (!new_env)
-        return (NULL);
-    i = -1;
-    while (env[++i])
-    {
-        new_env[i] = ft_strdup(env[i]);
-        if (!new_env[i])
-        {
-            while (--i >= 0)
-                free(new_env[i]);
-            free(new_env);
-            return (NULL);
-        }
-    }
-    new_env[i] = NULL;
-    return (new_env);
-}
-
-int is_valid_identifier(const char *str)
-{
-    int i;
-
-    if (!str || !*str || ft_isdigit(*str))
-        return (0);
-    i = 0;
-    while (str[i] && str[i] != '=')
-    {
-        if (!ft_isalnum(str[i]) && str[i] != '_')
-            return (0);
-        i++;
-    }
-    return (1);
-}
-
-void export_env(char ***env, char *var)
-{
-    int i;
-    char *equal_sign;
-    int var_len;
-    char **new_env;
-
-    if (!is_valid_identifier(var))
-    {
-        ft_putstr_fd("export: not a valid identifier\n", 2);
-        return;
-    }
-    equal_sign = ft_strchr(var, '=');
+    equal_sign = ft_strchr(arg, '=');
+    
     if (equal_sign)
-        var_len = equal_sign - var;
+    {
+        key = ft_strndup(arg, equal_sign - arg);
+        value = ft_strdup(equal_sign + 1);
+    }
     else
-        var_len = ft_strlen(var);
-    i = -1;
-    while ((*env)[++i])
     {
-        if (ft_strncmp((*env)[i], var, var_len) == 0 && 
-            ((*env)[i][var_len] == '=' || (*env)[i][var_len] == '\0'))
+        key = strdup(arg);
+        value = NULL;
+    }
+    current = *envp;
+    while (current)
+    {
+        if (strcmp(current->key, key) == 0)
         {
-            if (equal_sign)
+            if (value)
             {
-                char *tmp = ft_strdup(var);
-                if (!tmp)
-                    return;
-                free((*env)[i]);
-                (*env)[i] = tmp;
+                free(current->value);
+                current->value = strdup(value);
             }
-            return;
+            free(key);
+            free(value);
+            return ;
         }
+        current = current->next;
     }
-    if (equal_sign)
+    new_node = malloc(sizeof(t_envp));
+    if (!new_node)
     {
-        new_env = realloc_env(*env, i + 1);
-        if (!new_env)
-            return;
-        new_env[i] = ft_strdup(var);
-        if (!new_env[i])
-        {
-            free(new_env);
-            return;
-        }
-        new_env[i + 1] = NULL;
-        i = -1;
-        while ((*env)[++i])
-            free((*env)[i]);
-        free(*env);
-        
-        *env = new_env;
-    }
-}
-
-void unset_env(char **env, char *var)
-{
-    int i;
-    int var_len;
-
-    if (!is_valid_identifier(var))
-    {
-        ft_putstr_fd("unset: not a valid identifier\n", 2);
+        perror("malloc");
+        free(key);
+        free(value);
         return;
     }
+    new_node->key = key;
+    new_node->value = value;
+    new_node->sign = 1;
+    new_node->next = *envp;
+    *envp = new_node;
+	(*data)->env_len++;
+}
 
-    var_len = ft_strlen(var);
-    i = -1;
-    while (env[++i])
+
+void unset_env(t_envp **envp, char *key, t_data **data)
+{
+    t_envp *current = *envp;
+    t_envp *prev = NULL;
+
+    while (current)
     {
-        if (ft_strncmp(env[i], var, var_len) == 0 && 
-            (env[i][var_len] == '=' || env[i][var_len] == '\0'))
+        if (strcmp(current->key, key) == 0)
         {
-            free(env[i]);
-            while (env[i + 1])
-            {
-                env[i] = env[i + 1];
-                i++;
-            }
-            env[i] = NULL;
+            if (prev)
+                prev->next = current->next;
+            else
+                *envp = current->next;
+            free(current->key);
+            free(current->value);
+            free(current);
+			(*data)->env_len--;
             return;
         }
+        prev = current;
+        current = current->next;
     }
 }
 
@@ -221,26 +173,19 @@ int	execute_builtin(t_command *commands, t_data *data)
 			{
 				if (commands->args[i])
 				{ 
-					export_env(&(data->env), commands->args[i]);
+					export_env(&(data->envp), commands->args[i], &data);
 				}
 			}
 		}
 		else
 		{
-			i = -1;
-			int j;
-			while (data->env[++i])
+			t_envp	*current;
+			current = data->envp;
+			while (current)
 			{
 				printf("declare -x ");
-				j = -1;
-				while (data->env[i][++j])
-				{
-					printf("%c", data->env[i][j]);
-					if (data->env[i][j] == '=')
-						printf("\"");
-				}
-				printf("\"\n");
-				
+				printf("%s=\"%s\"\n", current->key, current->value);
+				current = current->next;
 			}
 		}
 		return (1);
@@ -254,7 +199,7 @@ int	execute_builtin(t_command *commands, t_data *data)
 			{
 				if (commands->args[i])
 				{ 
-					unset_env(data->env, commands->args[i]);
+					unset_env(&(data->envp), commands->args[i], &data);
 				}
 			}
 		}

@@ -6,7 +6,7 @@
 /*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 15:27:03 by talin             #+#    #+#             */
-/*   Updated: 2025/02/28 15:07:22 by rick             ###   ########.fr       */
+/*   Updated: 2025/02/28 17:06:23 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,9 @@ t_command	*parse_tokens(t_lexer *lexer, t_data *data)
 				delimeter_read(file, tmp, data);
 				file = file->next;
 			}
-			tmp->delimeter = file;
 		}
 		tmp = tmp->next;
 	}
-	command_list = tmp;
 	return (command_list);
 }
 
@@ -99,6 +97,8 @@ void	print_commands(t_command *cmd)
 			{
 				printf("Delimeter: %s (Type: %d)\n", \
 				tmp->file_name, tmp->redirect_type);
+				printf("Content.......... \n");
+				printf("%s", tmp->content);
 				tmp = tmp->next;
 			}
 		}

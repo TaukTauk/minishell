@@ -6,7 +6,7 @@
 /*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:37:48 by rick              #+#    #+#             */
-/*   Updated: 2025/02/28 09:39:11 by rick             ###   ########.fr       */
+/*   Updated: 2025/02/28 19:39:27 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,17 +99,42 @@ char	*ft_get_path(char *cmd, char **envp, int i)
 	}
 }
 
-void	execve_cmd(char *cmd, char **s_cmd, char **envp)
+void	exec_err_exit(t_command *command, char *cmd_path, t_data *data)
 {
-	char *path;
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(command->args[0], STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	ft_putstr_fd(strerror(errno), STDERR_FILENO);
+	ft_putstr_fd("\n", STDERR_FILENO);
+	free(cmd_path);
+	data -> status = 1;
+	exit(errno);
+}
 
+void	execve_cmd(char *cmd, char **s_cmd, char **envp, t_data *data)
+{
+	char	*path;
+	pid_t	pid;
+
+	if (!cmd)
+		return ;
 	path = ft_get_path(cmd, envp, -1);
-	if (execve(path, s_cmd, envp) == -1)
+	if (!path)
+		return (handle_execution_error(data->commands, data, NULL, 1));
+	pid = fork();
+	if (pid == -1)
 	{
-		if (access(path, F_OK) == 0)
-			ft_putstr_fd("permission denied: ", 2);
-		else
-			ft_putstr_fd("command not found: ", 2);
-		ft_putendl_fd(s_cmd[0], 2);
+		handle_execution_error(data->commands, data, path, 2);
+		return ;
+	}
+	if (pid == 0)
+	{
+		if (execve(path, s_cmd, envp) == -1)
+			exec_err_exit(data->commands, path, data);
+	}
+	else
+	{
+		handle_execution_status(pid, data);
+		free(path);
 	}
 }

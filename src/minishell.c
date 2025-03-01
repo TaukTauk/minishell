@@ -6,7 +6,7 @@
 /*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 11:35:12 by talin             #+#    #+#             */
-/*   Updated: 2025/02/28 15:13:16 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/01 21:08:00 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,26 +35,6 @@ t_lexer	*tokenize(char *input)
 	lexer->tokens = new_tokens;
 	lexer->tokens[lexer->token_count] = NULL;
 	return (lexer);
-}
-
-void	free_data(t_data *data)
-{
-	int	i;
-
-	if (data)
-	{
-		if (data->commands)
-		{
-			free_commands(data->commands);
-		}
-		if (data->env)
-		{
-			i = -1;
-			while (data->env[++i])
-				free(data->env[i]);
-			free(data->env);
-		}
-	}
 }
 
 void	add_env(t_data *data, const char *key, const char *value, int sign)
@@ -209,68 +189,146 @@ void	init_shell(t_data *data, char **envp)
 	update_shlvl(data);
 }
 
-int	main(int ac, char **av, char **env)
-{
-	char		*input;
-	t_data		data;
-	int			i;
-	(void)ac;
-	(void)av;
+// void cleanup_and_exit(t_data *data, int status)
+// {
+//     free_data(data);
+//     exit(status);
+// }
 
-	init_shell(&data, env);
-	while (1)
-	{
-		gen_env(&data);
-		input = readline("minishell > ");
-		if (!input)
-			break ;
-		if (*input)
-			add_history(input);
-		input[ft_strcspn(input, "\n")] = '\0';
-		data.lexer = tokenize(input);
-		if (data.lexer)
-		{
-			// tokenization done but need to handle for meta-characters
-			if (sanitize_tokens(data.lexer->tokens) != 0)
-			{
-				printf("SANITIZATION ERROR!\n");
-				free_lexer(data.lexer);
-				free(input);
-				continue ;
-			}
-			// sanitization done 
-			if (!parameter_expansion(data.lexer, data.env))
-			{
-				printf("EXPANSION ERROR!\n");
-				free_lexer(data.lexer);
-				free(input);
-				continue ;
-			}
-			// parameter expansion done
-			data.commands = parse_tokens(data.lexer, &data);
-			// print_commands(data.commands);
-			// parsing done
-			if (data.commands) {
-				i = 0;
-				t_command *cmd = data.commands;
-				while (cmd)
-				{
-					i++;
-					cmd = cmd->next;
-				}
-				data.cmd_count = i;
-				// free_commands(data.commands);
-			}
-			if (!execute_commands(&data))
-			{
-				// free_lexer(data.lexer);
-				free(input);
-				// free_data(&data);
-				break ;
-			}
-			free_lexer(data.lexer);
-		}
-		free(input);
-	}
-	return (0);
+void free_io_file(t_io_file *file)
+{
+    t_io_file *tmp;
+    
+    while (file)
+    {
+        tmp = file;
+        file = file->next;
+        free(tmp->file_name);
+        free(tmp->content);
+        free(tmp);
+    }
+}
+
+void free_command(t_command *cmd)
+{
+    t_command *tmp;
+    
+    while (cmd)
+    {
+        tmp = cmd;
+        cmd = cmd->next;
+        free(tmp->cmd);
+        if (tmp->args)
+        {
+            int i = 0;
+            while (tmp->args[i])
+                free(tmp->args[i++]);
+            free(tmp->args);
+        }
+        free_io_file(tmp->infile);
+        free_io_file(tmp->outfile);
+        free_io_file(tmp->delimeter);
+        free_io_file(tmp->outfileappend);
+        free(tmp);
+    }
+}
+
+void free_envp(t_envp *envp)
+{
+    t_envp *tmp;
+    
+    while (envp)
+    {
+        tmp = envp;
+        envp = envp->next;
+        free(tmp->key);
+        free(tmp->value);
+        free(tmp);
+    }
+}
+
+void free_data(t_data *data)
+{
+    if (data->env)
+    {
+        int i = 0;
+        while (data->env[i])
+            free(data->env[i++]);
+        free(data->env);
+    }
+    free_command(data->commands);
+    free_envp(data->envp);
+    data->commands = NULL;
+    data->envp = NULL;
+    data->env = NULL;
+    data->lexer = NULL;
+}
+
+int main(int ac, char **av, char **env)
+{
+    char *input;
+    t_data data;
+    int i;
+    (void)ac;
+    (void)av;
+    
+    init_shell(&data, env);
+    while (1)
+    {
+        gen_env(&data);
+        input = readline("minishell > ");
+        if (!input)
+            break;
+        if (*input)
+            add_history(input);
+        input[ft_strcspn(input, "\n")] = '\0';
+        data.lexer = tokenize(input);
+        if (data.lexer)
+        {
+            // tokenization done but need to handle for meta-characters
+            if (sanitize_tokens(data.lexer->tokens) != 0)
+            {
+                printf("SANITIZATION ERROR!\n");
+                free_lexer(data.lexer);
+                free(input);
+                continue;
+            }
+            // sanitization done
+            if (!parameter_expansion(data.lexer, data.env))
+            {
+                printf("EXPANSION ERROR!\n");
+                free_lexer(data.lexer);
+                free(input);
+                continue;
+            }
+            // parameter expansion done
+            data.commands = parse_tokens(data.lexer, &data);
+            // parsing done
+            if (data.commands) {
+                i = 0;
+                t_command *cmd = data.commands;
+                while (cmd)
+                {
+                    i++;
+                    cmd = cmd->next;
+                }
+                data.cmd_count = i;
+            }
+            if (!execute_commands(&data))
+            {
+                free_lexer(data.lexer);
+                free(input);
+                free_data(&data);
+                break;
+            }
+            free_command(data.commands);
+            data.commands = NULL;
+            
+            free_lexer(data.lexer);
+            data.lexer = NULL;
+        }
+        free(input);
+    }
+    free_data(&data);
+    return (0);
 }
