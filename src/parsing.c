@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 15:27:03 by talin             #+#    #+#             */
-/*   Updated: 2025/02/28 17:06:23 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/02 12:29:47 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_command	*parse_tokens(t_lexer *lexer, t_data *data)
 	i = -1;
 	while (++i < lexer->token_count)
 	{
-		if (!parse_tokens_statement(&command_list, &current_cmd, &i, lexer))
+		if (!parse_tokens_statement(&command_list, &current_cmd, &i, data))
 			return (NULL);
 	}
 	tmp = command_list;
@@ -65,8 +65,8 @@ void	print_commands(t_command *cmd)
 			tmp = cmd->infile;
 			while (tmp)
 			{
-				printf("Input File: %s (Type: %d)\n", \
-				tmp->file_name, tmp->redirect_type);
+				printf("Input File: %s (Type: %d), order number ==> %d\n", \
+				tmp->file_name, tmp->redirect_type, tmp->order_value);
 				tmp = tmp->next;
 			}
 		}
@@ -75,8 +75,8 @@ void	print_commands(t_command *cmd)
 			tmp = cmd->outfile;
 			while (tmp)
 			{
-				printf("Output File: %s (Type: %d)\n", \
-				tmp->file_name, tmp->redirect_type);
+				printf("Output File: %s (Type: %d), order number ==> %d\n", \
+				tmp->file_name, tmp->redirect_type, tmp->order_value);
 				tmp = tmp->next;
 			}
 		}
@@ -85,8 +85,8 @@ void	print_commands(t_command *cmd)
 			tmp = cmd->outfileappend;
 			while (tmp)
 			{
-				printf("Output append File: %s (Type: %d)\n", \
-				tmp->file_name, tmp->redirect_type);
+				printf("Output append File: %s (Type: %d), order number ==> %d\n", \
+				tmp->file_name, tmp->redirect_type, tmp->order_value);
 				tmp = tmp->next;
 			}
 		}
@@ -95,13 +95,15 @@ void	print_commands(t_command *cmd)
 			tmp = cmd->delimeter;
 			while (tmp)
 			{
-				printf("Delimeter: %s (Type: %d)\n", \
-				tmp->file_name, tmp->redirect_type);
+				printf("Delimeter: %s (Type: %d), order number ==> %d\n", \
+				tmp->file_name, tmp->redirect_type, tmp->order_value);
 				printf("Content.......... \n");
 				printf("%s", tmp->content);
 				tmp = tmp->next;
 			}
 		}
+		printf("Input order : %d\n", cmd->input_order);
+		printf("Output order : %d\n", cmd->output_order);
 		cmd = cmd->next;
 		printf("\n");
 	}

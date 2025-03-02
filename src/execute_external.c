@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_external.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:37:48 by rick              #+#    #+#             */
-/*   Updated: 2025/02/28 19:39:27 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/02 12:38:54 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ char	*ft_get_path(char *cmd, char **envp, int i)
 			free(exec);
 		}
 		ft_free_arr(allpath);
-		return (cmd);
+		return (ft_strdup(cmd));
 	}
 }
 

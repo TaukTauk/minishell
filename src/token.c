@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 09:50:51 by talin             #+#    #+#             */
-/*   Updated: 2025/02/18 15:34:54 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/02 14:52:46 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ int	ft_tokenize_one(t_lexer *lexer, char *input, int *i)
 {
 	char	*token;
 
-	if ((input[*i] == '>' && input[(*i + 1)] == '>') || \
-	(input[*i] == '<' && input[(*i + 1)] == '<'))
+	if (input[(*i + 1)] && ((input[*i] == '>' && input[(*i + 1)] == '>') || \
+	(input[*i] == '<' && input[(*i + 1)] == '<')))
 	{
 		token = malloc(3);
 		if (!token)

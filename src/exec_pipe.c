@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:51:07 by rick              #+#    #+#             */
-/*   Updated: 2025/02/28 10:39:09 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/02 13:42:31 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,26 @@ void	close_both(int fd1, int fd2)
 
 void	write_pipe(int fd[2], t_command *command)
 {
-	size_t	len;
-	ssize_t	written;
+	size_t		len;
+	ssize_t		written;
+	t_io_file	*current;
 
-	close(fd[0]);
-	len = ft_strlen(command->delimeter->content);
-	written = write(fd[1], command->delimeter->content, len);
-	write(fd[1], "\n", 1);
-	close(fd[1]);
-	if (written == -1)
-		exit(1);
-	exit(0);
+	current = command->delimeter;
+	while (current)
+	{
+		if (current->order_value == command->input_order)
+		{
+			close(fd[0]);
+			len = ft_strlen(current->content);
+			written = write(fd[1], current->content, len);
+			write(fd[1], "\n", 1);
+			close(fd[1]);
+			if (written == -1)
+				exit(1);
+			exit(0);
+		}
+		current = current->next;
+	}
 }
 
 void	execute_in_child(char *cmd_path, t_command *command, t_data *data)

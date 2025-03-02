@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_builtin.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:36:35 by rick              #+#    #+#             */
-/*   Updated: 2025/02/28 21:02:03 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/02 15:48:56 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,8 @@ int	execute_builtin(t_command *commands, t_data *data)
 	{
 		i = -1;
 		while (data->env[++i])
-		{
 			printf("%s\n", data->env[i]);
-		}
+		data->status = 0;
 		return (1);
 	}
 	else if (ft_strcmp(commands->cmd, "echo") == 0)
@@ -115,6 +114,7 @@ int	execute_builtin(t_command *commands, t_data *data)
 		}
 		if (ft_strcmp(commands->args[1], "-n") != 0)
 			printf("\n");
+		data->status = 0;
 		return (1);
 	}
 	else if (ft_strcmp(commands->cmd, "cd") == 0)

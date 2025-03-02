@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:45:08 by rick              #+#    #+#             */
-/*   Updated: 2025/02/28 09:45:45 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/02 15:31:55 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	setup_pipes(t_data *data, int **pipe_fds)
+void	set_up_pipes(t_data *data, int **pipe_fds)
 {
 	int	i;
 
@@ -73,7 +73,7 @@ void	run_piped_command(t_data *data, int **pipe_fds, int i)
 	}
 }
 
-void	create_pipeline_processes(t_data *data, pid_t *pids, int **pipe_fds)
+void	create_pipelines(t_data *data, pid_t *pids, int **pipe_fds)
 {
 	int	i;
 

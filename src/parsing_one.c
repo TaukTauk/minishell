@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_one.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:36:53 by talin             #+#    #+#             */
-/*   Updated: 2025/02/28 14:47:41 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/02 10:39:05 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	create_io_file(t_io_file **file_list, char *file_name, int redirect_type)
+int	create_io_file(t_io_file **file_list, char *file_name, int redirect_type, int order_num)
 {
 	t_io_file	*new_file;
 	t_io_file	*last;
@@ -30,6 +30,7 @@ int	create_io_file(t_io_file **file_list, char *file_name, int redirect_type)
 		return (0);
 	}
 	new_file->redirect_type = redirect_type;
+	new_file->order_value = order_num;
 	new_file->content = NULL;
 	new_file->next = NULL;
 
@@ -61,6 +62,8 @@ t_command	*create_command(void)
 	cmd->fd_in = STDIN_FILENO;
 	cmd->fd_out = STDOUT_FILENO;
 	cmd->builtin = 0;
+	cmd->input_order = 0;
+	cmd->output_order = 0;
 	cmd->next = NULL;
 	return (cmd);
 }
@@ -110,14 +113,14 @@ int	ft_parse_pipe(t_command **command_list, t_command **current_cmd)
 }
 
 int	ft_parse_in_red_two(t_command **command_list, \
-	t_command **current_cmd, int *i, t_lexer *lexer)
+	t_command **current_cmd, int *i, t_data *data)
 {
 	char	*token;
 
-	token = lexer->tokens[*i];
+	token = data->lexer->tokens[*i];
 	if (ft_strcmp(token, "<") == 0)
 	{
-		if (!create_io_file(&(*current_cmd)->infile, lexer->tokens[++(*i)], REDIRECT_INPUT))
+		if (!create_io_file(&(*current_cmd)->infile, data->lexer->tokens[++(*i)], REDIRECT_INPUT, ++(*current_cmd)->input_order))
 		{
 			perror("Error: malloc for input redirection file");
 			return (free_commands(*command_list), 0);
@@ -125,7 +128,7 @@ int	ft_parse_in_red_two(t_command **command_list, \
 	}
 	else
 	{
-		if (!create_io_file(&(*current_cmd)->delimeter, lexer->tokens[++(*i)], REDIRECT_HEREDOC))
+		if (!create_io_file(&(*current_cmd)->delimeter, data->lexer->tokens[++(*i)], REDIRECT_HEREDOC, ++(*current_cmd)->input_order))
 		{
 			perror("Error: malloc for delimiter");
 			return (free_commands(*command_list), 0);

@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_two.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:35:52 by talin             #+#    #+#             */
-/*   Updated: 2025/02/28 14:47:14 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/02 10:42:16 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
 int	ft_parse_in_red(t_command **command_list, \
-t_command **current_cmd, int *i, t_lexer *lexer)
+t_command **current_cmd, int *i, t_data *data)
 {
 	if (!*current_cmd)
 	{
@@ -25,9 +25,9 @@ t_command **current_cmd, int *i, t_lexer *lexer)
 		}
 		*current_cmd = *command_list;
 	}
-	if (*i + 1 < lexer->token_count)
+	if (*i + 1 < data->lexer->token_count)
 	{
-		if (!ft_parse_in_red_two(command_list, current_cmd, i, lexer))
+		if (!ft_parse_in_red_two(command_list, current_cmd, i, data))
 			return (0);
 	}
 	else
@@ -39,14 +39,14 @@ t_command **current_cmd, int *i, t_lexer *lexer)
 }
 
 int	ft_parse_out_red_two(t_command **command_list, \
-t_command **current_cmd, int *i, t_lexer *lexer)
+t_command **current_cmd, int *i, t_data *data)
 {
 	char	*token;
 
-	token = lexer->tokens[*i];
+	token = data->lexer->tokens[*i];
 	if (ft_strcmp(token, ">") == 0)
 	{
-		if (!create_io_file(&(*current_cmd)->outfile, lexer->tokens[++(*i)], REDIRECT_OUTPUT))
+		if (!create_io_file(&(*current_cmd)->outfile, data->lexer->tokens[++(*i)], REDIRECT_OUTPUT, ++(*current_cmd)->output_order))
 		{
 			perror("Error: malloc for input redirection file");
 			return (free_commands(*command_list), 0);
@@ -54,7 +54,7 @@ t_command **current_cmd, int *i, t_lexer *lexer)
 	}
 	else
 	{
-		if (!create_io_file(&(*current_cmd)->outfileappend, lexer->tokens[++(*i)], REDIRECT_APPEND))
+		if (!create_io_file(&(*current_cmd)->outfileappend, data->lexer->tokens[++(*i)], REDIRECT_APPEND, ++(*current_cmd)->output_order))
 		{
 			perror("Error: malloc for input redirection file");
 			return (free_commands(*command_list), 0);
@@ -64,7 +64,7 @@ t_command **current_cmd, int *i, t_lexer *lexer)
 }
 
 int	ft_parse_out_red(t_command **command_list, \
-t_command **current_cmd, int *i, t_lexer *lexer)
+t_command **current_cmd, int *i, t_data *data)
 {
 	if (!*current_cmd)
 	{
@@ -76,9 +76,9 @@ t_command **current_cmd, int *i, t_lexer *lexer)
 		}
 		*current_cmd = *command_list;
 	}
-	if (*i + 1 < lexer->token_count)
+	if (*i + 1 < data->lexer->token_count)
 	{
-		if (!ft_parse_out_red_two(command_list, current_cmd, i, lexer))
+		if (!ft_parse_out_red_two(command_list, current_cmd, i, data))
 			return (0);
 	}
 	else
@@ -133,11 +133,11 @@ t_command **current_cmd, char *token)
 }
 
 int	parse_tokens_statement(t_command **command_list, \
-t_command **current_cmd, int *i, t_lexer *lexer)
+t_command **current_cmd, int *i, t_data *data)
 {
 	char	*token;
 
-	token = lexer->tokens[*i];
+	token = data->lexer->tokens[*i];
 	if (ft_strcmp(token, "|") == 0)
 	{
 		if (!ft_parse_pipe(command_list, current_cmd))
@@ -145,12 +145,12 @@ t_command **current_cmd, int *i, t_lexer *lexer)
 	}
 	else if (ft_strcmp(token, "<") == 0 || ft_strcmp(token, "<<") == 0)
 	{
-		if (!ft_parse_in_red(command_list, current_cmd, i, lexer))
+		if (!ft_parse_in_red(command_list, current_cmd, i, data))
 			return (0);
 	}
 	else if (ft_strcmp(token, ">") == 0 || ft_strcmp(token, ">>") == 0)
 	{
-		if (!ft_parse_out_red(command_list, current_cmd, i, lexer))
+		if (!ft_parse_out_red(command_list, current_cmd, i, data))
 			return (0);
 	}
 	else

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redirections_two.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:52:57 by rick              #+#    #+#             */
-/*   Updated: 2025/02/28 17:08:53 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/02 15:45:40 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,20 +88,46 @@ int	handle_redirections(t_command *command, t_data *data)
 {
 	if (!command)
 		return (1);
-	if (command->delimeter)
+	if (command->delimeter || command->infile)
 	{
-		if (setup_delimeter(command, data))
-			return (1);
-	}
-	if (command->infile && !command->delimeter)
-	{
-		if (setup_input_redirection(command, data))
+		int			status;
+		t_io_file	*current;
+
+		status = 0;
+		if (command->delimeter)
 		{
-			cleanup_redirections(command);
-			return (1);
+			current = command->delimeter;
+			while (current)
+			{
+				if (current->order_value == command->input_order)
+				{
+					if (setup_delimeter(command, data))
+						return (1);
+					status = 1;
+					break ;
+				}
+				current = current->next;
+			}
+		}
+		if (!status && command->infile)
+		{
+			current = command->infile;
+			while (current)
+			{
+				if (current->order_value == command->input_order)
+				{
+					if (setup_input_redirection(command, data))
+					{
+						cleanup_redirections(command);
+						return (1);
+					}
+					break ;
+				}
+				current = current->next;
+			}
 		}
 	}
-	if (command->outfile)
+	if (command->outfile || command->outfileappend)
 	{
 		if (setup_output_redirection(data, command))
 		{
@@ -121,7 +147,7 @@ void	cleanup_redirections(t_command *command)
 		close(command->fd_in);
 		command->fd_in = -1;
 	}
-	if ((command->outfile) && command->fd_out != -1)
+	if ((command->outfile || command->outfileappend) && command->fd_out != -1)
 	{
 		close(command->fd_out);
 		command->fd_out = -1;

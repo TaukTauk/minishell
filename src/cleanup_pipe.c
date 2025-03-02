@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup_pipe.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:47:36 by rick              #+#    #+#             */
-/*   Updated: 2025/02/28 09:47:55 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/02 15:32:20 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	cleanup_pipeline(t_data *data, pid_t *pids, int **pipe_fds)
+void	clear_pipeline(t_data *data, pid_t *pids, int **pipe_fds)
 {
 	int	i;
 

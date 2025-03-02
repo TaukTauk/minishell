@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:38 by talin             #+#    #+#             */
-/*   Updated: 2025/02/28 21:02:45 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/02 15:32:20 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ typedef struct s_io_file
 {
 	char				*file_name;
 	int					redirect_type;
+	int					order_value;
 	char				*content;
 	struct s_io_file	*next;
 }	t_io_file;
@@ -70,6 +71,8 @@ typedef struct s_command
 	int					builtin;
 	int					fd_in;
 	int					fd_out;
+	int					input_order;
+	int					output_order;
 	struct s_command	*next;
 }	t_command;
 
@@ -109,26 +112,26 @@ void		print_commands(t_command *cmd);
 t_command	*parse_tokens(t_lexer *lexer, t_data *data);
 int			add_argument(t_command *cmd, char *arg);
 t_command	*create_command(void);
-int			create_io_file(t_io_file **file_list, char *file_name, int redirect_type);
+int			create_io_file(t_io_file **file_list, char *file_name, int redirect_type, int order_num);
 int			ft_strcmp(const char *s1, const char *s2);
 int			sanitize_tokens(char **tokens);
 int			ft_parse_pipe(t_command **command_list, t_command **current_cmd);
 int			ft_parse_in_red_two(t_command **command_list, \
-t_command **current_cmd, int *i, t_lexer *lexer);
+t_command **current_cmd, int *i, t_data *data);
 int			ft_parse_in_red(t_command **command_list, \
-t_command **current_cmd, int *i, t_lexer *lexer);
+t_command **current_cmd, int *i, t_data *data);
 int			ft_parse_out_red_two(t_command **command_list, \
-t_command **current_cmd, int *i, t_lexer *lexer);
+t_command **current_cmd, int *i, t_data *data);
 int			ft_parse_out_red(t_command **command_list, \
-t_command **current_cmd, int *i, t_lexer *lexer);
+t_command **current_cmd, int *i, t_data *data);
 int			ft_parse_cmd_arg(t_command **command_list, \
 t_command **current_cmd, char *token);
 int			parse_tokens_statement(t_command **command_list, \
-t_command **current_cmd, int *i, t_lexer *lexer);
+t_command **current_cmd, int *i, t_data *data);
 int			parameter_expansion(t_lexer *tokens, char **env);
 int			execute_commands(t_data *data);
 int 		execute_command(t_data *data);
-void		cleanup_pipeline(t_data *data, pid_t *pids, int **pipe_fds);
+void		clear_pipeline(t_data *data, pid_t *pids, int **pipe_fds);
 void		close_both(int fd1, int fd2);
 void		write_pipe(int fd[2], t_command *command);
 void		execute_in_child(char *cmd_path, t_command *command, t_data *data);
@@ -149,11 +152,11 @@ void		ft_error(const char *message);
 void		handle_execution_error(t_command *command, t_data *data, char *cmd_path, int error_type);
 void		cleanup_redirections(t_command *command);
 int			handle_redirections(t_command *command, t_data *data);
-void		setup_pipes(t_data *data, int **pipe_fds);
+void		set_up_pipes(t_data *data, int **pipe_fds);
 void		close_pipes(t_data *data, int **pipe_fds);
 void		setup_child_pipes(t_data *data, int **pipe_fds, int i);
 void		run_piped_command(t_data *data, int **pipe_fds, int i);
-void		create_pipeline_processes(t_data *data, pid_t *pids, int **pipe_fds);
+void		create_pipelines(t_data *data, pid_t *pids, int **pipe_fds);
 int			setup_delimeter(t_command *command, t_data *data);
 int			setup_input_redirection(t_command *command, t_data *data);
 int			setup_output_redirection(t_data *data, t_command *command);
