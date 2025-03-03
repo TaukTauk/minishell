@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_one.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:36:53 by talin             #+#    #+#             */
-/*   Updated: 2025/03/03 10:56:28 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/03 14:25:23 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-int	create_io_file(t_io_file **file_list, char *file_name, int redirect_type, int order_num)
+int	create_io_file(t_io_file **file_list,
+		char *file_name, int redirect_type, int order_num)
 {
 	t_io_file	*new_file;
 	t_io_file	*last;
 
 	if (!file_name)
 		return (0);
-
 	new_file = malloc(sizeof(t_io_file));
 	if (!new_file)
 		return (0);
@@ -33,7 +33,6 @@ int	create_io_file(t_io_file **file_list, char *file_name, int redirect_type, in
 	new_file->order_value = order_num;
 	new_file->content = NULL;
 	new_file->next = NULL;
-
 	if (!(*file_list))
 		*file_list = new_file;
 	else
@@ -121,7 +120,9 @@ int	ft_parse_in_red_two(t_command **command_list, \
 	token = data->lexer->tokens[*i];
 	if (ft_strcmp(token, "<") == 0)
 	{
-		if (!create_io_file(&(*current_cmd)->infile, data->lexer->tokens[++(*i)], REDIRECT_INPUT, ++(*current_cmd)->input_order))
+		if (!create_io_file(&(*current_cmd)->infile,
+				data->lexer->tokens[++(*i)], REDIRECT_INPUT,
+				++(*current_cmd)->input_order))
 		{
 			perror("Error: malloc for input redirection file");
 			return (free_commands(*command_list), 0);
@@ -129,7 +130,9 @@ int	ft_parse_in_red_two(t_command **command_list, \
 	}
 	else
 	{
-		if (!create_io_file(&(*current_cmd)->delimeter, data->lexer->tokens[++(*i)], REDIRECT_HEREDOC, ++(*current_cmd)->input_order))
+		if (!create_io_file(&(*current_cmd)->delimeter,
+				data->lexer->tokens[++(*i)], REDIRECT_HEREDOC,
+				++(*current_cmd)->input_order))
 		{
 			perror("Error: malloc for delimiter");
 			return (free_commands(*command_list), 0);

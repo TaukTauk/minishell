@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 15:27:03 by talin             #+#    #+#             */
-/*   Updated: 2025/03/02 12:29:47 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/03 14:35:06 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ t_command	*parse_tokens(t_lexer *lexer, t_data *data)
 	t_command	*current_cmd;
 	t_command	*tmp;
 	int			i;
+	t_io_file	*file;
 
 	command_list = NULL;
 	current_cmd = NULL;
@@ -32,7 +33,6 @@ t_command	*parse_tokens(t_lexer *lexer, t_data *data)
 	{
 		if (tmp->delimeter)
 		{
-			t_io_file	*file;
 			file = tmp->delimeter;
 			while (file)
 			{
@@ -47,7 +47,8 @@ t_command	*parse_tokens(t_lexer *lexer, t_data *data)
 
 void	print_commands(t_command *cmd)
 {
-	int	i;
+	int			i;
+	t_io_file	*tmp;
 
 	while (cmd)
 	{
@@ -59,7 +60,6 @@ void	print_commands(t_command *cmd)
 			while (cmd->args[++i])
 				printf("  %s\n", cmd->args[i]);
 		}
-		t_io_file *tmp;
 		if (cmd->infile)
 		{
 			tmp = cmd->infile;

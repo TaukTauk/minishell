@@ -3,25 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 10:38:39 by talin             #+#    #+#             */
-/*   Updated: 2025/03/01 21:05:02 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/03 14:38:15 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void ft_free_io_file(t_io_file *file)
+void	ft_free_io_file(t_io_file *file)
 {
-    if (!file)
-        return ;
-    if (file->file_name)
-        free(file->file_name);
-    free(file);
+	if (!file)
+		return ;
+	if (file->file_name)
+		free(file->file_name);
+	free(file);
 }
 
-void free_commands(t_command *cmd)
+void	free_commands(t_command *cmd)
 {
 	t_command	*temp;
 	int			i;
@@ -49,14 +49,14 @@ void free_commands(t_command *cmd)
 	}
 }
 
-void free_lexer(t_lexer *lexer)
+void	free_lexer(t_lexer *lexer)
 {
-    int i;
-    
-    i = -1;
-    while (++i < lexer->token_count)
-        free(lexer->tokens[i]);
-    free(lexer->tokens);
-    lexer->tokens = NULL;
-    free(lexer);
+	int	i;
+
+	i = -1;
+	while (++i < lexer->token_count)
+		free(lexer->tokens[i]);
+	free(lexer->tokens);
+	lexer->tokens = NULL;
+	free(lexer);
 }

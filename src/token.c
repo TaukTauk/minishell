@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 09:50:51 by talin             #+#    #+#             */
-/*   Updated: 2025/03/02 14:52:46 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/03 14:36:55 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,8 @@ char	*ft_tokenize_two_token(int start, int *i, char *input)
 	quote_char = '\0';
 	while (input[*i])
 	{
-		if ((input[*i] == '"' || input[*i] == '\'') && (!in_quotes || input[*i] == quote_char))
+		if ((input[*i] == '"' || input[*i] == '\'')
+			&& (!in_quotes || input[*i] == quote_char))
 		{
 			if (!in_quotes)
 			{
@@ -86,7 +87,8 @@ char	*ft_tokenize_two_token(int start, int *i, char *input)
 			else
 				in_quotes = 0;
 		}
-		else if (!in_quotes && (ft_isspace(input[*i]) || input[*i] == '|' || input[*i] == '>' || input[*i] == '<'))
+		else if (!in_quotes && (ft_isspace(input[*i]) || input[*i] == '|'
+				|| input[*i] == '>' || input[*i] == '<'))
 			break ;
 		(*i)++;
 	}
@@ -129,7 +131,7 @@ int	ft_tokenize_two(t_lexer *lexer, char *input, int *i)
 	{
 		token = ft_tokenize_two_token(start, i, input);
 		if (!token)
-			return(free_lexer(lexer), 0);
+			return (free_lexer(lexer), 0);
 		add_token(lexer, token);
 	}
 	else
@@ -153,7 +155,8 @@ int	ft_tokenize_three(t_lexer *lexer, char *input, int *i)
 	quote_char = '\0';
 	while (input[*i])
 	{
-		if ((input[*i] == '"' || input[*i] == '\'') && (!in_quotes || input[*i] == quote_char))
+		if ((input[*i] == '"' || input[*i] == '\'')
+			&& (!in_quotes || input[*i] == quote_char))
 		{
 			if (!in_quotes)
 			{
@@ -163,7 +166,8 @@ int	ft_tokenize_three(t_lexer *lexer, char *input, int *i)
 			else
 				in_quotes = 0;
 		}
-		else if (!in_quotes && (ft_isspace(input[*i]) || input[*i] == '|' || input[*i] == '>' || input[*i] == '<'))
+		else if (!in_quotes && (ft_isspace(input[*i]) || input[*i] == '|'
+				|| input[*i] == '>' || input[*i] == '<'))
 			break ;
 		(*i)++;
 	}

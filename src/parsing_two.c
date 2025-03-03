@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_two.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:35:52 by talin             #+#    #+#             */
-/*   Updated: 2025/03/02 10:42:16 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/03 14:33:50 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,9 @@ t_command **current_cmd, int *i, t_data *data)
 	token = data->lexer->tokens[*i];
 	if (ft_strcmp(token, ">") == 0)
 	{
-		if (!create_io_file(&(*current_cmd)->outfile, data->lexer->tokens[++(*i)], REDIRECT_OUTPUT, ++(*current_cmd)->output_order))
+		if (!create_io_file(&(*current_cmd)->outfile,
+				data->lexer->tokens[++(*i)], REDIRECT_OUTPUT,
+				++(*current_cmd)->output_order))
 		{
 			perror("Error: malloc for input redirection file");
 			return (free_commands(*command_list), 0);
@@ -54,7 +56,9 @@ t_command **current_cmd, int *i, t_data *data)
 	}
 	else
 	{
-		if (!create_io_file(&(*current_cmd)->outfileappend, data->lexer->tokens[++(*i)], REDIRECT_APPEND, ++(*current_cmd)->output_order))
+		if (!create_io_file(&(*current_cmd)->outfileappend,
+				data->lexer->tokens[++(*i)], REDIRECT_APPEND,
+				++(*current_cmd)->output_order))
 		{
 			perror("Error: malloc for input redirection file");
 			return (free_commands(*command_list), 0);
@@ -97,7 +101,7 @@ int	ft_check_builtin(char *cmd)
 	i = -1;
 	while (++i < 7)
 	{
-		if (ft_strcmp(cmd,builtin[i]) == 0)
+		if (ft_strcmp(cmd, builtin[i]) == 0)
 			return (1);
 	}
 	return (0);
