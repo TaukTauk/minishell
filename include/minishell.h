@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:38 by talin             #+#    #+#             */
-/*   Updated: 2025/03/02 15:32:20 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/03 11:00:59 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@
 # include <stdlib.h>
 # include <string.h>
 # include <ctype.h>
+# include <dirent.h>
+# include <limits.h>
 
 # define ERROR_INVALID_QUOTE 1
 # define ERROR_INVALID_REDIRECTION 2
@@ -73,6 +75,7 @@ typedef struct s_command
 	int					fd_out;
 	int					input_order;
 	int					output_order;
+	int					piped;
 	struct s_command	*next;
 }	t_command;
 
@@ -177,4 +180,17 @@ int			delimeter_append(t_io_file *delimeter, char *line);
 int			delimeter_lines(t_io_file *delimeter);
 void		delimeter_expand(t_io_file *delimeter, t_data *data);
 void		delimeter_read(t_io_file *delimeter, t_command *command, t_data *data);
+int			ft_echo(t_command *command, t_data *data);
+int			ft_cd(t_command *command, t_data *data);
+int			ft_exit(t_command *command, t_data *data);
+void		error_args(char *command, t_data *data);
+void		error_not_found(char *path, t_data *data);
+void		error_permission(char *command, t_data *data);
+void		error_directory(char *command, t_data *data);
+char		*get_target(t_command *command, t_data *data);
+char		*get_path(t_data *data, char *variable);
+char		*ft_strcpy(char *dest, const char *src);
+void		add_env(t_data *data, const char *key, const char *value, int sign);
+int			update_pwd(t_data *data, const char *old_pwd);
+void		error_numeric(char *command, t_data *data);
 #endif

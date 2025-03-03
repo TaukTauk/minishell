@@ -27,7 +27,10 @@ SRC         = cleanup_pipe.c \
 				sanitize.c \
 				setup_redirection.c \
 				token.c \
-				utils.c 
+				utils.c \
+				ft_echo.c \
+				ft_cd.c \
+				ft_exit.c
 
 SRCS        = $(addprefix ${SRCS_DIR}, ${SRC})
 OBJS        = ${SRCS:.c=.o}

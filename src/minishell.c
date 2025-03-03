@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 11:35:12 by talin             #+#    #+#             */
-/*   Updated: 2025/03/02 15:04:02 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/03 09:34:11 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -314,7 +314,7 @@ int main(int ac, char **av, char **env)
                 }
                 data.cmd_count = i;
             }
-			print_commands(data.commands);
+			// print_commands(data.commands);
             if (!execute_commands(&data))
             {
                 free_lexer(data.lexer);

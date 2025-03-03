@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:36:35 by rick              #+#    #+#             */
-/*   Updated: 2025/03/02 15:48:56 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/03 10:47:02 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,53 +103,12 @@ int	execute_builtin(t_command *commands, t_data *data)
 	}
 	else if (ft_strcmp(commands->cmd, "echo") == 0)
 	{
-		i = 0;
-		while (commands->args[++i])
-		{
-			if (ft_strcmp(commands->args[i], "-n") == 0)
-				continue ;
-			printf("%s", commands->args[i]);
-			if (commands->args[i + 1])
-				printf(" ");
-		}
-		if (ft_strcmp(commands->args[1], "-n") != 0)
-			printf("\n");
-		data->status = 0;
+		ft_echo(commands, data);
 		return (1);
 	}
 	else if (ft_strcmp(commands->cmd, "cd") == 0)
 	{
-		if (commands->args[1])
-		{
-			if (commands->args[2])
-				perror("too many arguments");
-			else 
-			{
-				if (chdir(commands->args[1]) != 0)
-				perror("chdir() failed");
-			}
-		}
-		else
-		{
-			char	*home;
-
-			i = -1;
-			home = NULL;
-			while (data->env[++i])
-			{
-				if (ft_strncmp("HOME=", data->env[i], 5) == 0)
-				{
-					home = ft_strdup(data->env[i] + 5);
-					break ;
-				}
-			}
-			if (home)
-			{
-				if (chdir(home) != 0)
-				perror("chdir() failed");
-			}
-			
-		}
+		ft_cd(commands, data);
 		return (1);
 	}
 	else if (ft_strcmp(commands->cmd, "pwd") == 0)
@@ -206,6 +165,9 @@ int	execute_builtin(t_command *commands, t_data *data)
 		return (1);
 	}
 	else if (ft_strcmp(commands->cmd, "exit") == 0)
-		return (0);
+	{
+		ft_exit(commands, data);
+		return (1);
+	}
 	return (1);
 }
