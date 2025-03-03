@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:38 by talin             #+#    #+#             */
-/*   Updated: 2025/03/03 15:19:54 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/03 21:41:39 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ typedef struct s_command
 	int					fd_out;
 	int					input_order;
 	int					output_order;
-	int					piped;
 	struct s_command	*next;
 }	t_command;
 
@@ -196,4 +195,5 @@ int			handle_delimeter_red_field(t_command *command, t_data *data);
 int			handle_input_red_field(t_command *command, t_data *data, int *status);
 void		ft_export(t_command *commands, t_data *data);
 void		ft_unset(t_command *commands, t_data *data);
+
 #endif

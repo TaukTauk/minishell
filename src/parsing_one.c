@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_one.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:36:53 by talin             #+#    #+#             */
-/*   Updated: 2025/03/03 14:25:23 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/03 21:41:50 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ t_command	*create_command(void)
 	cmd->builtin = 0;
 	cmd->input_order = 0;
 	cmd->output_order = 0;
-	cmd->piped = 0;
 	cmd->next = NULL;
 	return (cmd);
 }

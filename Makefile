@@ -31,10 +31,13 @@ SRC         = cleanup_pipe.c \
 				utils.c \
 				ft_echo.c \
 				ft_cd.c \
+				ft_cd_two.c \
 				ft_exit.c \
 				ft_export.c \
 				ft_unset.c \
-				ft_get_path.c
+				ft_get_path.c \
+				output_redirection.c \
+				error.c 
 
 SRCS        = $(addprefix ${SRCS_DIR}, ${SRC})
 OBJS        = ${SRCS:.c=.o}

@@ -3,22 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:47:44 by talin             #+#    #+#             */
-/*   Updated: 2025/03/03 10:59:29 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/03 21:41:11 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
-void	error_numeric(char *command, t_data *data)
-{
-	ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
-	ft_putstr_fd(command, STDERR_FILENO);
-	ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
-	data->status = 2;
-}
 
 static int	exit_valid_argument(const char *str)
 {
@@ -90,19 +82,12 @@ static unsigned char	exit_status(char *str, t_data *data)
 	return (num % 256);
 }
 
-static int	ft_ispiped(t_command *command)
-{
-	if (command->piped == 1)
-		return (1);
-	return (0);
-}
-
 int	ft_exit(t_command *command, t_data *data)
 {
 	int	fd;
 
 	fd = dup(STDOUT_FILENO);
-	if (isatty(fd) && !ft_ispiped(command))
+	if (isatty(fd))
 		ft_putstr_fd("exit\n", STDOUT_FILENO);
 	if (!command->args[1])
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:22:58 by talin             #+#    #+#             */
-/*   Updated: 2025/03/02 15:34:20 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/03 21:15:16 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,17 +53,14 @@ int	execute_commands(t_data *data)
 	pid_t	*pids;
 	int		i;
 
-	i = 0;
+	i = -1;
 	if (!data || data->cmd_count == 0)
 		return (0);
 	if (data->cmd_count == 1)
 		return (execute_command(data));
 	pipe_fds = malloc(sizeof(int *) * (data->cmd_count - 1));
-	while (i < data->cmd_count - 1)
-	{
+	while (++i < data->cmd_count - 1)
 		pipe_fds[i] = malloc(sizeof(int) * 2);
-		i++;
-	}
 	pids = malloc(sizeof(pid_t) * data->cmd_count);
 	set_up_pipes(data, pipe_fds);
 	create_pipelines(data, pids, pipe_fds);
