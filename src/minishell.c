@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 11:35:12 by talin             #+#    #+#             */
-/*   Updated: 2025/03/03 09:34:11 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/03 14:12:31 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -264,6 +264,15 @@ void free_data(t_data *data)
     data->lexer = NULL;
 }
 
+void    handle_sigint(int signum)
+{
+    (void)signum;
+    write(1, "\n", 1);
+    rl_on_new_line();
+    rl_replace_line("", 0);
+    rl_redisplay();
+}
+
 int main(int ac, char **av, char **env)
 {
     char *input;
@@ -276,6 +285,8 @@ int main(int ac, char **av, char **env)
     while (1)
     {
         gen_env(&data);
+		signal(SIGINT, handle_sigint);
+		signal(SIGQUIT, SIG_IGN);
         input = readline("minishell > ");
         if (!input)
             break ;

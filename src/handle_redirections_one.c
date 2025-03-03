@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redirections_one.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:54:04 by rick              #+#    #+#             */
-/*   Updated: 2025/02/28 16:54:16 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/03 14:41:31 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ char	*expand_var_two(const char **pointer, t_data *data)
 	return (ft_strdup(value));
 }
 
-// expand the exit status "$?"
 char	*expand_exit(t_data *data)
 {
 	char	*status;

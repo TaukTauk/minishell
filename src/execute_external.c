@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:37:48 by rick              #+#    #+#             */
-/*   Updated: 2025/03/02 12:38:54 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/03 15:19:13 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,43 +60,6 @@ int	ft_check_set_unset(char **envp)
 			return (1);
 	}
 	return (0);
-}
-
-char	*ft_get_path(char *cmd, char **envp, int i)
-{
-	char	*exec;
-	char	**allpath;
-	char	*path_part;
-	char	*home;
-
-	if (cmd[0] == '~')
-	{
-		home = ft_getenv("HOME", envp);
-		if (!home)
-			return (cmd);
-		path_part = ft_strjoin(home, cmd + 1);
-		return (path_part); 
-	}
-	else
-	{
-		if (ft_check_set_unset(envp) == 0)
-			return (cmd);
-		allpath = ft_split(ft_getenv("PATH", envp), ':');
-		while (allpath[++i])
-		{
-			path_part = ft_strjoin(allpath[i], "/");
-			exec = ft_strjoin(path_part, cmd);
-			free(path_part);
-			if (access(exec, F_OK | X_OK) == 0)
-			{
-				ft_free_arr(allpath);
-				return (exec);
-			}
-			free(exec);
-		}
-		ft_free_arr(allpath);
-		return (ft_strdup(cmd));
-	}
 }
 
 void	exec_err_exit(t_command *command, char *cmd_path, t_data *data)

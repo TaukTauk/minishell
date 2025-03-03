@@ -19,6 +19,7 @@ SRC         = cleanup_pipe.c \
 				handle_redirections_one.c \
 				handle_redirections_two.c \
 				handle_redirections_three.c \
+				handle_redirections_four.c \
 				minishell.c \
 				parsing.c \
 				parsing_one.c \
@@ -30,7 +31,10 @@ SRC         = cleanup_pipe.c \
 				utils.c \
 				ft_echo.c \
 				ft_cd.c \
-				ft_exit.c
+				ft_exit.c \
+				ft_export.c \
+				ft_unset.c \
+				ft_get_path.c
 
 SRCS        = $(addprefix ${SRCS_DIR}, ${SRC})
 OBJS        = ${SRCS:.c=.o}

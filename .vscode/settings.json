@@ -1,0 +1,7 @@
+{
+	"files.associations": {
+		"*.rmd": "markdown",
+		"out": "cpp",
+		"minishell.h": "c"
+	}
+}

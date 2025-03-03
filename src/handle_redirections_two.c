@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:52:57 by rick              #+#    #+#             */
-/*   Updated: 2025/03/02 15:45:40 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/03 14:40:11 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,72 +84,42 @@ void	delimeter_read(t_io_file *delimeter, t_command *command, t_data *data)
 	}
 }
 
-int	handle_redirections(t_command *command, t_data *data)
+int	handle_input_red_field(t_command *command, t_data *data, int *status)
 {
-	if (!command)
-		return (1);
-	if (command->delimeter || command->infile)
-	{
-		int			status;
-		t_io_file	*current;
+	t_io_file	*current;
 
-		status = 0;
-		if (command->delimeter)
-		{
-			current = command->delimeter;
-			while (current)
-			{
-				if (current->order_value == command->input_order)
-				{
-					if (setup_delimeter(command, data))
-						return (1);
-					status = 1;
-					break ;
-				}
-				current = current->next;
-			}
-		}
-		if (!status && command->infile)
-		{
-			current = command->infile;
-			while (current)
-			{
-				if (current->order_value == command->input_order)
-				{
-					if (setup_input_redirection(command, data))
-					{
-						cleanup_redirections(command);
-						return (1);
-					}
-					break ;
-				}
-				current = current->next;
-			}
-		}
-	}
-	if (command->outfile || command->outfileappend)
+	current = command->delimeter;
+	while (current)
 	{
-		if (setup_output_redirection(data, command))
+		if (current->order_value == command->input_order)
 		{
-			cleanup_redirections(command);
-			return (1);
+			if (setup_delimeter(command, data))
+				return (1);
+			*status = 1;
+			break ;
 		}
+		current = current->next;
 	}
 	return (0);
 }
 
-void	cleanup_redirections(t_command *command)
+int	handle_delimeter_red_field(t_command *command, t_data *data)
 {
-	if (!command)
-		return ;
-	if ((command->infile) && command->fd_in != -1)
+	t_io_file	*current;
+
+	current = command->infile;
+	while (current)
 	{
-		close(command->fd_in);
-		command->fd_in = -1;
+		if (current->order_value == command->input_order)
+		{
+			if (setup_input_redirection(command, data))
+			{
+				cleanup_redirections(command);
+				return (1);
+			}
+			break ;
+		}
+		current = current->next;
 	}
-	if ((command->outfile || command->outfileappend) && command->fd_out != -1)
-	{
-		close(command->fd_out);
-		command->fd_out = -1;
-	}
+	return (0);
 }

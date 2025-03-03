@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:38 by talin             #+#    #+#             */
-/*   Updated: 2025/03/03 11:00:59 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/03 15:19:54 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,8 +139,6 @@ void		close_both(int fd1, int fd2);
 void		write_pipe(int fd[2], t_command *command);
 void		execute_in_child(char *cmd_path, t_command *command, t_data *data);
 void		execute_piped_command(t_command *command, t_data *data);
-void		export_env(t_envp **envp, char *arg, t_data **data);
-void		unset_env(t_envp **envp, char *key, t_data **data);
 int			execute_builtin(t_command *commands, t_data *data);
 void		ft_free_arr(char **arr);
 char		*ft_getenv(char *name, char **envp);
@@ -193,4 +191,9 @@ char		*ft_strcpy(char *dest, const char *src);
 void		add_env(t_data *data, const char *key, const char *value, int sign);
 int			update_pwd(t_data *data, const char *old_pwd);
 void		error_numeric(char *command, t_data *data);
+int			handle_input_delimeter(t_command *command, t_data *data);
+int			handle_delimeter_red_field(t_command *command, t_data *data);
+int			handle_input_red_field(t_command *command, t_data *data, int *status);
+void		ft_export(t_command *commands, t_data *data);
+void		ft_unset(t_command *commands, t_data *data);
 #endif
