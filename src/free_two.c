@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_two.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 11:19:18 by talin             #+#    #+#             */
-/*   Updated: 2025/03/04 12:29:59 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/04 20:56:46 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ void	free_data(t_data *data)
 		free(data->env);
 	}
 	free_command(data->commands);
+	free_lexer(data->lexer);
 	free_envp(data->envp);
 	data->commands = NULL;
 	data->envp = NULL;

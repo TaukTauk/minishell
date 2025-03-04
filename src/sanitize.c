@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sanitize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:32:21 by ubuntu            #+#    #+#             */
-/*   Updated: 2025/02/18 14:14:11 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/04 20:46:00 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ int	sanitize_tokens(char **tokens)
 	int	i;
 
 	i = -1;
+	if (!(tokens && *tokens))
+		return (1);
 	while (tokens[++i])
 	{
 		if (check_unclosed_quotes(tokens[i]))

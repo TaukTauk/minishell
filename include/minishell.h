@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:38 by talin             #+#    #+#             */
-/*   Updated: 2025/03/04 15:34:05 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/04 20:04:17 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int			ft_tokenize_two(t_lexer *lexer, char *input, int *i);
 int			ft_tokenize_one(t_lexer *lexer, char *input, int *i);
 void		free_commands(t_command *cmd);
 void		ft_free_io_file(t_io_file *file);
-// void		print_commands(t_command *cmd);
+void		print_commands(t_command *cmd);
 t_command	*parse_tokens(t_lexer *lexer, t_data *data);
 int			add_argument(t_command *cmd, char *arg);
 t_command	*create_command(void);

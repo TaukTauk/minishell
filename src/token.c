@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 09:50:51 by talin             #+#    #+#             */
-/*   Updated: 2025/03/04 11:29:17 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/04 20:43:24 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ t_lexer	*tokenize(char *input)
 	char	**new_tokens;
 	int		i;
 
+	if (!input)
+		return (NULL);
 	lexer = malloc(sizeof(t_lexer));
 	if (!lexer)
 		return (NULL);

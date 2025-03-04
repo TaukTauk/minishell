@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 15:54:59 by talin             #+#    #+#             */
-/*   Updated: 2025/03/04 13:42:26 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/04 20:47:21 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,8 @@ int	parameter_expansion(t_lexer *tokens, t_data *data)
 	int		i;
 
 	i = -1;
+	if (!tokens)
+		return (0);
 	while (tokens->tokens[++i])
 	{
 		if (i >= 1 && ft_strcmp(tokens->tokens[i - 1], "<<") == 0)
