@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:38 by talin             #+#    #+#             */
-/*   Updated: 2025/03/04 12:42:58 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/04 13:45:54 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ int			ft_tokenize_two(t_lexer *lexer, char *input, int *i);
 int			ft_tokenize_one(t_lexer *lexer, char *input, int *i);
 void		free_commands(t_command *cmd);
 void		ft_free_io_file(t_io_file *file);
-void		print_commands(t_command *cmd);
+// void		print_commands(t_command *cmd);
 t_command	*parse_tokens(t_lexer *lexer, t_data *data);
 int			add_argument(t_command *cmd, char *arg);
 t_command	*create_command(void);
@@ -130,7 +130,7 @@ int			ft_parse_cmd_arg(t_command **command_list, \
 t_command **current_cmd, char *token);
 int			parse_tokens_statement(t_command **command_list, \
 t_command **current_cmd, int *i, t_data *data);
-int			parameter_expansion(t_lexer *tokens, char **env);
+int			parameter_expansion(t_lexer *tokens, t_data *data);
 int			execute_commands(t_data *data);
 int 		execute_command(t_data *data);
 void		clear_pipeline(t_data *data, pid_t *pids, int **pipe_fds);
@@ -195,9 +195,9 @@ int			handle_delimeter_red_field(t_command *command, t_data *data);
 int			handle_input_red_field(t_command *command, t_data *data, int *status);
 void		ft_export(t_command *commands, t_data *data);
 void		ft_unset(t_command *commands, t_data *data);
-size_t		calculate_expanded_size(const char *input, char **env);
+size_t		calculate_expanded_size(const char *input, t_data *data);
 void		ft_quote_handle(char **ptr, int *inside_single_quote, int *inside_double_quote);
-void		get_value(char **ptr, char **env, char **output_ptr);
+void		get_value(char **ptr, t_data *data, char **output_ptr);
 int			ft_is_valid_name_character(const char c);
 char		*get_env_value(char *env[], const char *var_name);
 void		remove_quote(char **str);
@@ -216,4 +216,5 @@ void		gen_env(t_data *data);
 void		init_shell(t_data *data, char **envp);
 void		update_shlvl(t_data *data);
 void    	handle_sigint(int signum);
+int			ft_is_only_space(char *input);
 #endif

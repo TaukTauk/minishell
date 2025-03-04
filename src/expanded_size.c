@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanded_size.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 10:32:25 by talin             #+#    #+#             */
-/*   Updated: 2025/03/04 12:27:07 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/04 13:40:14 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void	expanded_size_ptr_increase(const char **ptr, size_t *var_len)
 	}
 }
 
-static int	expanded_size_create_var(size_t *var_len, char **env,
+static int	expanded_size_create_var(size_t *var_len, t_data *data,
 				const char **ptr, size_t *new_size)
 {
 	char	*var_name;
@@ -34,7 +34,18 @@ static int	expanded_size_create_var(size_t *var_len, char **env,
 		var_name = ft_strndup((*ptr) - (*var_len), (*var_len));
 		if (!var_name)
 			return (-1);
-		var_value = get_env_value(env, var_name);
+		if (!ft_strcmp(var_name, "?"))
+		{
+			var_value = ft_itoa(data->status);
+			free(var_name);
+			if (var_value)
+			{
+				(*new_size) += ft_strlen(var_value);
+				free(var_value);
+			}
+			return (0);
+		}
+		var_value = get_env_value(data->env, var_name);
 		free(var_name);
 		if (var_value)
 			(*new_size) += ft_strlen(var_value);
@@ -42,7 +53,7 @@ static int	expanded_size_create_var(size_t *var_len, char **env,
 	return (0);
 }
 
-size_t	calculate_expanded_size(const char *input, char **env)
+size_t	calculate_expanded_size(const char *input, t_data *data)
 {
 	size_t		new_size;
 	const char	*ptr;
@@ -55,7 +66,7 @@ size_t	calculate_expanded_size(const char *input, char **env)
 		if (*ptr == '$')
 		{
 			expanded_size_ptr_increase(&ptr, &var_len);
-			if (expanded_size_create_var(&var_len, env, &ptr, &new_size) == -1)
+			if (expanded_size_create_var(&var_len, data, &ptr, &new_size) == -1)
 				return (-1);
 			continue ;
 		}

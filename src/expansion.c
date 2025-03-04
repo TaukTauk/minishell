@@ -6,13 +6,13 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 15:54:59 by talin             #+#    #+#             */
-/*   Updated: 2025/03/04 10:38:57 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/04 13:42:26 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	expand_variable_copy(char **ptr, char **env, char **output_ptr)
+void	expand_variable_copy(char **ptr, t_data *data, char **output_ptr)
 {
 	int	inside_single_quote;
 	int	inside_double_quote;
@@ -25,7 +25,7 @@ void	expand_variable_copy(char **ptr, char **env, char **output_ptr)
 			ft_quote_handle(ptr, &inside_single_quote, &inside_double_quote);
 		if (**ptr == '$' && !inside_single_quote)
 		{
-			get_value(ptr, env, output_ptr);
+			get_value(ptr, data, output_ptr);
 			if (!*ptr || !**ptr)
 				break ;
 			continue ;
@@ -36,7 +36,7 @@ void	expand_variable_copy(char **ptr, char **env, char **output_ptr)
 	*(*output_ptr) = '\0';
 }
 
-char	*expand_variable(char *input, char **env)
+char	*expand_variable(char *input, t_data *data)
 {
 	char	*expanded_str;
 	char	*ptr;
@@ -45,7 +45,7 @@ char	*expand_variable(char *input, char **env)
 
 	if (!input)
 		return (NULL);
-	size = calculate_expanded_size(input, env);
+	size = calculate_expanded_size(input, data);
 	if (size == -1)
 		return (NULL);
 	expanded_str = malloc(size + 1);
@@ -53,15 +53,15 @@ char	*expand_variable(char *input, char **env)
 		return (perror("malloc"), NULL);
 	ptr = input;
 	output_ptr = expanded_str;
-	expand_variable_copy(&ptr, env, &output_ptr);
+	expand_variable_copy(&ptr, data, &output_ptr);
 	return (expanded_str);
 }
 
-int	expand_var(char **cmd, char **env)
+int	expand_var(char **cmd, t_data *data)
 {
 	char	*expanded_cmd;
 
-	expanded_cmd = expand_variable(*cmd, env);
+	expanded_cmd = expand_variable(*cmd, data);
 	if (expanded_cmd)
 	{
 		free(*cmd);
@@ -72,7 +72,7 @@ int	expand_var(char **cmd, char **env)
 		return (0);
 }
 
-int	parameter_expansion(t_lexer *tokens, char **env)
+int	parameter_expansion(t_lexer *tokens, t_data *data)
 {
 	int		i;
 
@@ -81,7 +81,7 @@ int	parameter_expansion(t_lexer *tokens, char **env)
 	{
 		if (i >= 1 && ft_strcmp(tokens->tokens[i - 1], "<<") == 0)
 			continue ;
-		if (!expand_var(&(tokens->tokens[i]), env))
+		if (!expand_var(&(tokens->tokens[i]), data))
 			return (0);
 	}
 	i = -1;

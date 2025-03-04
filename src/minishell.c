@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 11:35:12 by talin             #+#    #+#             */
-/*   Updated: 2025/03/04 11:29:05 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/04 13:34:24 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,24 @@ int main(int ac, char **av, char **env)
     init_shell(&data, env);
     while (1)
     {
-        gen_env(&data);
 		signal(SIGINT, handle_sigint);
 		signal(SIGQUIT, SIG_IGN);
         input = readline("minishell > ");
         if (!input)
+		{
+			if (data.env)
+				free_environ(data.env);
             break ;
+		}
         if (*input)
             add_history(input);
         input[ft_strcspn(input, "\n")] = '\0';
+		if (!ft_strcmp(input, "\0") || ft_is_only_space(input))
+		{
+			free(input);
+			continue ;
+		}
+		gen_env(&data);
         data.lexer = tokenize(input);
         if (data.lexer)
         {
@@ -44,7 +53,7 @@ int main(int ac, char **av, char **env)
                 continue ;
             }
             // sanitization done
-            if (!parameter_expansion(data.lexer, data.env))
+            if (!parameter_expansion(data.lexer, &data))
             {
                 printf("EXPANSION ERROR!\n");
                 free_lexer(data.lexer);

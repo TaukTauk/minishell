@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_one.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 10:35:08 by talin             #+#    #+#             */
-/*   Updated: 2025/03/04 12:27:27 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/04 13:53:01 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,25 +29,25 @@ char	*get_env_value(char *env[], const char *var_name)
 int	ft_is_valid_name_character(const char c)
 {
 	if ((c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z') || \
-	(c >= '0' && c <= '9') || c == '_')
+	(c >= '0' && c <= '9') || c == '_' || c == '?')
 		return (1);
 	return (0);
 }
 
-static void	get_value_copying(char **var_value, char **output_ptr)
+static void	get_value_copying(char *var_value, char **output_ptr)
 {
-	if ((*var_value))
+	if (var_value)
 	{
-		while (**var_value)
+		while (*var_value)
 		{
-			**output_ptr = **var_value;
+			**output_ptr = *var_value;
 			(*output_ptr)++;
-			(*var_value)++;
+			var_value++;
 		}
 	}
 }
 
-void	get_value(char **ptr, char **env, char **output_ptr)
+void	get_value(char **ptr, t_data *data, char **output_ptr)
 {
 	char	*var_name;
 	int		var_index;
@@ -69,9 +69,18 @@ void	get_value(char **ptr, char **env, char **output_ptr)
 	var_name = ft_strndup(*ptr - var_index, var_index);
 	if (!var_name)
 		return ;
-	var_value = get_env_value(env, var_name);
+	if (ft_strcmp(var_name, "?") == 0)
+	{
+		var_value = ft_itoa(data->status);
+		get_value_copying(var_value, output_ptr);
+		if (var_value)
+			free(var_value);
+		free(var_name);
+		return ;
+	}
+	var_value = get_env_value(data->env, var_name);
 	free(var_name);
-	get_value_copying(&var_value, output_ptr);
+	get_value_copying(var_value, output_ptr);
 }
 
 void	ft_quote_handle(char **ptr, int *inside_single_quote,
