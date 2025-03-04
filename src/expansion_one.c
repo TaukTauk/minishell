@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_one.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 10:35:08 by talin             #+#    #+#             */
-/*   Updated: 2025/03/04 10:38:08 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/04 12:27:27 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ void	get_value(char **ptr, char **env, char **output_ptr)
 	get_value_copying(&var_value, output_ptr);
 }
 
-void	ft_quote_handle(char **ptr, int *inside_single_quote, int *inside_double_quote)
+void	ft_quote_handle(char **ptr, int *inside_single_quote,
+			int *inside_double_quote)
 {
 	if (**ptr == '\'' && !(*inside_double_quote))
 		*inside_single_quote = !(*inside_single_quote);

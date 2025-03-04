@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_get_path.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 15:18:50 by talin             #+#    #+#             */
-/*   Updated: 2025/03/03 15:30:53 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/04 12:25:04 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static char	*ft_get_home_path(char *cmd, char **envp)
 	if (!home)
 		return (ft_strdup(cmd));
 	path_part = ft_strjoin(home, cmd + 1);
-	return (path_part); 
+	return (path_part);
 }
 
 static char	*ft_get_exec_path(char *cmd, char **allpath, int i)

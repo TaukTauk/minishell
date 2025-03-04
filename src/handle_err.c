@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   handle_err.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:42:16 by rick              #+#    #+#             */
-/*   Updated: 2025/03/03 21:42:35 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/04 12:30:30 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-void	handle_execution_error(t_command *command, t_data *data, char *cmd_path, int error_type)
+void	handle_execution_error(t_command *command, t_data *data,
+			char *cmd_path, int error_type)
 {
 	if (error_type == 1)
 	{

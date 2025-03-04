@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 10:40:15 by talin             #+#    #+#             */
-/*   Updated: 2025/03/04 11:18:04 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/04 12:50:23 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,14 +87,10 @@ int	ft_strcmp(const char *s1, const char *s2)
 
 int	ft_check_builtin(char *cmd)
 {
-	const char	*builtin[] = {"env", "pwd", "echo", "export", "unset", "cd", "exit"};
-	int			i;
-
-	i = -1;
-	while (++i < 7)
-	{
-		if (ft_strcmp(cmd, builtin[i]) == 0)
-			return (1);
-	}
+	if (!ft_strcmp(cmd, "env") || !ft_strcmp(cmd, "pwd")
+		|| !ft_strcmp(cmd, "echo") || !ft_strcmp(cmd, "export")
+		|| !ft_strcmp(cmd, "unset") || !ft_strcmp(cmd, "cd")
+		|| !ft_strcmp(cmd, "exit"))
+		return (1);
 	return (0);
 }

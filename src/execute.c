@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:22:58 by talin             #+#    #+#             */
-/*   Updated: 2025/03/03 21:15:16 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/04 12:26:29 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,13 @@ void	restore_std_fds(int fd_stdin, int fd_stdout)
 	close(fd_stdout);
 }
 
-int execute_command(t_data *data)
+int	execute_command(t_data *data)
 {
 	int	fd_stdin;
 	int	fd_stdout;
 
-	if (!data || !data->commands || !data->commands->args || !data->commands->args[0])
+	if (!data || !data->commands || !data->commands->args
+		|| !data->commands->args[0])
 		return (0);
 	fd_stdin = dup(STDIN_FILENO);
 	fd_stdout = dup(STDOUT_FILENO);

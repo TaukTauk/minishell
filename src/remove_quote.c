@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   remove_quote.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 10:39:10 by talin             #+#    #+#             */
-/*   Updated: 2025/03/04 10:39:31 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/04 12:31:27 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ static int	size_of_str_without_quote(char **str)
 	return (size);
 }
 
-static void	copy_str_without_quote(char **clean_str, int in_quote, char quote_char, char **str)
+static void	copy_str_without_quote(char **clean_str, int in_quote,
+				char quote_char, char **str)
 {
 	int	i;
 	int	j;

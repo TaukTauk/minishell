@@ -3,15 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redirections_one.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:54:04 by rick              #+#    #+#             */
-/*   Updated: 2025/03/03 14:41:31 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/04 12:26:07 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
-
 
 char	*env_value(t_data *data, const char *key)
 {

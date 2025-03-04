@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanded_size.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 10:32:25 by talin             #+#    #+#             */
-/*   Updated: 2025/03/04 10:32:49 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/04 12:27:07 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@ static void	expanded_size_ptr_increase(const char **ptr, size_t *var_len)
 	}
 }
 
-static int	expanded_size_create_var(size_t *var_len, char **env, const char **ptr, size_t *new_size)
+static int	expanded_size_create_var(size_t *var_len, char **env,
+				const char **ptr, size_t *new_size)
 {
 	char	*var_name;
 	char	*var_value;

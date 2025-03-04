@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   setup_redirection.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:44:06 by rick              #+#    #+#             */
-/*   Updated: 2025/03/03 20:49:09 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/04 12:31:41 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	ft_input_access(t_io_file *input, t_data *data, int *fd)
 int	setup_input_redirection(t_command *command, t_data *data)
 {
 	int				fd;
-	t_io_file	*input;
+	t_io_file		*input;
 
 	if (!command || !command->infile)
 		return (1);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_builtin.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:36:35 by rick              #+#    #+#             */
-/*   Updated: 2025/03/03 15:16:00 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/04 12:24:30 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,16 @@ void	ft_env(t_data *data)
 
 void	ft_pwd(void)
 {
-	char *buf;
+	char	*buf;
 
 	buf = getcwd(NULL, 0);
-	if (buf != NULL) {
+	if (buf != NULL)
+	{
 		printf("%s\n", buf);
 		free(buf);
-	} else {
-		perror("getcwd");
 	}
+	else
+		perror("getcwd");
 }
 
 int	execute_builtin(t_command *commands, t_data *data)
