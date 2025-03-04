@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 10:40:15 by talin             #+#    #+#             */
-/*   Updated: 2025/02/18 15:38:40 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/04 11:18:04 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,18 @@ int	ft_strcmp(const char *s1, const char *s2)
 	while (s1[i] && s2[i] && s1[i] == s2[i])
 		i++;
 	return ((unsigned char)s1[i] - (unsigned char)s2[i]);
+}
+
+int	ft_check_builtin(char *cmd)
+{
+	const char	*builtin[] = {"env", "pwd", "echo", "export", "unset", "cd", "exit"};
+	int			i;
+
+	i = -1;
+	while (++i < 7)
+	{
+		if (ft_strcmp(cmd, builtin[i]) == 0)
+			return (1);
+	}
+	return (0);
 }

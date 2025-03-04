@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_one.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:36:53 by talin             #+#    #+#             */
-/*   Updated: 2025/03/03 21:41:50 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/04 11:17:03 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,7 @@ int	create_io_file(t_io_file **file_list,
 		return (0);
 	new_file->file_name = ft_strdup(file_name);
 	if (!new_file->file_name)
-	{
-		free(new_file);
-		return (0);
-	}
+		return (free(new_file), 0);
 	new_file->redirect_type = redirect_type;
 	new_file->order_value = order_num;
 	new_file->content = NULL;

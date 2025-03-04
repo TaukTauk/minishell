@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:38 by talin             #+#    #+#             */
-/*   Updated: 2025/03/03 21:41:39 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/04 11:29:39 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,5 +195,25 @@ int			handle_delimeter_red_field(t_command *command, t_data *data);
 int			handle_input_red_field(t_command *command, t_data *data, int *status);
 void		ft_export(t_command *commands, t_data *data);
 void		ft_unset(t_command *commands, t_data *data);
-
+size_t		calculate_expanded_size(const char *input, char **env);
+void		ft_quote_handle(char **ptr, int *inside_single_quote, int *inside_double_quote);
+void		get_value(char **ptr, char **env, char **output_ptr);
+int			ft_is_valid_name_character(const char c);
+char		*get_env_value(char *env[], const char *var_name);
+void		remove_quote(char **str);
+int			ft_check_builtin(char *cmd);
+void 		free_data(t_data *data);
+void 		free_envp(t_envp *envp);
+void 		free_command(t_command *cmd);
+void 		free_io_file(t_io_file *file);
+char		*ft_multjoin(char **arr_str);
+void		free_env(t_data *data);
+void		free_environ(char **envp);
+t_envp		*env_find(t_envp *envp, const char *key);
+void		init_env(t_data *data);
+void		add_env(t_data *data, const char *key, const char *value, int sign);
+void		gen_env(t_data *data);
+void		init_shell(t_data *data, char **envp);
+void		update_shlvl(t_data *data);
+void    	handle_sigint(int signum);
 #endif

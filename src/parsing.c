@@ -3,31 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 15:27:03 by talin             #+#    #+#             */
-/*   Updated: 2025/03/03 14:35:06 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/04 11:15:03 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/minishell.h"
 
-t_command	*parse_tokens(t_lexer *lexer, t_data *data)
+static void	parse_tokens_delimeter(t_command *command_list, t_data *data)
 {
-	t_command	*command_list;
-	t_command	*current_cmd;
 	t_command	*tmp;
-	int			i;
 	t_io_file	*file;
 
-	command_list = NULL;
-	current_cmd = NULL;
-	i = -1;
-	while (++i < lexer->token_count)
-	{
-		if (!parse_tokens_statement(&command_list, &current_cmd, &i, data))
-			return (NULL);
-	}
 	tmp = command_list;
 	while (tmp)
 	{
@@ -42,6 +31,23 @@ t_command	*parse_tokens(t_lexer *lexer, t_data *data)
 		}
 		tmp = tmp->next;
 	}
+}
+
+t_command	*parse_tokens(t_lexer *lexer, t_data *data)
+{
+	t_command	*command_list;
+	t_command	*current_cmd;
+	int			i;
+
+	command_list = NULL;
+	current_cmd = NULL;
+	i = -1;
+	while (++i < lexer->token_count)
+	{
+		if (!parse_tokens_statement(&command_list, &current_cmd, &i, data))
+			return (NULL);
+	}
+	parse_tokens_delimeter(command_list, data);
 	return (command_list);
 }
 

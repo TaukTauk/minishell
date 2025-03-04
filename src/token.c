@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 09:50:51 by talin             #+#    #+#             */
-/*   Updated: 2025/03/03 14:36:55 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/04 11:29:17 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,135 +59,6 @@ int	ft_tokenize_one(t_lexer *lexer, char *input, int *i)
 	return (1);
 }
 
-char	*ft_tokenize_two_token(int start, int *i, char *input)
-{
-	char	*token;
-	char	*combined;
-	char	*temp;
-	int		in_quotes;
-	char	quote_char;
-
-	token = ft_strndup(input + start, *i - start + 1);
-	if (!token)
-		return (NULL);
-	(*i)++;
-	start = *i;
-	in_quotes = 0;
-	quote_char = '\0';
-	while (input[*i])
-	{
-		if ((input[*i] == '"' || input[*i] == '\'')
-			&& (!in_quotes || input[*i] == quote_char))
-		{
-			if (!in_quotes)
-			{
-				in_quotes = 1;
-				quote_char = input[*i];
-			}
-			else
-				in_quotes = 0;
-		}
-		else if (!in_quotes && (ft_isspace(input[*i]) || input[*i] == '|'
-				|| input[*i] == '>' || input[*i] == '<'))
-			break ;
-		(*i)++;
-	}
-	if (in_quotes)
-	{
-		perror("Unclosed quote");
-		free(token);
-		return (NULL);
-	}
-	if (start < *i)
-	{
-		combined = ft_strndup(input + start, *i - start);
-		if (!combined)
-		{
-			free(token);
-			return (NULL);
-		}
-		temp = ft_strjoin(token, combined);
-		free(token);
-		free(combined);
-		token = temp;
-	}
-	token[ft_strlen(token)] = '\0';
-	return (token);
-}
-
-int	ft_tokenize_two(t_lexer *lexer, char *input, int *i)
-{
-	char	*token;
-	char	quote;
-	int		start;
-
-	quote = input[(*i)];
-	start = *i;
-	if (input[(*i) + 1])
-		(*i)++;
-	while (input[*i] && input[*i] != quote)
-		(*i)++;
-	if (input[*i] == quote)
-	{
-		token = ft_tokenize_two_token(start, i, input);
-		if (!token)
-			return (free_lexer(lexer), 0);
-		add_token(lexer, token);
-	}
-	else
-	{
-		perror("unclosed quote");
-		free_lexer(lexer);
-		return (0);
-	}
-	return (1);
-}
-
-int	ft_tokenize_three(t_lexer *lexer, char *input, int *i)
-{
-	int		start;
-	char	*token;
-	int		in_quotes;
-	char	quote_char;
-
-	start = *i;
-	in_quotes = 0;
-	quote_char = '\0';
-	while (input[*i])
-	{
-		if ((input[*i] == '"' || input[*i] == '\'')
-			&& (!in_quotes || input[*i] == quote_char))
-		{
-			if (!in_quotes)
-			{
-				in_quotes = 1;
-				quote_char = input[*i];
-			}
-			else
-				in_quotes = 0;
-		}
-		else if (!in_quotes && (ft_isspace(input[*i]) || input[*i] == '|'
-				|| input[*i] == '>' || input[*i] == '<'))
-			break ;
-		(*i)++;
-	}
-	if (in_quotes)
-	{
-		perror("Unclosed quote");
-		free_lexer(lexer);
-		return (0);
-	}
-	if (start < *i)
-	{
-		token = ft_strndup(input + start, *i - start);
-		if (!token)
-			return (free_lexer(lexer), 0);
-		token[ft_strlen(token)] = '\0';
-		add_token(lexer, token);
-	}
-	return (1);
-}
-
 int	ft_tokenize_four(t_lexer *lexer, char *input)
 {
 	int	i;
@@ -215,4 +86,29 @@ int	ft_tokenize_four(t_lexer *lexer, char *input)
 			return (0);
 	}
 	return (1);
+}
+
+t_lexer	*tokenize(char *input)
+{
+	t_lexer	*lexer;
+	char	**new_tokens;
+	int		i;
+
+	lexer = malloc(sizeof(t_lexer));
+	if (!lexer)
+		return (NULL);
+	lexer->tokens = NULL;
+	lexer->token_count = 0;
+	if (!ft_tokenize_four(lexer, input))
+		return (NULL);
+	new_tokens = malloc(sizeof(char *) * (lexer->token_count + 1));
+	if (!new_tokens)
+		return (free_lexer(lexer), NULL);
+	i = -1;
+	while (++i < lexer->token_count)
+		new_tokens[i] = lexer->tokens[i];
+	free(lexer->tokens);
+	lexer->tokens = new_tokens;
+	lexer->tokens[lexer->token_count] = NULL;
+	return (lexer);
 }

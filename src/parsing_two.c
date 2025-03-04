@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_two.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:35:52 by talin             #+#    #+#             */
-/*   Updated: 2025/03/03 14:33:50 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/04 11:17:52 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,20 +91,6 @@ t_command **current_cmd, int *i, t_data *data)
 		return (free_commands(*command_list), 0);
 	}
 	return (1);
-}
-
-int	ft_check_builtin(char *cmd)
-{
-	const char	*builtin[] = {"env", "pwd", "echo", "export", "unset", "cd", "exit"};
-	int			i;
-
-	i = -1;
-	while (++i < 7)
-	{
-		if (ft_strcmp(cmd, builtin[i]) == 0)
-			return (1);
-	}
-	return (0);
 }
 
 int	ft_parse_cmd_arg(t_command **command_list, \

@@ -14,6 +14,8 @@ SRC         = cleanup_pipe.c \
 				exit_status.c \
 				expansion.c \
 				free.c \
+				free_env.c \
+				free_two.c \
 				handle_err.c \
 				handle_redirections.c \
 				handle_redirections_one.c \
@@ -28,7 +30,10 @@ SRC         = cleanup_pipe.c \
 				sanitize.c \
 				setup_redirection.c \
 				token.c \
+				token_two.c \
+				token_three.c \
 				utils.c \
+				utils_two.c \
 				ft_echo.c \
 				ft_cd.c \
 				ft_cd_two.c \
@@ -37,7 +42,13 @@ SRC         = cleanup_pipe.c \
 				ft_unset.c \
 				ft_get_path.c \
 				output_redirection.c \
-				error.c 
+				error.c \
+				expanded_size.c \
+				expansion_one.c \
+				remove_quote.c \
+				signal.c \
+				init_shell.c \
+				get_env.c 
 
 SRCS        = $(addprefix ${SRCS_DIR}, ${SRC})
 OBJS        = ${SRCS:.c=.o}
