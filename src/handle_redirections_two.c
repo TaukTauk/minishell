@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redirections_two.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:52:57 by rick              #+#    #+#             */
-/*   Updated: 2025/03/03 14:40:11 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/05 09:42:25 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,34 @@ void	delimeter_read(t_io_file *delimeter, t_command *command, t_data *data)
 	}
 }
 
+void	ft_free_infile(t_command *command)
+{
+	t_io_file	*current;
+	t_io_file	*next;
+
+	if (command->infile)
+	{
+		current = command->infile;
+		while (current)
+		{
+			next = current->next;
+			if (current->file_name)
+			{
+				free(current->file_name);
+				current->file_name = NULL;
+			}
+			if (current->content)
+			{
+				free(current->content);
+				current->content = NULL;
+			}
+			free(current);
+			current = next;
+		}
+		command->infile = NULL;
+	}
+}
+
 int	handle_input_red_field(t_command *command, t_data *data, int *status)
 {
 	t_io_file	*current;
@@ -93,6 +121,7 @@ int	handle_input_red_field(t_command *command, t_data *data, int *status)
 	{
 		if (current->order_value == command->input_order)
 		{
+			ft_free_infile(command);
 			if (setup_delimeter(command, data))
 				return (1);
 			*status = 1;
