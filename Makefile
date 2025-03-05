@@ -1,87 +1,131 @@
-NAME        = minishell
-LIBFT       = ./libft
-HEADERS     = -I ./include -I ${LIBFT}
+SRC_PATH = src/
+BUILTIN_PATH = $(SRC_PATH)builtin/
+EXTCMD_PATH = $(SRC_PATH)extcmd/
+LEXER_PATH = $(SRC_PATH)lexer/
+PARSING_PATH = $(SRC_PATH)parsing/
+PIPE_PATH = $(SRC_PATH)pipe/
+REDIRECTION_PATH = $(SRC_PATH)redirection/
+SIGNAL_PATH = $(SRC_PATH)signal/
+UTILS_PATH = $(SRC_PATH)utils/
 
-LIBS        = ${LIBFT}/libft.a
+SRCS = main.c
 
-SRCS_DIR    = src/
+SRCS_PREFIXED = $(addprefix $(SRC_PATH), $(SRCS))
 
-SRC         = cleanup_pipe.c \
-				exec_pipe.c \
-				execute_builtin.c \
-				execute.c \
-				execute_external.c \
-				exit_status.c \
-				expansion.c \
-				free.c \
-				free_env.c \
-				free_two.c \
-				handle_err.c \
-				handle_redirections.c \
-				handle_redirections_one.c \
-				handle_redirections_two.c \
-				handle_redirections_three.c \
-				handle_redirections_four.c \
-				minishell.c \
-				parsing.c \
-				parsing_one.c \
-				parsing_two.c \
-				pipes.c \
-				sanitize.c \
-				setup_redirection.c \
-				token.c \
-				token_two.c \
-				token_three.c \
-				utils.c \
-				utils_two.c \
-				ft_echo.c \
-				ft_cd.c \
-				ft_cd_two.c \
-				ft_exit.c \
-				ft_export.c \
-				ft_unset.c \
-				ft_get_path.c \
-				output_redirection.c \
-				error.c \
-				expanded_size.c \
-				expansion_one.c \
-				remove_quote.c \
-				signal.c \
-				init_shell.c \
-				get_env.c 
+SRCS_BUILTIN = ft_echo.c ft_exit.c ft_export.c  \
+				ft_unset.c execute_builtin.c ft_cd.c ft_cd_two.c
+SRCS_BUILTIN_PREFIXED = $(addprefix $(BUILTIN_PATH), $(SRCS_BUILTIN))
 
-SRCS        = $(addprefix ${SRCS_DIR}, ${SRC})
-OBJS        = ${SRCS:.c=.o}
+SRCS_EXTCMD = execute_external.c execute.c ft_get_path.c
+SRCS_EXTCMD_PREFIXED = $(addprefix $(EXTCMD_PATH), $(SRCS_EXTCMD))
 
-CC          = cc
+SRCS_LEXER = expanded_size.c expansion_one.c expansion.c remove_quote.c sanitize.c token_three.c token_two.c token.c
+SRCS_LEXER_PREFIXED = $(addprefix $(LEXER_PATH), $(SRCS_LEXER))
 
-CFLAGS      = -Wall -Werror -Wextra -g3 -fsanitize=address
+SRCS_PARSING = parsing_one.c parsing_two.c parsing.c
+SRCS_PARSING_PREFIXED = $(addprefix $(PARSING_PATH), $(SRCS_PARSING))
 
-LDFLAGS 	= -lreadline -lncurses
+SRCS_PIPE = cleanup_pipe.c exec_pipe.c pipes.c 
+SRCS_PIPE_PREFIXED = $(addprefix $(PIPE_PATH), $(SRCS_PIPE))
 
-all:        libft ${NAME}
+SRCS_REDIRECTION = handle_redirections_four.c handle_redirections_one.c handle_redirections_three.c \
+					handle_redirections_two.c handle_redirections.c output_redirection.c setup_redirection.c
+SRCS_REDIRECTION_PREFIXED = $(addprefix $(REDIRECTION_PATH), $(SRCS_REDIRECTION))
 
-norm: 
-	@norminette libft src include
+SRCS_SIGNAL = signal.c
+SRCS_SIGNAL_PREFIXED = $(addprefix $(SIGNAL_PATH), $(SRCS_SIGNAL))
 
-libft:
-	@${MAKE} -C ${LIBFT}
+SRCS_UTILS = error.c exit_status.c free_env.c free_two.c free.c get_env.c handle_err.c init_shell.c utils_two.c utils.c
+SRCS_UTILS_PREFIXED = $(addprefix $(UTILS_PATH), $(SRCS_UTILS))
 
-%.o: %.c include/minishell.h
-	${CC} ${CFLAGS} -o $@ -c $< ${HEADERS}
+INCLUDE = include/minishell.h
 
-${NAME}: ${OBJS} include/minishell.h Makefile
-	${CC} ${CFLAGS} ${OBJS} ${LIBS} ${HEADERS} -o ${NAME} ${LDFLAGS}
+NAME = minishell
 
+CC = cc
+CFLAGS = -Wall -Wextra -Werror
+LDFLAGS = -lreadline -lncurses
+
+LIBFT_PATH = libft/
+LIBFT_LIB = $(LIBFT_PATH)libft.a
+
+OBJS_DIR = obj/
+OBJS = $(addprefix $(OBJS_DIR), \
+    $(SRCS:.c=.o) \
+    $(SRCS_BUILTIN:.c=.o) \
+    $(SRCS_EXTCMD:.c=.o) \
+    $(SRCS_LEXER:.c=.o) \
+    $(SRCS_PARSING:.c=.o) \
+    $(SRCS_PIPE:.c=.o) \
+    $(SRCS_REDIRECTION:.c=.o) \
+    $(SRCS_SIGNAL:.c=.o) \
+    $(SRCS_UTILS:.c=.o))
+
+all: SUBSYSTEMS $(OBJS) $(NAME)
+
+SUBSYSTEMS:
+	@make -C $(LIBFT_PATH) all -s
+
+$(OBJS_DIR)%.o: $(SRC_PATH)%.c Makefile $(INCLUDE)
+	@mkdir -p $(OBJS_DIR)
+	@$(CC) $(CFLAGS) -c $< -o $@
+	@printf "\033[0;32mCompiling: $<\e[0m\n"
+
+$(OBJS_DIR)%.o: $(BUILTIN_PATH)%.c
+	@mkdir -p $(OBJS_DIR)
+	@$(CC) $(CFLAGS) -c $< -o $@
+	@printf "\033[0;32mCompiling: $<\e[0m\n"
+
+$(OBJS_DIR)%.o: $(EXTCMD_PATH)%.c
+	@mkdir -p $(OBJS_DIR)
+	@$(CC) $(CFLAGS) -c $< -o $@
+	@printf "\033[0;32mCompiling: $<\e[0m\n"
+
+$(OBJS_DIR)%.o: $(LEXER_PATH)%.c
+	@mkdir -p $(OBJS_DIR)
+	@$(CC) $(CFLAGS) -c $< -o $@
+	@printf "\033[0;32mCompiling: $<\e[0m\n"
+
+$(OBJS_DIR)%.o: $(PARSING_PATH)%.c
+	@mkdir -p $(OBJS_DIR)
+	@$(CC) $(CFLAGS) -c $< -o $@
+	@printf "\033[0;32mCompiling: $<\e[0m\n"
+
+$(OBJS_DIR)%.o: $(PIPE_PATH)%.c
+	@mkdir -p $(OBJS_DIR)
+	@$(CC) $(CFLAGS) -c $< -o $@
+	@printf "\033[0;32mCompiling: $<\e[0m\n"
+
+$(OBJS_DIR)%.o: $(REDIRECTION_PATH)%.c
+	@mkdir -p $(OBJS_DIR)
+	@$(CC) $(CFLAGS) -c $< -o $@
+	@printf "\033[0;32mCompiling: $<\e[0m\n"
+
+$(OBJS_DIR)%.o: $(SIGNAL_PATH)%.c
+	@mkdir -p $(OBJS_DIR)
+	@$(CC) $(CFLAGS) -c $< -o $@
+	@printf "\033[0;32mCompiling: $<\e[0m\n"
+
+$(OBJS_DIR)%.o: $(UTILS_PATH)%.c
+	@mkdir -p $(OBJS_DIR)
+	@$(CC) $(CFLAGS) -c $< -o $@
+	@printf "\033[0;32mCompiling: $<\e[0m\n"
+
+$(NAME): $(OBJS)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_LIB) -o $(NAME) $(LDFLAGS)
+	@printf "\n\033[0;32m$(NAME) compiled\n\e[0m"
 
 clean:
-	@rm -rf ${OBJS}
-	@rm -rf ${LIBFT}/*.o
+	@make -C $(LIBFT_PATH) clean -s
+	@rm -rf $(OBJS_DIR)
+	@printf "\033[0;31mCleaning process done!\n\e[0m"
 
-fclean:     clean
-	@rm -rf ${NAME}
-	@rm -rf ${LIBS}
+fclean:
+	@make -C $(LIBFT_PATH) fclean -s
+	@rm -rf $(OBJS_DIR)
+	@rm -rf $(NAME)
+	@printf "\033[0;31mFile cleaning process done!\n\e[0m"
 
-re:         fclean all
+re: fclean all
 
-.PHONY:     all clean fclean re libft norm
+.PHONY: clean fclean re all
