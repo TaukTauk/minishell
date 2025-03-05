@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 11:35:12 by talin             #+#    #+#             */
-/*   Updated: 2025/03/04 21:30:37 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/05 11:46:10 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,11 @@ int handle_command_input(char *input, t_data *data)
     }
 
     data->cmd_count = count_commands(data);
+	// print_commands(data->commands);ma
     execute_commands(data);
     
     // Cleanup
-    free_data(data);
+    // free_data(data);
     free(input);
     
     return (1);
