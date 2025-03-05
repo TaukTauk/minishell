@@ -6,7 +6,7 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 11:35:12 by talin             #+#    #+#             */
-/*   Updated: 2025/03/05 14:07:08 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/05 15:44:11 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,9 +96,9 @@ int	main(int ac, char **av, char **env)
 	(void)ac;
 	(void)av;
 	init_shell(&data, env);
-	// Ensure clean signal handling
-	signal(SIGINT, handle_sigint);
-	signal(SIGQUIT, SIG_IGN);
+	// // Ensure clean signal handling
+	// signal(SIGINT, handle_sigint);
+	// signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
 		gen_env(&data);
@@ -106,9 +106,6 @@ int	main(int ac, char **av, char **env)
 		signal(SIGINT, handle_sigint);
 		signal(SIGQUIT, SIG_IGN);
 		input = readline("minishell > ");
-		// Reset signals before processing input
-		signal(SIGINT, handle_sigint);
-		signal(SIGQUIT, SIG_IGN);
 		if (!input)
 		{
 			printf("DEBUG: Received NULL input\n");
