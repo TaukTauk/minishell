@@ -35,7 +35,7 @@ SRCS_REDIRECTION_PREFIXED = $(addprefix $(REDIRECTION_PATH), $(SRCS_REDIRECTION)
 SRCS_SIGNAL = signal.c
 SRCS_SIGNAL_PREFIXED = $(addprefix $(SIGNAL_PATH), $(SRCS_SIGNAL))
 
-SRCS_UTILS = error.c exit_status.c free_env.c free_two.c free.c get_env.c handle_err.c init_shell.c utils_two.c utils.c
+SRCS_UTILS = error.c exit_status.c free_env.c free_two.c free.c get_env.c handle_err.c init_shell.c utils_two.c utils.c global.c
 SRCS_UTILS_PREFIXED = $(addprefix $(UTILS_PATH), $(SRCS_UTILS))
 
 INCLUDE = include/minishell.h

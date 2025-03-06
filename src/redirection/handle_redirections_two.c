@@ -6,11 +6,21 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:52:57 by rick              #+#    #+#             */
-/*   Updated: 2025/03/06 11:28:40 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/06 16:25:03 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+void handle_sigint_delim(int sig)
+{
+    (void)sig;
+    g_delim_interrupt = 1;
+    write(1, "\n", 1);
+	printf("control c\n");
+    rl_replace_line("", 0);
+	rl_on_new_line();
+}
 
 int	delimeter_lines(t_io_file *delimeter, t_data *data)
 {
@@ -19,6 +29,12 @@ int	delimeter_lines(t_io_file *delimeter, t_data *data)
 
 	while (1)
 	{
+		signal(SIGINT, handle_sigint_delim);
+		if (g_delim_interrupt)
+        {
+            g_delim_interrupt = 0;
+            return (0);
+        }
 		line = readline("> ");
 		if (!line)
 		{
@@ -63,6 +79,7 @@ void	delimeter_read(t_io_file *delimeter, t_command *command, t_data *data)
 		return ;
 	if (!delimeter_lines(delimeter, data))
 	{
+		printf("hello from deli read\n");
 		free(delimeter->content);
 		delimeter->content = NULL;
 		return ;

@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:38 by talin             #+#    #+#             */
-/*   Updated: 2025/03/06 12:15:41 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/06 15:47:05 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@
 # define ERROR_INVALID_QUOTE 1
 # define ERROR_INVALID_REDIRECTION 2
 # define ERROR_INVALID_PIPE 3
+
+extern volatile sig_atomic_t	g_delim_interrupt;
 
 typedef struct s_lexer
 {

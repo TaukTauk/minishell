@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 11:35:12 by talin             #+#    #+#             */
-/*   Updated: 2025/03/06 12:11:27 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/06 15:49:09 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ int	main(int ac, char **av, char **env)
 	init_shell(&data, env);
 	while (1)
 	{
+		g_delim_interrupt = 0;
 		gen_env(&data);
 		signal(SIGINT, handle_sigint);
 		signal(SIGQUIT, SIG_IGN);
