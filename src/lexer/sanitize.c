@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sanitize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 13:32:21 by ubuntu            #+#    #+#             */
-/*   Updated: 2025/03/05 13:52:37 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/06 12:10:03 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	is_valid_redirection(const char *token, const char *next_token)
 	return (1);
 }
 
-int	sanitize_tokens(char **tokens)
+int	sanitize_tokens(char **tokens, t_data *data)
 {
 	int	i;
 
@@ -62,19 +62,28 @@ int	sanitize_tokens(char **tokens)
 	while (tokens[++i])
 	{
 		if (check_unclosed_quotes(tokens[i]))
-			return (perror("Error: Unclosed quotes"), ERROR_INVALID_QUOTE);
+		{
+			data->status = 2;
+			return (ft_putendl_fd("minishell: unclosed quote", 2), ERROR_INVALID_QUOTE);
+		}
 		if (ft_strcmp(tokens[i], "<") == 0 || ft_strcmp(tokens[i], ">") == 0 || \
 		ft_strcmp(tokens[i], "<<") == 0 || ft_strcmp(tokens[i], ">>") == 0)
 		{
 			if (!is_valid_redirection(tokens[i], tokens[i + 1]))
-				return (perror("Error: Invalid redirection"), \
+			{
+				data->status = 2;
+				return (ft_putstr_fd("minishell: syntax error near unexpected token '", 2), write(2, tokens[i], ft_strlen(tokens[i])), write(2, "'\n", 2), \
 				ERROR_INVALID_REDIRECTION);
+			}
 		}
 		if (ft_strcmp(tokens[i], "|") == 0)
 		{
 			if (i == 0 || !tokens[i + 1] || ft_strcmp(tokens[i + 1], "|") == 0)
-				return (perror("Error: Invalid pipe placement"), \
+			{
+				data->status = 2;
+				return (ft_putendl_fd("minishell: syntax error near unexpected token '|'", 2), \
 				ERROR_INVALID_PIPE);
+			}
 		}
 	}
 	return (0);

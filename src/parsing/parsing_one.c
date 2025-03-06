@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_one.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:36:53 by talin             #+#    #+#             */
-/*   Updated: 2025/03/05 13:52:52 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/06 10:09:00 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,13 +95,13 @@ int	ft_parse_pipe(t_command **command_list, t_command **current_cmd)
 {
 	if (!*current_cmd)
 	{
-		perror("Syntax error: Pipe '|' without a preceding command");
+		ft_putendl_fd("minishell: syntax error near unexpected token '|'", 2);
 		return (free_commands(*command_list), 0);
 	}
 	(*current_cmd)->next = create_command();
 	if (!(*current_cmd)->next)
 	{
-		perror("Error: Failed to allocate memory for command");
+		ft_putendl_fd("minishell: failed to allocate memory for command", 2);
 		return (free_commands(*command_list), 0);
 	}
 	(*current_cmd) = (*current_cmd)->next;
@@ -120,7 +120,7 @@ int	ft_parse_in_red_two(t_command **command_list, \
 				data->lexer->tokens[++(*i)], REDIRECT_INPUT,
 				++(*current_cmd)->input_order))
 		{
-			perror("Error: malloc for input redirection file");
+			ft_putendl_fd("minishell: malloc for input redirection file", 2);
 			return (free_commands(*command_list), 0);
 		}
 	}
@@ -130,7 +130,7 @@ int	ft_parse_in_red_two(t_command **command_list, \
 				data->lexer->tokens[++(*i)], REDIRECT_HEREDOC,
 				++(*current_cmd)->input_order))
 		{
-			perror("Error: malloc for delimiter");
+			ft_putendl_fd("minishell: malloc for delimeter", 2);
 			return (free_commands(*command_list), 0);
 		}
 	}

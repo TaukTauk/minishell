@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_two.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:35:52 by talin             #+#    #+#             */
-/*   Updated: 2025/03/05 13:53:02 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/06 10:11:41 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_command **current_cmd, int *i, t_data *data)
 		*command_list = create_command();
 		if (!*command_list)
 		{
-			perror("Error: Failed to allocate memory for command");
+			ft_putendl_fd("minishell: failed to allocate memory for command", 2);
 			return (0);
 		}
 		*current_cmd = *command_list;
@@ -32,7 +32,7 @@ t_command **current_cmd, int *i, t_data *data)
 	}
 	else
 	{
-		perror("Syntax error: Missing input file");
+		ft_putendl_fd("minishell: missing input file", 2);
 		return (free_commands(*command_list), 0);
 	}
 	return (1);
@@ -50,7 +50,7 @@ t_command **current_cmd, int *i, t_data *data)
 				data->lexer->tokens[++(*i)], REDIRECT_OUTPUT,
 				++(*current_cmd)->output_order))
 		{
-			perror("Error: malloc for input redirection file");
+			ft_putendl_fd("minishell: malloc for output redirection file", 2);
 			return (free_commands(*command_list), 0);
 		}
 	}
@@ -60,7 +60,7 @@ t_command **current_cmd, int *i, t_data *data)
 				data->lexer->tokens[++(*i)], REDIRECT_APPEND,
 				++(*current_cmd)->output_order))
 		{
-			perror("Error: malloc for input redirection file");
+			ft_putendl_fd("minishell: malloc for output redirection file", 2);
 			return (free_commands(*command_list), 0);
 		}
 	}
@@ -75,7 +75,7 @@ t_command **current_cmd, int *i, t_data *data)
 		*command_list = create_command();
 		if (!*command_list)
 		{
-			perror("Error: Failed to allocate memory for command");
+			ft_putendl_fd("minishell: failed to allocate memory for command", 2);
 			return (0);
 		}
 		*current_cmd = *command_list;
@@ -87,7 +87,7 @@ t_command **current_cmd, int *i, t_data *data)
 	}
 	else
 	{
-		perror("Syntax error: Missing output file");
+		ft_putendl_fd("minishell: missing output file", 2);
 		return (free_commands(*command_list), 0);
 	}
 	return (1);

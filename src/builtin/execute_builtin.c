@@ -3,20 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   execute_builtin.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:36:35 by rick              #+#    #+#             */
-/*   Updated: 2025/03/05 13:50:59 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/06 11:51:43 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	ft_env(t_data *data)
+void	ft_env(t_command *command, t_data *data)
 {
 	int	i;
 
 	i = -1;
+	if (command->args[1])
+	{
+		ft_putstr_fd("minishell: env: ", STDERR_FILENO);
+		ft_putstr_fd(command->args[1], STDERR_FILENO);
+		ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+		data->status = 127;
+		return ;
+	}
 	while (data->env[++i])
 		printf("%s\n", data->env[i]);
 	data->status = 0;
@@ -39,7 +47,7 @@ void	ft_pwd(void)
 int	execute_builtin(t_command *commands, t_data *data)
 {
 	if (ft_strcmp(commands->cmd, "env") == 0)
-		return (ft_env(data), 1);
+		return (ft_env(commands, data), 1);
 	else if (ft_strcmp(commands->cmd, "echo") == 0)
 		return (ft_echo(commands, data), 1);
 	else if (ft_strcmp(commands->cmd, "cd") == 0)

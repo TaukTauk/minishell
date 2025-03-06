@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd_two.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 21:33:06 by rick              #+#    #+#             */
-/*   Updated: 2025/03/05 13:51:07 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/06 11:47:25 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ char	*get_path(t_data *data, char *variable)
 	char	*path;
 
 	path = env_value(data, variable);
-	if (data->envp)
-		printf("hello from get_path\n");
 	if (!path)
 	{
 		error_not_found(variable, data);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 09:50:51 by talin             #+#    #+#             */
-/*   Updated: 2025/03/05 13:52:46 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/06 12:13:34 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ void	add_token(t_lexer *lexer, char *token)
 	new_tokens = malloc(sizeof(char *) * (lexer->token_count + 1));
 	if (!new_tokens)
 	{
-		perror("malloc");
-		exit (EXIT_FAILURE);
+		ft_putendl_fd("minishell: malloc error for adding token", 2);
+		return ;
 	}
 	i = -1;
 	while (++i < lexer->token_count)
@@ -59,7 +59,7 @@ int	ft_tokenize_one(t_lexer *lexer, char *input, int *i)
 	return (1);
 }
 
-int	ft_tokenize_four(t_lexer *lexer, char *input)
+int	ft_tokenize_four(t_lexer *lexer, char *input, t_data *data)
 {
 	int	i;
 
@@ -78,17 +78,17 @@ int	ft_tokenize_four(t_lexer *lexer, char *input)
 		}
 		if (input[i] == '"' || input[i] == '\'')
 		{
-			if (!ft_tokenize_two(lexer, input, &i))
+			if (!ft_tokenize_two(lexer, input, &i, data))
 				return (0);
 			continue ;
 		}
-		if (!ft_tokenize_three(lexer, input, &i))
+		if (!ft_tokenize_three(lexer, input, &i, data))
 			return (0);
 	}
 	return (1);
 }
 
-t_lexer	*tokenize(char *input)
+t_lexer	*tokenize(char *input, t_data *data)
 {
 	t_lexer	*lexer;
 	char	**new_tokens;
@@ -101,7 +101,7 @@ t_lexer	*tokenize(char *input)
 		return (NULL);
 	lexer->tokens = NULL;
 	lexer->token_count = 0;
-	if (!ft_tokenize_four(lexer, input))
+	if (!ft_tokenize_four(lexer, input, data))
 		return (NULL);
 	new_tokens = malloc(sizeof(char *) * (lexer->token_count + 1));
 	if (!new_tokens)

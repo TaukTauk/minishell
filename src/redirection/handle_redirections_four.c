@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redirections_four.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 14:27:58 by talin             #+#    #+#             */
-/*   Updated: 2025/03/05 13:53:27 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/06 11:28:52 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ int	handle_input_delimeter(t_command *command, t_data *data)
 	status = 0;
 	if (command->delimeter)
 	{
-		if (handle_input_red_field(command, data, &status))
+		if (handle_delimeter_red_field(command, data, &status))
 			return (1);
 	}
 	if (!status && command->infile)
 	{
-		if (handle_delimeter_red_field(command, data))
+		if (handle_input_red_field(command, data))
 			return (1);
 	}
 	return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_two.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 11:06:22 by talin             #+#    #+#             */
-/*   Updated: 2025/03/05 13:52:41 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/06 12:14:33 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static int	tokenize_two_copy(char *input, int start, int *i, char **token)
 	return (1);
 }
 
-static char	*ft_tokenize_two_token(int start, int *i, char *input)
+static char	*ft_tokenize_two_token(int start, int *i, char *input, t_data *data)
 {
 	char	*token;
 	int		in_quotes;
@@ -69,7 +69,8 @@ static char	*ft_tokenize_two_token(int start, int *i, char *input)
 	tokenize_two_token(input, i, &in_quotes);
 	if (in_quotes)
 	{
-		perror("Unclosed quote");
+		data->status = 2;
+		ft_putendl_fd("minishell: unclosed quote", 2);
 		free(token);
 		return (NULL);
 	}
@@ -82,7 +83,7 @@ static char	*ft_tokenize_two_token(int start, int *i, char *input)
 	return (token);
 }
 
-int	ft_tokenize_two(t_lexer *lexer, char *input, int *i)
+int	ft_tokenize_two(t_lexer *lexer, char *input, int *i, t_data *data)
 {
 	char	*token;
 	char	quote;
@@ -96,14 +97,15 @@ int	ft_tokenize_two(t_lexer *lexer, char *input, int *i)
 		(*i)++;
 	if (input[*i] == quote)
 	{
-		token = ft_tokenize_two_token(start, i, input);
+		token = ft_tokenize_two_token(start, i, input, data);
 		if (!token)
 			return (free_lexer(lexer), 0);
 		add_token(lexer, token);
 	}
 	else
 	{
-		perror("unclosed quote");
+		data->status = 2;
+		ft_putendl_fd("minishell: unclosed quote", 2);
 		free_lexer(lexer);
 		return (0);
 	}

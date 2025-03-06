@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_three.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 11:04:57 by talin             #+#    #+#             */
-/*   Updated: 2025/03/05 13:52:40 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/06 12:14:53 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static void	tokenize_three(char *input, int *i, int *in_quotes)
 	}
 }
 
-int	ft_tokenize_three(t_lexer *lexer, char *input, int *i)
+int	ft_tokenize_three(t_lexer *lexer, char *input, int *i, t_data *data)
 {
 	int		start;
 	char	*token;
@@ -48,7 +48,8 @@ int	ft_tokenize_three(t_lexer *lexer, char *input, int *i)
 	tokenize_three(input, i, &in_quotes);
 	if (in_quotes)
 	{
-		perror("Unclosed quote");
+		data->status = 2;
+		ft_putendl_fd("minishell: unclosed quote", 2);
 		free_lexer(lexer);
 		return (0);
 	}

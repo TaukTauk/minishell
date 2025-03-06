@@ -3,18 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redirections_two.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:52:57 by rick              #+#    #+#             */
-/*   Updated: 2025/03/05 13:53:38 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/06 11:28:40 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	delimeter_lines(t_io_file *delimeter)
+int	delimeter_lines(t_io_file *delimeter, t_data *data)
 {
 	char	*line;
+	char	*history;
 
 	while (1)
 	{
@@ -25,17 +26,15 @@ int	delimeter_lines(t_io_file *delimeter)
 			write(1, "\n", 1);
 			return (1);
 		}
+		history = ft_strdup(data->history);
+		free(data->history);
+		history[ft_strcspn(history, "\0")] = '\n';
+		data->history = ft_strjoin(history, line);
+		free(history);
 		if (ft_strcmp(line, delimeter->file_name) == 0)
-		{
-			rl_clear_history();
 			return (free(line), 1);
-		}
 		if (!delimeter_append(delimeter, line))
-		{
-			rl_clear_history();
 			return (free(line), 0);
-		}
-		add_history(line);
 		free(line);
 	}
 }
@@ -62,7 +61,7 @@ void	delimeter_read(t_io_file *delimeter, t_command *command, t_data *data)
 		return ;
 	if (!delimeter_content(delimeter))
 		return ;
-	if (!delimeter_lines(delimeter))
+	if (!delimeter_lines(delimeter, data))
 	{
 		free(delimeter->content);
 		delimeter->content = NULL;
@@ -112,7 +111,7 @@ void	ft_free_infile(t_command *command)
 	}
 }
 
-int	handle_input_red_field(t_command *command, t_data *data, int *status)
+int	handle_delimeter_red_field(t_command *command, t_data *data, int *status)
 {
 	t_io_file	*current;
 
@@ -132,7 +131,7 @@ int	handle_input_red_field(t_command *command, t_data *data, int *status)
 	return (0);
 }
 
-int	handle_delimeter_red_field(t_command *command, t_data *data)
+int	handle_input_red_field(t_command *command, t_data *data)
 {
 	t_io_file	*current;
 
