@@ -6,7 +6,7 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 10:38:39 by talin             #+#    #+#             */
-/*   Updated: 2025/03/05 13:54:09 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:39:24 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	ft_free_io_file(t_io_file *file)
 	if (file->file_name)
 		free(file->file_name);
 	free(file);
+	// ft_printf("Freed IO File\n");
 }
 
 void	free_commands(t_command *cmd)
@@ -46,6 +47,7 @@ void	free_commands(t_command *cmd)
 			ft_free_io_file(cmd->delimeter);
 		free(cmd);
 		cmd = temp;
+		// ft_printf("Freed Command\n");
 	}
 }
 
@@ -59,4 +61,5 @@ void	free_lexer(t_lexer *lexer)
 	free(lexer->tokens);
 	lexer->tokens = NULL;
 	free(lexer);
+	// ft_printf("Freed Lexer\n");
 }

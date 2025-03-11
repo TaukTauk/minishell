@@ -6,7 +6,7 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:53:30 by rick              #+#    #+#             */
-/*   Updated: 2025/03/05 13:53:33 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/11 14:51:19 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	error_delimeter(char *delimiter)
 		delimited by end-of-file (wanted `", STDERR_FILENO);
 	ft_putstr_fd(delimiter, STDERR_FILENO);
 	ft_putstr_fd("')", STDERR_FILENO);
-	rl_clear_history();
+	// rl_clear_history();
 }
 
 int	delimeter_content(t_io_file *delimeter)

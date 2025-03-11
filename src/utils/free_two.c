@@ -6,7 +6,7 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 11:19:18 by talin             #+#    #+#             */
-/*   Updated: 2025/03/05 13:54:05 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/11 15:39:06 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	free_io_file(t_io_file *file)
 		free(tmp->content);
 		free(tmp);
 	}
+	// ft_printf("Freed IO File\n");
 }
 
 void	free_command(t_command *cmd)
@@ -49,6 +50,7 @@ void	free_command(t_command *cmd)
 		free_io_file(tmp->outfileappend);
 		free(tmp);
 	}
+	// printf("Freed command\n");
 }
 
 void	free_envp(t_envp *envp)
@@ -63,24 +65,13 @@ void	free_envp(t_envp *envp)
 		free(tmp->value);
 		free(tmp);
 	}
+	// ft_printf("Freed ENVP\n");
 }
 
 void	free_data(t_data *data)
 {
-	int	i;
-
-	if (data->env)
-	{
-		i = 0;
-		while (data->env[i])
-			free(data->env[i++]);
-		free(data->env);
-	}
 	free_command(data->commands);
 	free_lexer(data->lexer);
-	free_envp(data->envp);
 	data->commands = NULL;
-	data->envp = NULL;
-	data->env = NULL;
 	data->lexer = NULL;
 }

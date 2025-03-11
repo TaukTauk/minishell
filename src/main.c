@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 11:35:12 by talin             #+#    #+#             */
-/*   Updated: 2025/03/06 15:49:09 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/11 15:03:19 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,36 +37,37 @@ int	handle_command_input(char *input, t_data *data)
 	data->lexer = tokenize(input, data);
 	if (!data->lexer)
 	{
-		printf("DEBUG: Tokenization failed\n");
+		ft_printf("DEBUG: Tokenization failed\n");
 		return (add_history(data->history), 1);
 	}
 	if (sanitize_tokens(data->lexer->tokens, data))
 	{
-		printf("DEBUG: Token sanitization failed\n");
+		ft_printf("DEBUG: Token sanitization failed\n");
 		free_lexer(data->lexer);
 		return (add_history(data->history), 1);
 	}
 	if (!parameter_expansion(data->lexer, data))
 	{
-		printf("DEBUG: Parameter expansion failed\n");
+		ft_printf("DEBUG: Parameter expansion failed\n");
 		free_lexer(data->lexer);
 		return (add_history(data->history), 1);
 	}
 	data->commands = parse_tokens(data->lexer, data);
 	if (!data->commands)
 	{
-		printf("DEBUG: Parsing tokens failed\n");
+		ft_printf("DEBUG: Parsing tokens failed\n");
 		free_lexer(data->lexer);
 		return (add_history(data->history), 1);
 	}
 	data->cmd_count = count_commands(data);
 	// print_commands(data->commands);
 	execute_commands(data);
-	// Cleanup
-	// free_data(data);
+	free_data(data);
 	if (data->history)
+	{
 		add_history(data->history);
-	free(input);
+		free(data->history);
+	}
 	return (1);
 }
 
@@ -117,7 +118,11 @@ int	main(int ac, char **av, char **env)
 			printf("DEBUG: handle_command_input returned < 0\n");
 			break ;
 		}
+		free(input);
 	}
+	free_env(&data);
+	rl_clear_history();
+	free(data.envp);
 	return (0);
 }
 
