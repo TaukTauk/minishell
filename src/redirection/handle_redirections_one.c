@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redirections_one.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:54:04 by rick              #+#    #+#             */
-/*   Updated: 2025/03/05 13:53:30 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/12 14:54:33 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*env_value(t_data *data, const char *key)
 			return (current->value);
 		current = current->next;
 	}
-	return (getenv(key));
+	return (NULL);
 }
 
 void	error_file_not_found(char *path, t_data *data)

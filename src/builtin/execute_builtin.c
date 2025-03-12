@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:36:35 by rick              #+#    #+#             */
-/*   Updated: 2025/03/06 11:51:43 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/12 14:35:12 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 
 void	ft_env(t_command *command, t_data *data)
 {
-	int	i;
+	t_envp	*current;
 
-	i = -1;
 	if (command->args[1])
 	{
 		ft_putstr_fd("minishell: env: ", STDERR_FILENO);
@@ -25,8 +24,13 @@ void	ft_env(t_command *command, t_data *data)
 		data->status = 127;
 		return ;
 	}
-	while (data->env[++i])
-		printf("%s\n", data->env[i]);
+	current = data->envp;
+	while (current)
+	{
+		if (current->value)
+			printf("%s=%s\n", current->key, current->value);
+		current = current->next;
+	}
 	data->status = 0;
 }
 

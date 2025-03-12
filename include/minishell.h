@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:38 by talin             #+#    #+#             */
-/*   Updated: 2025/03/12 12:31:49 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/12 14:26:32 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,4 +224,5 @@ void		init_shell(t_data *data, char **envp);
 void		update_shlvl(t_data *data);
 void		handle_sigint(int signum);
 int			ft_is_only_space(char *input);
+int			ft_check_exec_access(char *path);
 #endif

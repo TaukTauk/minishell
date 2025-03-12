@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:51:07 by rick              #+#    #+#             */
-/*   Updated: 2025/03/05 13:53:18 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/12 15:00:37 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,8 +75,10 @@ void	execute_piped_command(t_command *command, t_data *data)
 		execute_builtin(command, data);
 		exit(data->status);
 	}
+	if (!command->args || !command->args[0])
+		return ;
 	cmd_path = ft_get_path(command->args[0], data->env, -1);
-	if (!cmd_path)
+	if (!cmd_path || !ft_check_exec_access(cmd_path))
 	{
 		handle_execution_error(command, data, NULL, 1);
 		exit(127);

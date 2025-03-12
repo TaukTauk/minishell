@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_get_path.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 15:18:50 by talin             #+#    #+#             */
-/*   Updated: 2025/03/05 13:52:12 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/12 14:57:04 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ char	*ft_get_path(char *cmd, char **envp, int i)
 	char	*exec;
 	char	**allpath;
 
+	if (!cmd)
+		return (NULL);
 	if (cmd[0] == '~')
 		return (ft_get_home_path(cmd, envp));
 	else

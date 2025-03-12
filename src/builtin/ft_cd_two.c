@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 21:33:06 by rick              #+#    #+#             */
-/*   Updated: 2025/03/06 11:47:25 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/12 14:46:19 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ char	*ft_strcpy(char *dest, const char *src)
 	size_t	i;
 
 	i = 0;
+	if (!src)
+		return (NULL);
 	while (src[i] != '\0')
 	{
 		dest[i] = src[i];
