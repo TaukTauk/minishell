@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_external.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:37:48 by rick              #+#    #+#             */
-/*   Updated: 2025/03/12 12:50:42 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/12 13:56:38 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,18 @@ void	exec_err_exit(t_command *command, char *cmd_path, t_data *data)
 	exit(errno);
 }
 
+int	ft_check_exec_access(char *path)
+{
+	if (path)
+	{
+		if (access(path, X_OK) == 0)
+			return (1);
+		free(path);
+		return (0);
+	}
+	return (0);
+}
+
 void	execve_cmd(char *cmd, char **s_cmd, char **envp, t_data *data)
 {
 	char	*path;
@@ -108,7 +120,7 @@ void	execve_cmd(char *cmd, char **s_cmd, char **envp, t_data *data)
 	if (!cmd)
 		return ;
 	path = ft_get_path(cmd, envp, -1);
-	if (!path)
+	if (!path || !ft_check_exec_access(path))
 		return (handle_execution_error(data->commands, data, NULL, 1));
 	pid = fork();
 	if (pid == -1)
