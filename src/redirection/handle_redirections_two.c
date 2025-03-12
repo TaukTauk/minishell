@@ -6,7 +6,7 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:52:57 by rick              #+#    #+#             */
-/*   Updated: 2025/03/12 12:33:55 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/12 14:13:20 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,9 @@ void handle_sigint_delim(int sig)
 {
     (void)sig;
     g_delim_interrupt = 1;
-    write(1, "\n", 1);
-	printf("control c\n");
-    rl_replace_line("", 0);
+	ioctl(STDIN_FILENO, TIOCSTI, "\n");
 	rl_on_new_line();
+    rl_replace_line("", 0);
 }
 
 int	delimeter_lines(t_io_file *delimeter, t_data *data)
