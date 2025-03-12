@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 11:26:55 by talin             #+#    #+#             */
-/*   Updated: 2025/03/06 12:05:34 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/12 12:28:57 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	update_shlvl(t_data *data)
 		temp->value = ft_itoa(num);
 		if (!temp->value)
 		{
+			printf("hi\n");
 			perror("ft_itoa");
 			exit(EXIT_FAILURE);
 		}

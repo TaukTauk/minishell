@@ -6,7 +6,7 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 11:19:18 by talin             #+#    #+#             */
-/*   Updated: 2025/03/11 15:39:06 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/12 12:49:37 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,18 @@ void	free_io_file(t_io_file *file)
 {
 	t_io_file	*tmp;
 
-	while (file)
+	if (file)
 	{
-		tmp = file;
-		file = file->next;
-		free(tmp->file_name);
-		free(tmp->content);
-		free(tmp);
+		while (file)
+		{
+			tmp = file;
+			file = file->next;
+			if (tmp->file_name)
+				free(tmp->file_name);
+			if (tmp->content)
+				free(tmp->content);
+			free(tmp);
+		}
 	}
 	// ft_printf("Freed IO File\n");
 }
@@ -32,23 +37,31 @@ void	free_command(t_command *cmd)
 	t_command	*tmp;
 	int			i;
 
-	while (cmd)
+	if (cmd)
 	{
-		tmp = cmd;
-		cmd = cmd->next;
-		free(tmp->cmd);
-		if (tmp->args)
+		while (cmd)
 		{
-			i = 0;
-			while (tmp->args[i])
-				free(tmp->args[i++]);
-			free(tmp->args);
+			tmp = cmd;
+			cmd = cmd->next;
+			if (tmp->cmd)
+				free(tmp->cmd);
+			if (tmp->args)
+			{
+				i = 0;
+				while (tmp->args[i])
+					free(tmp->args[i++]);
+				free(tmp->args);
+			}
+			if (tmp->infile)
+				free_io_file(tmp->infile);
+			if (tmp->outfile)
+				free_io_file(tmp->outfile);
+			if (tmp->delimeter)
+				free_io_file(tmp->delimeter);
+			if (tmp->outfile)
+				free_io_file(tmp->outfileappend);
+			free(tmp);
 		}
-		free_io_file(tmp->infile);
-		free_io_file(tmp->outfile);
-		free_io_file(tmp->delimeter);
-		free_io_file(tmp->outfileappend);
-		free(tmp);
 	}
 	// printf("Freed command\n");
 }

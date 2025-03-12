@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redirections_two.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:52:57 by rick              #+#    #+#             */
-/*   Updated: 2025/03/06 16:25:03 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/12 12:33:55 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void handle_sigint_delim(int sig)
 int	delimeter_lines(t_io_file *delimeter, t_data *data)
 {
 	char	*line;
-	char	*history;
+	(void)data;
 
 	while (1)
 	{
@@ -42,11 +42,6 @@ int	delimeter_lines(t_io_file *delimeter, t_data *data)
 			write(1, "\n", 1);
 			return (1);
 		}
-		history = ft_strdup(data->history);
-		free(data->history);
-		history[ft_strcspn(history, "\0")] = '\n';
-		data->history = ft_strjoin(history, line);
-		free(history);
 		if (ft_strcmp(line, delimeter->file_name) == 0)
 			return (free(line), 1);
 		if (!delimeter_append(delimeter, line))

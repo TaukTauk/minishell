@@ -6,11 +6,27 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 11:24:20 by talin             #+#    #+#             */
-/*   Updated: 2025/03/05 13:54:12 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/12 13:11:36 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+void	free_envi(char **env, int i)
+{
+	int	y;
+
+	y = 0;
+	while (y <= i)
+	{
+		if (env[y])
+			free(env[y]);
+		y++;
+	}
+	if (env)
+		free(env);
+}
+
 
 void	gen_env(t_data *data)
 {
@@ -21,11 +37,22 @@ void	gen_env(t_data *data)
 		free_environ(data->env);
 	i = 0;
 	data->env = malloc(sizeof(*data->env) * (data->env_len + 1));
+	if (!data->env)
+	{
+		perror("malloc");
+		exit(EXIT_FAILURE);
+	}
 	tmp = data->envp;
 	while (tmp)
 	{
-		data->env[i++] = ft_multjoin((char *[]){tmp->key, "=", tmp->value,
+		data->env[i] = ft_multjoin((char *[]){tmp->key, "=", tmp->value,
 				NULL});
+		if (!data->env[i])
+		{
+			free_envi(data->env, i);
+			printf("maloc here\n");
+		}
+		i++;
 		tmp = tmp->next;
 	}
 	data->env[i] = NULL;

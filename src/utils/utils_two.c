@@ -6,7 +6,7 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 11:21:50 by talin             #+#    #+#             */
-/*   Updated: 2025/03/05 13:54:24 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/12 13:13:13 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,18 @@ char	*ft_multjoin(char **arr_str)
 	while (*arr_str)
 	{
 		tmp = ft_strjoin(res, *arr_str);
+		if (!tmp)
+		{
+			free(res);
+			return (NULL);
+		}
 		free(res);
 		res = tmp;
 		arr_str++;
 	}
-	return (tmp);
+	tmp = NULL;
+	free(tmp);
+	return (res);
 }
 
 int	ft_is_only_space(char *input)

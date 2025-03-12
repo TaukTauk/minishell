@@ -6,7 +6,7 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 11:35:12 by talin             #+#    #+#             */
-/*   Updated: 2025/03/11 15:03:19 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/12 12:53:54 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,42 +32,37 @@ int	handle_command_input(char *input, t_data *data)
 	if (!input || !*input)
 		return (1);
 	if (*input)
-		data->history = ft_strdup(input);
+		add_history(input);
 	input[ft_strcspn(input, "\n")] = '\0';
 	data->lexer = tokenize(input, data);
 	if (!data->lexer)
 	{
 		ft_printf("DEBUG: Tokenization failed\n");
-		return (add_history(data->history), 1);
+		return (1);
 	}
 	if (sanitize_tokens(data->lexer->tokens, data))
 	{
 		ft_printf("DEBUG: Token sanitization failed\n");
 		free_lexer(data->lexer);
-		return (add_history(data->history), 1);
+		return (1);
 	}
 	if (!parameter_expansion(data->lexer, data))
 	{
 		ft_printf("DEBUG: Parameter expansion failed\n");
 		free_lexer(data->lexer);
-		return (add_history(data->history), 1);
+		return (1);
 	}
 	data->commands = parse_tokens(data->lexer, data);
 	if (!data->commands)
 	{
 		ft_printf("DEBUG: Parsing tokens failed\n");
 		free_lexer(data->lexer);
-		return (add_history(data->history), 1);
+		return (1);
 	}
 	data->cmd_count = count_commands(data);
 	// print_commands(data->commands);
 	execute_commands(data);
 	free_data(data);
-	if (data->history)
-	{
-		add_history(data->history);
-		free(data->history);
-	}
 	return (1);
 }
 

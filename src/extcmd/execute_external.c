@@ -6,7 +6,7 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:37:48 by rick              #+#    #+#             */
-/*   Updated: 2025/03/05 13:51:32 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/12 12:50:42 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,30 @@ int	ft_check_set_unset(char **envp)
 	return (0);
 }
 
+void	free_command_lexer_in_exec(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	if (data->lexer)
+	{
+		if (data->lexer->tokens)
+		{
+			while (data->lexer->tokens[i])
+			{
+				if (data->lexer->tokens[i])
+					free(data->lexer->tokens[i]);
+				i++;
+			}
+			free(data->lexer->tokens);
+		}
+	}
+	if (data->commands)
+	{
+		free_command(data->commands);
+	}
+}
+
 void	exec_err_exit(t_command *command, char *cmd_path, t_data *data)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
@@ -69,7 +93,9 @@ void	exec_err_exit(t_command *command, char *cmd_path, t_data *data)
 	ft_putstr_fd(": ", STDERR_FILENO);
 	ft_putstr_fd(strerror(errno), STDERR_FILENO);
 	ft_putstr_fd("\n", STDERR_FILENO);
-	free(cmd_path);
+	if (cmd_path)
+		free(cmd_path);
+	free_command_lexer_in_exec(data);
 	data -> status = 1;
 	exit(errno);
 }
