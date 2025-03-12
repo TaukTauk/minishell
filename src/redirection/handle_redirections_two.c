@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redirections_two.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:52:57 by rick              #+#    #+#             */
-/*   Updated: 2025/03/12 14:13:20 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/12 23:24:21 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,17 +94,35 @@ void	delimeter_read(t_io_file *delimeter, t_command *command, t_data *data)
 	}
 }
 
-void	ft_free_infile(t_command *command)
+int	ft_free_infile(t_command *command, t_data *data)
 {
 	t_io_file	*current;
 	t_io_file	*next;
+	int			status;
 
+	status = 0;
 	if (command->infile)
 	{
 		current = command->infile;
 		while (current)
 		{
 			next = current->next;
+			if (access(current->file_name, F_OK) != 0)
+			{
+				ft_putstr_fd("minishell: ", STDERR_FILENO);
+				ft_putstr_fd(current->file_name, STDERR_FILENO);
+				ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+				data->status = 1;
+				status = 1;
+			}
+			if (access(current->file_name, R_OK) != 0 && !status)
+			{
+				ft_putstr_fd("minishell: ", STDERR_FILENO);
+				ft_putstr_fd(current->file_name, STDERR_FILENO);
+				ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
+				data->status = 1;
+				status = 1;
+			}
 			if (current->file_name)
 			{
 				free(current->file_name);
@@ -120,6 +138,7 @@ void	ft_free_infile(t_command *command)
 		}
 		command->infile = NULL;
 	}
+	return (status);
 }
 
 int	handle_delimeter_red_field(t_command *command, t_data *data, int *status)
@@ -131,7 +150,8 @@ int	handle_delimeter_red_field(t_command *command, t_data *data, int *status)
 	{
 		if (current->order_value == command->input_order)
 		{
-			ft_free_infile(command);
+			if (ft_free_infile(command, data))
+				return (1);
 			if (setup_delimeter(command, data))
 				return (1);
 			*status = 1;
@@ -149,6 +169,22 @@ int	handle_input_red_field(t_command *command, t_data *data)
 	current = command->infile;
 	while (current)
 	{
+		if (access(current->file_name, F_OK) != 0)
+		{
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putstr_fd(current->file_name, STDERR_FILENO);
+			ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+			data->status = 1;
+			return (1);
+		}
+		if (access(current->file_name, R_OK) != 0)
+		{
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putstr_fd(current->file_name, STDERR_FILENO);
+			ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
+			data->status = 1;
+			return (1);
+		}
 		if (current->order_value == command->input_order)
 		{
 			if (setup_input_redirection(command, data))

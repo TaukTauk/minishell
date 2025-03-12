@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 15:12:01 by talin             #+#    #+#             */
-/*   Updated: 2025/03/05 13:51:24 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/12 22:38:05 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,24 @@ static int	export_env_new(char *key, char *value, t_envp **envp, t_data **data)
 	return (1);
 }
 
+static int is_valid_variable_name(const char *name)
+{
+	int	i;
+    
+	if (!name || !*name)
+		return (0);
+	if (!((name[0] >= 'a' && name[0] <= 'z') || (name[0] >= 'A' && name[0] <= 'Z') || name[0] == '_'))
+        return (0);
+	i = 1;
+	while (name[i])
+	{
+		if (!((name[i] >= 'a' && name[i] <= 'z') || (name[i] >= 'A' && name[i] <= 'Z') || (name[i] >= '0' && name[i] <= '9') || name[i] == '_'))
+            return (0);
+		i++;
+	}
+	return (1);
+}
+
 static void	export_env(t_envp **envp, char *arg, t_data **data)
 {
 	t_envp	*current;
@@ -70,6 +88,16 @@ static void	export_env(t_envp **envp, char *arg, t_data **data)
 	{
 		key = strdup(arg);
 		value = NULL;
+	}
+	if (!is_valid_variable_name(key))
+	{
+		ft_putstr_fd("minishell: export: '", STDERR_FILENO);
+		ft_putstr_fd(arg, STDERR_FILENO);
+		ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
+		(*data)->status = 1;
+		free(key);
+		free(value);
+		return ;
 	}
 	current = *envp;
 	if (export_env_search(current, key, value))
