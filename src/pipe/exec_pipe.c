@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:51:07 by rick              #+#    #+#             */
-/*   Updated: 2025/03/13 11:48:39 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/13 13:48:15 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	execute_piped_command(t_command *command, t_data *data)
 	}
 	if (!command->args || !command->args[0])
 		return ;
-	cmd_path = ft_get_path(command->args[0], data->env, -1);
+	cmd_path = ft_get_path(command->args[0], data->env, -1, data);
 	if (!cmd_path || !ft_check_exec_access(cmd_path))
 	{
 		handle_execution_error(command, data, NULL, 1);

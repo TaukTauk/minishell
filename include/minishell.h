@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:38 by talin             #+#    #+#             */
-/*   Updated: 2025/03/13 13:02:59 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/13 13:46:10 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,7 +143,7 @@ int			execute_builtin(t_command *commands, t_data *data);
 void		ft_free_arr(char **arr);
 char		*ft_getenv(char *name, char **envp);
 int			ft_check_set_unset(char **envp);
-char		*ft_get_path(char *cmd, char **envp, int i);
+char		*ft_get_path(char *cmd, char **envp, int i, t_data *data);
 void		execve_cmd(char *cmd, char **s_cmd, char **envp, t_data *data);
 void		update_exit_status(pid_t pid, int fd[2], t_data *data);
 void		handle_execution_status(pid_t pid, t_data *data);

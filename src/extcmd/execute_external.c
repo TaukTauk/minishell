@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:37:48 by rick              #+#    #+#             */
-/*   Updated: 2025/03/12 13:56:38 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/13 14:58:40 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,23 +119,56 @@ void	execve_cmd(char *cmd, char **s_cmd, char **envp, t_data *data)
 
 	if (!cmd)
 		return ;
-	path = ft_get_path(cmd, envp, -1);
-	if (!path || !ft_check_exec_access(path))
+	path = ft_get_path(cmd, envp, -1, data);
+	if (!path)
 		return (handle_execution_error(data->commands, data, NULL, 1));
 	pid = fork();
 	if (pid == -1)
 	{
-		handle_execution_error(data->commands, data, path, 2);
+		 free(path);
+        ft_putstr_fd("minishell: fork: ", STDERR_FILENO);
+        ft_putstr_fd(strerror(errno), STDERR_FILENO);
+        ft_putstr_fd("\n", STDERR_FILENO);
+        data->status = 1;
 		return ;
 	}
 	if (pid == 0)
 	{
 		if (execve(path, s_cmd, envp) == -1)
-			exec_err_exit(data->commands, path, data);
+		{
+            if (errno == ENOENT)
+            {
+                ft_putstr_fd("minishell: ", STDERR_FILENO);
+                ft_putstr_fd(cmd, STDERR_FILENO);
+                ft_putstr_fd(": command not found\n", STDERR_FILENO);
+                data->status = 127;
+            }
+            else if (errno == EACCES)
+            {
+                ft_putstr_fd("minishell: ", STDERR_FILENO);
+                ft_putstr_fd(cmd, STDERR_FILENO);
+                ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
+                data->status = 126;
+            }
+            else
+            {
+                ft_putstr_fd("minishell: ", STDERR_FILENO);
+                ft_putstr_fd(cmd, STDERR_FILENO);
+                ft_putstr_fd(": ", STDERR_FILENO);
+                ft_putstr_fd(strerror(errno), STDERR_FILENO);
+                ft_putstr_fd("\n", STDERR_FILENO);
+                data->status = 1;
+            }
+			if (path)
+            	free(path);
+            free_command_lexer_in_exec(data);
+            exit(data->status);
+        }
 	}
 	else
 	{
 		handle_execution_status(pid, data);
-		free(path);
+		if (path)
+			free(path);
 	}
 }

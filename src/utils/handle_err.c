@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:42:16 by rick              #+#    #+#             */
-/*   Updated: 2025/03/06 11:34:02 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/13 14:28:52 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 void	handle_execution_error(t_command *command, t_data *data,
 			char *cmd_path, int error_type)
 {
+	if (data->status)
+		return ;
 	if (error_type == 1)
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);

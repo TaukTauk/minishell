@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion_one.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 10:35:08 by talin             #+#    #+#             */
-/*   Updated: 2025/03/12 21:18:45 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/13 13:15:24 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,6 @@ void	get_value(char **ptr, t_data *data, char **output_ptr)
 			get_value_copying(var_value, output_ptr);
 			if (var_value)
 				free(var_value);
-			if (**ptr)
-				(*ptr)++;
 			return ;
 		}
 		if (**ptr && **ptr == '$')
