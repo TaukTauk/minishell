@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_redirection.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:44:06 by rick              #+#    #+#             */
-/*   Updated: 2025/03/13 13:00:45 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/13 22:27:07 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ int	handle_input_file(t_redirection *redir, t_command *command, t_data *data)
 
 	if (check_input_file_access(redir->file_name, data))
 		return (1);
+	if (redir->order_value != command->input_order)
+		return (0);
 	fd = open(redir->file_name, O_RDONLY);
 	if (fd == -1)
 		return (1);
@@ -55,6 +57,8 @@ int	handle_heredoc(t_redirection *redir, t_command *command, t_data *data)
 	int		fd[2];
 	pid_t	pid;
 
+	if (redir->order_value != command->input_order)
+		return (0);
 	if (pipe(fd) == -1)
 		return (ft_error("minishell: pipe failed"), 1);
 	pid = fork();

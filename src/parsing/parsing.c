@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 15:27:03 by talin             #+#    #+#             */
-/*   Updated: 2025/03/13 10:51:32 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/13 21:34:49 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ void	print_commands(t_command *cmd)
 					printf("Output file append:");
 				printf(" %s (Type: %d), order number ==> %d\n", \
 				tmp->file_name, tmp->type, tmp->order_value);
+				if (tmp->content)
+					printf("%s", tmp->content);
 				tmp = tmp->next;
 			}
 		}

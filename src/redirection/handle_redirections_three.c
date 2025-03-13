@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redirections_three.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:53:30 by rick              #+#    #+#             */
-/*   Updated: 2025/03/13 10:59:36 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/13 21:38:44 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ void	error_delimeter(char *delimiter)
 		delimited by end-of-file (wanted `", STDERR_FILENO);
 	ft_putstr_fd(delimiter, STDERR_FILENO);
 	ft_putstr_fd("')", STDERR_FILENO);
-	// rl_clear_history();
 }
 
 int	delimeter_content(t_redirection *delimeter)

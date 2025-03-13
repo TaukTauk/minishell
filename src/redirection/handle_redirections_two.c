@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redirections_two.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:52:57 by rick              #+#    #+#             */
-/*   Updated: 2025/03/13 12:53:51 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/13 21:44:29 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int	delimeter_lines(t_redirection *delimeter, t_data *data)
 void	delimeter_expand(t_redirection *delimeter, t_data *data)
 {
 	char	*expand;
+	char	*temp;
 
 	if (!delimeter || !delimeter->content)
 		return ;
@@ -59,7 +60,9 @@ void	delimeter_expand(t_redirection *delimeter, t_data *data)
 	if (expand)
 	{
 		free(delimeter->content);
-		delimeter->content = expand;
+		temp = ft_strjoin(expand, "\n");
+		free(expand);
+		delimeter->content = temp;
 	}
 	else
 		ft_error("delimeter: failed to expand delimeter");
