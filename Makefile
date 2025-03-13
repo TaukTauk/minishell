@@ -29,7 +29,7 @@ SRCS_PIPE = cleanup_pipe.c exec_pipe.c pipes.c
 SRCS_PIPE_PREFIXED = $(addprefix $(PIPE_PATH), $(SRCS_PIPE))
 
 SRCS_REDIRECTION = handle_redirections_four.c handle_redirections_one.c handle_redirections_three.c \
-					handle_redirections_two.c handle_redirections.c output_redirection.c setup_redirection.c
+					handle_redirections_two.c handle_redirections.c output_redirection.c input_redirection.c
 SRCS_REDIRECTION_PREFIXED = $(addprefix $(REDIRECTION_PATH), $(SRCS_REDIRECTION))
 
 SRCS_SIGNAL = signal.c

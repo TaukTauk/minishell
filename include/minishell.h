@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:38 by talin             #+#    #+#             */
-/*   Updated: 2025/03/13 11:26:55 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/13 13:02:59 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,9 +159,6 @@ void		close_pipes(t_data *data, int **pipe_fds);
 void		setup_child_pipes(t_data *data, int **pipe_fds, int i);
 void		run_piped_command(t_data *data, int **pipe_fds, int i);
 void		create_pipelines(t_data *data, pid_t *pids, int **pipe_fds);
-int			setup_delimeter(t_command *command, t_data *data);
-int			setup_input_redirection(t_command *command, t_data *data);
-int			setup_output_redirection(t_data *data, t_command *command);
 void		error_malloc(t_data *data);
 void		error_eof(char *token, t_data *data);
 char		*env_name(const char **input);
@@ -193,10 +190,6 @@ char		*ft_strcpy(char *dest, const char *src);
 void		add_env(t_data *data, const char *key, const char *value, int sign);
 int			update_pwd(t_data *data, const char *old_pwd);
 void		error_numeric(char *command, t_data *data);
-int			handle_input_delimeter(t_command *command, t_data *data);
-int			handle_input_red_field(t_command *command, t_data *data);
-int			handle_delimeter_red_field(t_command *command,
-				t_data *data, int *status);
 void		ft_export(t_command *commands, t_data *data);
 void		ft_unset(t_command *commands, t_data *data);
 size_t		calculate_expanded_size(const char *input, t_data *data);
@@ -223,4 +216,7 @@ void		update_shlvl(t_data *data);
 void		handle_sigint(int signum);
 int			ft_is_only_space(char *input);
 int			ft_check_exec_access(char *path);
+int			handle_heredoc(t_redirection *redir, t_command *command, t_data *data);
+int			handle_input_file(t_redirection *redir, t_command *command, t_data *data);
+int			handle_output_redirection(t_redirection *redir, t_command *command, t_data *data);
 #endif
