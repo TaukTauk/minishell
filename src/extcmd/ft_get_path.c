@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 15:18:50 by talin             #+#    #+#             */
-/*   Updated: 2025/03/13 14:56:27 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/13 15:21:48 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,59 +77,83 @@ int	is_directory_character(char *cmd)
 	return (0);
 }
 
-char	*ft_get_path(char *cmd, char **envp, int i, t_data *data)
+char *ft_get_path(char *cmd, char **envp, int i, t_data *data)
 {
-	char	*exec;
-	char	**allpath;
-	int		status;
+    char *exec;
+    char **allpath;
+    int status;
 
-	if (!cmd)
-		return (NULL);
-	status = 0;
-	if (cmd[0] == '~')
-	{
-		exec = ft_get_home_path(cmd, envp);
-		status = ft_check_file_type(exec);
-		if (status == 0)
-			return (ft_error_directory(exec, data, 0), free(exec), NULL);
-		else if (status == 2)
-			return (ft_error_directory(exec, data, 2), free(exec), NULL);
-		return (exec);
-	}
-	else
-	{
-		if (is_directory_character(cmd))
-		{
-			status = ft_check_file_type(cmd);
-			if (status == 0)
-				return (ft_error_directory(cmd, data, 0), NULL);
-			else if (status == 2)
-				return (ft_error_directory(cmd, data, 2), NULL);
-			return (ft_strdup(cmd));
-		}
-		if (ft_check_set_unset(envp) == 0)
-			return (ft_strdup(cmd));
-		allpath = ft_split(ft_getenv("PATH", envp), ':');
-		exec = ft_get_exec_path(cmd, allpath, i);
-		ft_free_arr(allpath);
-		if (exec)
-			return (exec);
-		if (access(cmd, F_OK) != 0)
-	    {
-	        ft_putstr_fd("minishell: ", STDERR_FILENO);
-	        ft_putstr_fd(cmd, STDERR_FILENO);
-	        ft_putstr_fd(": command not found\n", STDERR_FILENO);
-	        data->status = 127;
-	        return (NULL);
-	    }
-	    else if (access(cmd, X_OK) != 0)
-	    {
-	        ft_putstr_fd("minishell: ", STDERR_FILENO);
-	        ft_putstr_fd(cmd, STDERR_FILENO);
-	        ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
-	        data->status = 126;
-	        return (NULL);
-	    }
-		return (ft_strdup(cmd));
-	}
+    if (!cmd)
+        return (NULL);
+    if (cmd[0] == '~')
+    {
+        exec = ft_get_home_path(cmd, envp);
+        status = ft_check_file_type(exec);
+        if (status == 0)
+        {
+            ft_error_directory(exec, data, 0);
+            free(exec);
+            return (NULL);
+        }
+        else if (status == 2)
+        {
+            ft_error_directory(exec, data, 2);
+            free(exec);
+            return (NULL);
+        }
+        if (access(exec, X_OK) != 0)
+        {
+            ft_putstr_fd("minishell: ", STDERR_FILENO);
+            ft_putstr_fd(exec, STDERR_FILENO);
+            ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
+            data->status = 126;
+            free(exec);
+            return (NULL);
+        }
+        return (exec);
+    }
+    else if (is_directory_character(cmd))
+    {
+        status = ft_check_file_type(cmd);
+        if (status == 0)
+        {
+            ft_error_directory(cmd, data, 0);
+            return (NULL);
+        }
+        else if (status == 2)
+        {
+            ft_error_directory(cmd, data, 2);
+            return (NULL);
+        }
+        if (access(cmd, X_OK) != 0)
+        {
+            ft_putstr_fd("minishell: ", STDERR_FILENO);
+            ft_putstr_fd(cmd, STDERR_FILENO);
+            ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
+            data->status = 126;
+            return (NULL);
+        }
+        return (ft_strdup(cmd));
+    }
+    else
+    {
+        if (ft_check_set_unset(envp) == 0)
+        {
+            ft_putstr_fd("minishell: ", STDERR_FILENO);
+            ft_putstr_fd(cmd, STDERR_FILENO);
+            ft_putstr_fd(": command not found\n", STDERR_FILENO);
+            data->status = 127;
+            return (NULL);
+        }
+        allpath = ft_split(ft_getenv("PATH", envp), ':');
+        exec = ft_get_exec_path(cmd, allpath, i);
+        ft_free_arr(allpath);
+        if (exec)
+            return (exec);
+        ft_putstr_fd("minishell: ", STDERR_FILENO);
+        ft_putstr_fd(cmd, STDERR_FILENO);
+        ft_putstr_fd(": command not found\n", STDERR_FILENO);
+        data->status = 127;
+        return (NULL);
+    }
 }

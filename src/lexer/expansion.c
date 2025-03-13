@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 15:54:59 by talin             #+#    #+#             */
-/*   Updated: 2025/03/12 20:48:10 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/13 16:43:10 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,11 +57,44 @@ char	*expand_variable(char *input, t_data *data)
 	return (expanded_str);
 }
 
-int	expand_var(char **cmd, t_data *data)
+int	ft_contain_dollar_sign(char *cmd)
+{
+	int	i;
+
+	i = 0;
+	while (cmd[i])
+	{
+		if (cmd[i] == '$')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+int	ft_is_empty(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (!ft_isspace(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
+int	expand_var(char **cmd, t_data *data, int index)
 {
 	char	*expanded_cmd;
 
 	expanded_cmd = expand_variable(*cmd, data);
+	if (ft_contain_dollar_sign(*cmd) && ft_is_empty(expanded_cmd))
+	{
+		data->empty_list[data->index] = index;
+		data->index++;
+	}
 	if (expanded_cmd)
 	{
 		free(*cmd);
@@ -79,11 +112,15 @@ int	parameter_expansion(t_lexer *tokens, t_data *data)
 	i = -1;
 	if (!tokens)
 		return (0);
+	data->empty_list = malloc((sizeof(int) * tokens->token_count) + 1);
+	if (!data->empty_list)
+		return (0);
+	data->index = 0;
 	while (tokens->tokens[++i])
 	{
 		if (i >= 1 && ft_strcmp(tokens->tokens[i - 1], "<<") == 0)
 			continue ;
-		if (!expand_var(&(tokens->tokens[i]), data))
+		if (!expand_var(&(tokens->tokens[i]), data, i))
 			return (0);
 	}
 	i = -1;

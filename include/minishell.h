@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:38 by talin             #+#    #+#             */
-/*   Updated: 2025/03/13 13:46:10 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/13 16:38:26 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,8 @@ typedef struct s_data
 	t_lexer		*lexer;
 	int			cmd_count;
 	int			status;
+	int			*empty_list;
+	int			index;
 }	t_data;
 
 int			ft_isspace(const char str);
