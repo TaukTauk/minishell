@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:35:52 by talin             #+#    #+#             */
-/*   Updated: 2025/03/06 10:11:41 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/13 10:46:37 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,11 @@ t_command **current_cmd, int *i, t_data *data)
 	token = data->lexer->tokens[*i];
 	if (ft_strcmp(token, ">") == 0)
 	{
-		if (!create_io_file(&(*current_cmd)->outfile,
+		(*current_cmd)->red_order++;
+		(*current_cmd)->output_order = (*current_cmd)->red_order;
+		if (!create_io_file(&(*current_cmd)->redirections,
 				data->lexer->tokens[++(*i)], REDIRECT_OUTPUT,
-				++(*current_cmd)->output_order))
+				(*current_cmd)->output_order))
 		{
 			ft_putendl_fd("minishell: malloc for output redirection file", 2);
 			return (free_commands(*command_list), 0);
@@ -56,9 +58,11 @@ t_command **current_cmd, int *i, t_data *data)
 	}
 	else
 	{
-		if (!create_io_file(&(*current_cmd)->outfileappend,
+		(*current_cmd)->red_order++;
+		(*current_cmd)->output_order = (*current_cmd)->red_order;
+		if (!create_io_file(&(*current_cmd)->redirections,
 				data->lexer->tokens[++(*i)], REDIRECT_APPEND,
-				++(*current_cmd)->output_order))
+				(*current_cmd)->output_order))
 		{
 			ft_putendl_fd("minishell: malloc for output redirection file", 2);
 			return (free_commands(*command_list), 0);

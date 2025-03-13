@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:51:07 by rick              #+#    #+#             */
-/*   Updated: 2025/03/12 15:00:37 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/13 11:48:39 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,11 @@ void	close_both(int fd1, int fd2)
 
 void	write_pipe(int fd[2], t_command *command)
 {
-	size_t		len;
-	ssize_t		written;
-	t_io_file	*current;
+	size_t			len;
+	ssize_t			written;
+	t_redirection	*current;
 
-	current = command->delimeter;
+	current = command->redirections;
 	while (current)
 	{
 		if (current->order_value == command->input_order)

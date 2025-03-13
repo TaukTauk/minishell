@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   free_two.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 11:19:18 by talin             #+#    #+#             */
-/*   Updated: 2025/03/12 12:49:37 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/13 11:08:48 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	free_io_file(t_io_file *file)
+void	free_io_file(t_redirection *file)
 {
-	t_io_file	*tmp;
+	t_redirection	*tmp;
 
 	if (file)
 	{
@@ -52,14 +52,8 @@ void	free_command(t_command *cmd)
 					free(tmp->args[i++]);
 				free(tmp->args);
 			}
-			if (tmp->infile)
-				free_io_file(tmp->infile);
-			if (tmp->outfile)
-				free_io_file(tmp->outfile);
-			if (tmp->delimeter)
-				free_io_file(tmp->delimeter);
-			if (tmp->outfile)
-				free_io_file(tmp->outfileappend);
+			if (tmp->redirections)
+				free_io_file(tmp->redirections);
 			free(tmp);
 		}
 	}

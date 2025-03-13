@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:38 by talin             #+#    #+#             */
-/*   Updated: 2025/03/12 14:26:32 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/13 11:26:55 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,14 @@ typedef struct s_lexer
 	int		token_count;
 }	t_lexer;
 
-typedef struct s_io_file
+typedef struct s_redirection
 {
-	char				*file_name;
-	int					redirect_type;
-	int					order_value;
-	char				*content;
-	struct s_io_file	*next;
-}	t_io_file;
+	int						type;
+	char					*file_name;
+	char					*content;
+	int						order_value;
+	struct s_redirection	*next;
+}	t_redirection;
 
 typedef struct s_envp
 {
@@ -68,13 +68,11 @@ typedef struct s_command
 {
 	char				*cmd;
 	char				**args;
-	t_io_file			*infile;
-	t_io_file			*outfile;
-	t_io_file			*delimeter;
-	t_io_file			*outfileappend;
+	t_redirection		*redirections;
 	int					builtin;
 	int					fd_in;
 	int					fd_out;
+	int					red_order;
 	int					input_order;
 	int					output_order;
 	struct s_command	*next;
@@ -111,12 +109,12 @@ int			ft_tokenize_three(t_lexer *lexer, char *input, int *i, t_data *data);
 int			ft_tokenize_two(t_lexer *lexer, char *input, int *i, t_data *data);
 int			ft_tokenize_one(t_lexer *lexer, char *input, int *i);
 void		free_commands(t_command *cmd);
-void		ft_free_io_file(t_io_file *file);
+void		ft_free_io_file(t_redirection *file);
 void		print_commands(t_command *cmd);
 t_command	*parse_tokens(t_lexer *lexer, t_data *data);
 int			add_argument(t_command *cmd, char *arg);
 t_command	*create_command(void);
-int			create_io_file(t_io_file **file_list, char *file_name,
+int			create_io_file(t_redirection **file_list, char *file_name,
 				int redirect_type, int order_num);
 int			ft_strcmp(const char *s1, const char *s2);
 int			sanitize_tokens(char **tokens, t_data *data);
@@ -176,11 +174,11 @@ char		*expand_single(const char **string, t_data *data);
 char		*expand_append(char *result, char *expanded, t_data *data);
 char		*quote_expand(char *string, t_data *data);
 void		error_delimeter(char *delimiter);
-int			delimeter_content(t_io_file *delimeter);
-int			delimeter_append(t_io_file *delimeter, char *line);
-int			delimeter_lines(t_io_file *delimeter, t_data *data);
-void		delimeter_expand(t_io_file *delimeter, t_data *data);
-void		delimeter_read(t_io_file *delimeter,
+int			delimeter_content(t_redirection *delimeter);
+int			delimeter_append(t_redirection *delimeter, char *line);
+int			delimeter_lines(t_redirection *delimeter, t_data *data);
+void		delimeter_expand(t_redirection *delimeter, t_data *data);
+void		delimeter_read(t_redirection *delimeter,
 				t_command *command, t_data *data);
 int			ft_echo(t_command *command, t_data *data);
 int			ft_cd(t_command *command, t_data *data);
@@ -212,7 +210,7 @@ int			ft_check_builtin(char *cmd);
 void		free_data(t_data *data);
 void		free_envp(t_envp *envp);
 void		free_command(t_command *cmd);
-void		free_io_file(t_io_file *file);
+void		free_io_file(t_redirection *file);
 char		*ft_multjoin(char **arr_str);
 void		free_env(t_data *data);
 void		free_environ(char **envp);

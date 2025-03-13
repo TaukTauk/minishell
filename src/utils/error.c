@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 21:36:10 by rick              #+#    #+#             */
-/*   Updated: 2025/03/05 13:53:55 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/13 10:16:09 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	error_directory(char *command, t_data *data)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	ft_putstr_fd(command, STDERR_FILENO);
-	ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
+	ft_putstr_fd(": Not a directory\n", STDERR_FILENO);
 	data->status = 126;
 }
 

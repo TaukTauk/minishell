@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redirections_three.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:53:30 by rick              #+#    #+#             */
-/*   Updated: 2025/03/11 14:51:19 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/13 10:59:36 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	error_delimeter(char *delimiter)
 	// rl_clear_history();
 }
 
-int	delimeter_content(t_io_file *delimeter)
+int	delimeter_content(t_redirection *delimeter)
 {
 	delimeter->content = ft_strdup("");
 	if (!delimeter->content)
@@ -69,7 +69,7 @@ int	delimeter_content(t_io_file *delimeter)
 	return (1);
 }
 
-int	delimeter_append(t_io_file *delimeter, char *line)
+int	delimeter_append(t_redirection *delimeter, char *line)
 {
 	char	*temp;
 	char	*append;

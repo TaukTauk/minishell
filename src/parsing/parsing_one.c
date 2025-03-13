@@ -6,27 +6,27 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:36:53 by talin             #+#    #+#             */
-/*   Updated: 2025/03/06 10:09:00 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/13 10:45:34 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	create_io_file(t_io_file **file_list,
+int	create_io_file(t_redirection **file_list,
 		char *file_name, int redirect_type, int order_num)
 {
-	t_io_file	*new_file;
-	t_io_file	*last;
+	t_redirection	*new_file;
+	t_redirection	*last;
 
 	if (!file_name)
 		return (0);
-	new_file = malloc(sizeof(t_io_file));
+	new_file = malloc(sizeof(t_redirection));
 	if (!new_file)
 		return (0);
 	new_file->file_name = ft_strdup(file_name);
 	if (!new_file->file_name)
 		return (free(new_file), 0);
-	new_file->redirect_type = redirect_type;
+	new_file->type = redirect_type;
 	new_file->order_value = order_num;
 	new_file->content = NULL;
 	new_file->next = NULL;
@@ -51,15 +51,13 @@ t_command	*create_command(void)
 		return (NULL);
 	cmd->cmd = NULL;
 	cmd->args = NULL;
-	cmd->infile = NULL;
-	cmd->outfile = NULL;
-	cmd->outfileappend = NULL;
-	cmd->delimeter = NULL;
+	cmd->redirections = NULL;
 	cmd->fd_in = STDIN_FILENO;
 	cmd->fd_out = STDOUT_FILENO;
 	cmd->builtin = 0;
 	cmd->input_order = 0;
 	cmd->output_order = 0;
+	cmd->red_order = 0;
 	cmd->next = NULL;
 	return (cmd);
 }
@@ -116,9 +114,11 @@ int	ft_parse_in_red_two(t_command **command_list, \
 	token = data->lexer->tokens[*i];
 	if (ft_strcmp(token, "<") == 0)
 	{
-		if (!create_io_file(&(*current_cmd)->infile,
+		(*current_cmd)->red_order++;
+		(*current_cmd)->input_order = (*current_cmd)->red_order;
+		if (!create_io_file(&(*current_cmd)->redirections,
 				data->lexer->tokens[++(*i)], REDIRECT_INPUT,
-				++(*current_cmd)->input_order))
+				(*current_cmd)->input_order))
 		{
 			ft_putendl_fd("minishell: malloc for input redirection file", 2);
 			return (free_commands(*command_list), 0);
@@ -126,9 +126,11 @@ int	ft_parse_in_red_two(t_command **command_list, \
 	}
 	else
 	{
-		if (!create_io_file(&(*current_cmd)->delimeter,
+		(*current_cmd)->red_order++;
+		(*current_cmd)->input_order = (*current_cmd)->red_order;
+		if (!create_io_file(&(*current_cmd)->redirections,
 				data->lexer->tokens[++(*i)], REDIRECT_HEREDOC,
-				++(*current_cmd)->input_order))
+				(*current_cmd)->input_order))
 		{
 			ft_putendl_fd("minishell: malloc for delimeter", 2);
 			return (free_commands(*command_list), 0);
