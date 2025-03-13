@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_two.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:35:52 by talin             #+#    #+#             */
-/*   Updated: 2025/03/13 16:21:39 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/13 20:23:29 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,20 @@ t_command **current_cmd, char *token)
 	return (1);
 }
 
+int	ft_empty_token(t_data *data, int index)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->lexer->token_count && data->empty_list[i] != -1)
+	{
+		if (data->empty_list[i] == index)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 int	parse_tokens_statement(t_command **command_list, \
 t_command **current_cmd, int *i, t_data *data)
 {
@@ -149,8 +163,9 @@ t_command **current_cmd, int *i, t_data *data)
 	}
 	else
 	{
-		if (!ft_parse_cmd_arg(command_list, current_cmd, token))
-			return (0);
+		if (!ft_empty_token(data, *i))
+			if (!ft_parse_cmd_arg(command_list, current_cmd, token))
+				return (0);
 	}
 	return (1);
 }

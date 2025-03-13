@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 11:35:12 by talin             #+#    #+#             */
-/*   Updated: 2025/03/13 11:30:27 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/13 20:27:07 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	handle_command_input(char *input, t_data *data)
 	data->commands = parse_tokens(data->lexer, data);
 	if (!data->commands)
 	{
-		ft_printf("DEBUG: Parsing tokens failed\n");
+		// ft_printf("DEBUG: Parsing tokens failed\n");
 		free_lexer(data->lexer);
 		return (1);
 	}
