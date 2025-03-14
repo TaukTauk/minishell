@@ -19,7 +19,7 @@ SRCS_BUILTIN_PREFIXED = $(addprefix $(BUILTIN_PATH), $(SRCS_BUILTIN))
 SRCS_EXTCMD = execute_external.c execute.c ft_get_path.c
 SRCS_EXTCMD_PREFIXED = $(addprefix $(EXTCMD_PATH), $(SRCS_EXTCMD))
 
-SRCS_LEXER = expanded_size.c expansion_one.c expansion.c remove_quote.c sanitize.c token_three.c token_two.c token.c
+SRCS_LEXER = expanded_size.c expansion_one.c expansion.c remove_quote.c sanitize.c token_four.c token_three.c token_two.c token.c
 SRCS_LEXER_PREFIXED = $(addprefix $(LEXER_PATH), $(SRCS_LEXER))
 
 SRCS_PARSING = parsing_one.c parsing_two.c parsing.c

@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 10:38:39 by talin             #+#    #+#             */
-/*   Updated: 2025/03/13 11:04:21 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/14 11:44:34 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,19 @@ void	free_commands(t_command *cmd)
 
 void	free_lexer(t_lexer *lexer)
 {
-	int	i;
+	t_lexer	*tmp;
+	t_lexer	*next;
 
-	i = -1;
-	while (++i < lexer->token_count)
-		free(lexer->tokens[i]);
-	free(lexer->tokens);
-	lexer->tokens = NULL;
+	if (!lexer)
+		return ;
+	tmp = lexer;
+	while (tmp)
+	{
+		next = tmp->next;
+		if (tmp->value)
+			free(tmp->value);
+		free(tmp);
+		tmp = next;
+	}
 	free(lexer);
-	// ft_printf("Freed Lexer\n");
 }

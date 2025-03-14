@@ -3,130 +3,206 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 15:54:59 by talin             #+#    #+#             */
-/*   Updated: 2025/03/13 20:15:23 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/14 12:30:20 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	expand_variable_copy(char **ptr, t_data *data, char **output_ptr)
-{
-	int	inside_single_quote;
-	int	inside_double_quote;
+// void	expand_variable_copy(char **ptr, t_data *data, char **output_ptr)
+// {
+// 	int	inside_single_quote;
+// 	int	inside_double_quote;
 
-	inside_single_quote = 0;
-	inside_double_quote = 0;
-	while (*ptr && **ptr != '\0')
-	{
-		if (**ptr == '\'' || **ptr == '\"')
-			ft_quote_handle(ptr, &inside_single_quote, &inside_double_quote);
-		if (**ptr == '$' && !inside_single_quote)
-		{
-			get_value(ptr, data, output_ptr);
-			if (!*ptr || !**ptr)
-				break ;
-			continue ;
-		}
-		if (**ptr)
-			*(*output_ptr)++ = *(*ptr)++;
-	}
-	*(*output_ptr) = '\0';
+// 	inside_single_quote = 0;
+// 	inside_double_quote = 0;
+// 	while (*ptr && **ptr != '\0')
+// 	{
+// 		if (**ptr == '\'' || **ptr == '\"')
+// 			ft_quote_handle(ptr, &inside_single_quote, &inside_double_quote);
+// 		if (**ptr == '$' && !inside_single_quote)
+// 		{
+// 			get_value(ptr, data, output_ptr);
+// 			if (!*ptr || !**ptr)
+// 				break ;
+// 			continue ;
+// 		}
+// 		if (**ptr)
+// 			*(*output_ptr)++ = *(*ptr)++;
+// 	}
+// 	*(*output_ptr) = '\0';
+// }
+
+// char	*expand_variable(char *input, t_data *data)
+// {
+// 	char	*expanded_str;
+// 	char	*ptr;
+// 	char	*output_ptr;
+// 	int		size;
+
+// 	if (!input)
+// 		return (NULL);
+// 	size = calculate_expanded_size(input, data);
+// 	if (size == -1)
+// 		return (NULL);
+// 	expanded_str = malloc(size + 1);
+// 	if (!expanded_str)
+// 		return (perror("malloc"), NULL);
+// 	ptr = input;
+// 	output_ptr = expanded_str;
+// 	expand_variable_copy(&ptr, data, &output_ptr);
+// 	return (expanded_str);
+// }
+
+// int	ft_contain_dollar_sign(char *cmd)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (cmd[i])
+// 	{
+// 		if (cmd[i] == '$')
+// 			return (1);
+// 		i++;
+// 	}
+// 	return (0);
+// }
+
+// int	ft_is_empty(char *str)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (str[i])
+// 	{
+// 		if (!ft_isspace(str[i]))
+// 			return (0);
+// 		i++;
+// 	}
+// 	return (1);
+// }
+
+// int	expand_var(char **cmd, t_data *data, int index)
+// {
+// 	char	*expanded_cmd;
+
+// 	expanded_cmd = expand_variable(*cmd, data);
+// 	if (ft_contain_dollar_sign(*cmd) && ft_is_empty(expanded_cmd))
+// 	{
+// 		data->empty_list[data->index] = index;
+// 		data->index++;
+// 		data->empty_list[data->index] = -1;
+// 	}
+// 	if (expanded_cmd)
+// 	{
+// 		free(*cmd);
+// 		*cmd = expanded_cmd;
+// 		return (1);
+// 	}
+// 	else
+// 		return (0);
+// }
+
+// int	parameter_expansion(t_lexer *tokens, t_data *data)
+// {
+// 	int		i;
+
+// 	i = -1;
+// 	if (!tokens)
+// 		return (0);
+// 	data->empty_list = (int *)malloc(sizeof(int) * (tokens->token_count + 1));
+// 	if (!data->empty_list)
+// 		return (0);
+// 	data->index = 0;
+// 	data->empty_list[0] = -1;
+// 	while (tokens->tokens[++i])
+// 	{
+// 		if (i >= 1 && ft_strcmp(tokens->tokens[i - 1], "<<") == 0)
+// 			continue ;
+// 		if (!expand_var(&(tokens->tokens[i]), data, i))
+// 			return (0);
+// 	}
+// 	i = -1;
+// 	while (tokens->tokens[++i])
+// 		remove_quote(&(tokens->tokens[i]));
+// 	return (1);
+// }
+
+int ft_contain_dollar_sign(char *cmd)
+{
+    int i;
+
+    i = 0;
+    while (cmd[i])
+    {
+        if (cmd[i] == '$')
+            return (1);
+        i++;
+    }
+    return (0);
 }
 
-char	*expand_variable(char *input, t_data *data)
+int ft_is_empty(char *str)
 {
-	char	*expanded_str;
-	char	*ptr;
-	char	*output_ptr;
-	int		size;
+    int i;
 
-	if (!input)
-		return (NULL);
-	size = calculate_expanded_size(input, data);
-	if (size == -1)
-		return (NULL);
-	expanded_str = malloc(size + 1);
-	if (!expanded_str)
-		return (perror("malloc"), NULL);
-	ptr = input;
-	output_ptr = expanded_str;
-	expand_variable_copy(&ptr, data, &output_ptr);
-	return (expanded_str);
+    i = 0;
+    while (str[i])
+    {
+        if (!ft_isspace(str[i]))
+            return (0);
+        i++;
+    }
+    return (1);
 }
 
-int	ft_contain_dollar_sign(char *cmd)
+int expand_var(char **cmd, t_data *data, t_lexer **lexer)
 {
-	int	i;
+    char *expanded_cmd;
 
-	i = 0;
-	while (cmd[i])
-	{
-		if (cmd[i] == '$')
-			return (1);
-		i++;
-	}
-	return (0);
+    expanded_cmd = expand_variable(*cmd, data);
+    if (ft_contain_dollar_sign(*cmd) && ft_is_empty(expanded_cmd))
+	    (*lexer)->error = 1;
+    if (expanded_cmd)
+    {
+        free(*cmd);
+        *cmd = expanded_cmd;
+        return (1);
+    }
+    else
+        return (0);
 }
 
-int	ft_is_empty(char *str)
+int parameter_expansion(t_lexer *lexer, t_data *data)
 {
-	int	i;
+    t_lexer *current;
+    t_lexer *prev;
 
-	i = 0;
-	while (str[i])
-	{
-		if (!ft_isspace(str[i]))
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-int	expand_var(char **cmd, t_data *data, int index)
-{
-	char	*expanded_cmd;
-
-	expanded_cmd = expand_variable(*cmd, data);
-	if (ft_contain_dollar_sign(*cmd) && ft_is_empty(expanded_cmd))
-	{
-		data->empty_list[data->index] = index;
-		data->index++;
-		data->empty_list[data->index] = -1;
-	}
-	if (expanded_cmd)
-	{
-		free(*cmd);
-		*cmd = expanded_cmd;
-		return (1);
-	}
-	else
-		return (0);
-}
-
-int	parameter_expansion(t_lexer *tokens, t_data *data)
-{
-	int		i;
-
-	i = -1;
-	if (!tokens)
-		return (0);
-	data->empty_list = (int *)malloc(sizeof(int) * (tokens->token_count + 1));
-	if (!data->empty_list)
-		return (0);
-	data->index = 0;
-	data->empty_list[0] = -1;
-	while (tokens->tokens[++i])
-	{
-		if (i >= 1 && ft_strcmp(tokens->tokens[i - 1], "<<") == 0)
-			continue ;
-		if (!expand_var(&(tokens->tokens[i]), data, i))
-			return (0);
-	}
-	i = -1;
-	while (tokens->tokens[++i])
-		remove_quote(&(tokens->tokens[i]));
-	return (1);
+    if (!lexer)
+        return (0);
+    current = lexer;
+    prev = NULL;
+    while (current)
+    {
+        if (prev && prev->token_type == TKN_RDHEREDOC)
+        {
+            prev = current;
+            current = current->next;
+            continue ;
+        }
+        if (!expand_var(&(current->value), data, &current))
+            return (0);
+        prev = current;
+        current = current->next;
+    }
+    current = lexer;
+    while (current)
+    {
+        remove_quote(&(current->value));
+        current = current->next;
+    }
+    return (1);
 }

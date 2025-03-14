@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 15:27:03 by talin             #+#    #+#             */
-/*   Updated: 2025/03/13 21:34:49 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/14 11:23:37 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,17 +38,18 @@ t_command	*parse_tokens(t_lexer *lexer, t_data *data)
 {
 	t_command	*command_list;
 	t_command	*current_cmd;
-	int			i;
+	t_lexer		*current;
 
 	if (!lexer)
 		return (NULL);
 	command_list = NULL;
 	current_cmd = NULL;
-	i = -1;
-	while (++i < lexer->token_count)
+	current = lexer;
+	while (current)
 	{
-		if (!parse_tokens_statement(&command_list, &current_cmd, &i, data))
+		if (!parse_tokens_statement(&command_list, &current_cmd, &current, data))
 			return (NULL);
+		current = current->next;
 	}
 	parse_tokens_delimeter(command_list, data);
 	return (command_list);

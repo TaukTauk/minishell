@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanded_size.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 10:32:25 by talin             #+#    #+#             */
-/*   Updated: 2025/03/12 21:16:19 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/14 11:11:22 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,60 @@ size_t	calculate_expanded_size(const char *input, t_data *data)
 		ptr++;
 	}
 	return (new_size + 1);
+}
+
+void ft_quote_handle(char **ptr, int *inside_single_quote,
+            int *inside_double_quote)
+{
+    if (**ptr == '\'' && !(*inside_double_quote))
+        *inside_single_quote = !(*inside_single_quote);
+    if (**ptr == '\"' && !(*inside_single_quote))
+        *inside_double_quote = !(*inside_double_quote);
+}
+
+void expand_variable_copy(char **ptr, t_data *data, char **output_ptr)
+{
+    int inside_single_quote;
+    int inside_double_quote;
+
+    inside_single_quote = 0;
+    inside_double_quote = 0;
+    while (*ptr && **ptr != '\0')
+    {
+        if (**ptr == '\'' || **ptr == '\"')
+            ft_quote_handle(ptr, &inside_single_quote, &inside_double_quote);
+        if (**ptr == '$' && !inside_single_quote)
+        {
+            get_value(ptr, data, output_ptr);
+            if (!*ptr || !**ptr)
+                break;
+            continue;
+        }
+        if (**ptr)
+            *(*output_ptr)++ = *(*ptr)++;
+    }
+    *(*output_ptr) = '\0';
+}
+
+char *expand_variable(char *input, t_data *data)
+{
+    char    *expanded_str;
+    char    *ptr;
+    char    *output_ptr;
+    int     size;
+
+    if (!input)
+        return (NULL);
+    size = calculate_expanded_size(input, data);
+    if (size == -1)
+        return (NULL);
+    expanded_str = malloc(size + 1);
+    if (!expanded_str)
+        return (perror("malloc"), NULL);
+    ptr = input;
+    output_ptr = expanded_str;
+    expand_variable_copy(&ptr, data, &output_ptr);
+    return (expanded_str);
 }
 
 // static void	expanded_size_ptr_increase(const char **ptr, size_t *var_len)

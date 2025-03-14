@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:37:48 by rick              #+#    #+#             */
-/*   Updated: 2025/03/13 15:39:38 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/14 11:33:53 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,20 +64,19 @@ int	ft_check_set_unset(char **envp)
 
 void	free_command_lexer_in_exec(t_data *data)
 {
-	int	i;
+	t_lexer	*tmp;
+	t_lexer	*next;
 
-	i = 0;
 	if (data->lexer)
 	{
-		if (data->lexer->tokens)
+		tmp = data->lexer;
+		while (tmp)
 		{
-			while (data->lexer->tokens[i])
-			{
-				if (data->lexer->tokens[i])
-					free(data->lexer->tokens[i]);
-				i++;
-			}
-			free(data->lexer->tokens);
+			next = tmp->next;
+			if (tmp->value)
+				free(tmp->value);
+			free(tmp);
+			tmp = next;
 		}
 	}
 	if (data->commands)

@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:38 by talin             #+#    #+#             */
-/*   Updated: 2025/03/13 16:38:26 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/14 12:27:20 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,22 @@
 
 extern volatile sig_atomic_t	g_delim_interrupt;
 
-typedef struct s_lexer
+typedef enum e_token_type
 {
-	char	**tokens;
-	int		token_count;
+	TKN_IN,
+	TKN_OUT,
+	TKN_RDAPPEND,
+	TKN_RDHEREDOC,
+	TKN_PIPE,
+	TKN_WORD
+}	t_token_type;
+
+typedef struct	s_lexer
+{
+	int				token_type;
+	char			*value;
+	int				error;
+	struct s_lexer	*next;
 }	t_lexer;
 
 typedef struct s_redirection
@@ -95,21 +107,26 @@ typedef struct s_data
 	t_lexer		*lexer;
 	int			cmd_count;
 	int			status;
-	int			*empty_list;
-	int			index;
 }	t_data;
 
 int			ft_isspace(const char str);
 size_t		ft_strnlen(const char *s, size_t max_len);
 char		*ft_strndup(const char *s, size_t n);
-void		add_token(t_lexer *lexer, char *token);
+void		add_token(t_lexer **lexer, int token_type, char *value);
 t_lexer		*tokenize(char *input, t_data *data);
+char		*ft_tokenize_two_token(int start, int *i, char *input, t_data *data);
+void		tokenize_three(char *input, int *i, int *in_quotes);
+t_lexer		*get_token_at_index(t_lexer *lexer, int index);
+int			get_token_count(t_lexer *lexer);
 void		free_lexer(t_lexer *lexer);
+int			get_token_type(char *token);
+void		add_token(t_lexer **lexer, int token_type, char *value);
+t_lexer		*new_lexer_node(int token_type, char *value);
 size_t		ft_strcspn(const char *str, const char *reject);
-int			ft_tokenize_four(t_lexer *lexer, char *input, t_data *data);
-int			ft_tokenize_three(t_lexer *lexer, char *input, int *i, t_data *data);
-int			ft_tokenize_two(t_lexer *lexer, char *input, int *i, t_data *data);
-int			ft_tokenize_one(t_lexer *lexer, char *input, int *i);
+int			ft_tokenize_four(t_lexer **lexer, char *input, t_data *data);
+int			ft_tokenize_three(t_lexer **lexer, char *input, int *i, t_data *data);
+int			ft_tokenize_two(t_lexer **lexer, char *input, int *i, t_data *data);
+int			ft_tokenize_one(t_lexer **lexer, char *input, int *i);
 void		free_commands(t_command *cmd);
 void		ft_free_io_file(t_redirection *file);
 void		print_commands(t_command *cmd);
@@ -119,20 +136,22 @@ t_command	*create_command(void);
 int			create_io_file(t_redirection **file_list, char *file_name,
 				int redirect_type, int order_num);
 int			ft_strcmp(const char *s1, const char *s2);
-int			sanitize_tokens(char **tokens, t_data *data);
+int			sanitize_tokens(t_lexer *lexer, t_data *data);
+char		*expand_variable(char *input, t_data *data);
 int			ft_parse_pipe(t_command **command_list, t_command **current_cmd);
-int			ft_parse_in_red_two(t_command **command_list, \
-t_command **current_cmd, int *i, t_data *data);
-int			ft_parse_in_red(t_command **command_list, \
-t_command **current_cmd, int *i, t_data *data);
-int			ft_parse_out_red_two(t_command **command_list, \
-t_command **current_cmd, int *i, t_data *data);
-int			ft_parse_out_red(t_command **command_list, \
-t_command **current_cmd, int *i, t_data *data);
+int			ft_parse_in_red_two(t_command **command_list, 
+	t_command **current_cmd, t_lexer **current);
+t_lexer		*get_next_token(t_lexer *current);
+// int			ft_parse_in_red(t_command **command_list, \
+// t_command **current_cmd, int *i, t_data *data);
+int			ft_parse_out_red_two(t_command **command_list,
+	t_command **current_cmd, t_lexer **current, t_data *data);
+int			ft_parse_out_red(t_command **command_list,
+	t_command **current_cmd, t_lexer **current, t_data *data);
 int			ft_parse_cmd_arg(t_command **command_list, \
 t_command **current_cmd, char *token);
-int			parse_tokens_statement(t_command **command_list, \
-t_command **current_cmd, int *i, t_data *data);
+int			parse_tokens_statement(t_command **command_list,
+	t_command **current_cmd, t_lexer **current, t_data *data);
 int			parameter_expansion(t_lexer *tokens, t_data *data);
 int			execute_commands(t_data *data);
 int			execute_command(t_data *data);

@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:36:53 by talin             #+#    #+#             */
-/*   Updated: 2025/03/13 10:45:34 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/14 11:37:22 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,35 +106,37 @@ int	ft_parse_pipe(t_command **command_list, t_command **current_cmd)
 	return (1);
 }
 
-int	ft_parse_in_red_two(t_command **command_list, \
-	t_command **current_cmd, int *i, t_data *data)
+t_lexer	*get_next_token(t_lexer *current)
 {
-	char	*token;
+	if (!current)
+		return (NULL);
+	return (current->next);
+}
 
-	token = data->lexer->tokens[*i];
-	if (ft_strcmp(token, "<") == 0)
+int	ft_parse_in_red_two(t_command **command_list, 
+	t_command **current_cmd, t_lexer **current)
+{
+	int			redirect_type;
+	t_lexer		*next_token;
+	
+	redirect_type = ((*current)->token_type == TKN_IN) ? 
+		REDIRECT_INPUT : REDIRECT_HEREDOC;
+	next_token = get_next_token(*current);
+	if (!next_token || next_token->token_type != TKN_WORD)
 	{
-		(*current_cmd)->red_order++;
-		(*current_cmd)->input_order = (*current_cmd)->red_order;
-		if (!create_io_file(&(*current_cmd)->redirections,
-				data->lexer->tokens[++(*i)], REDIRECT_INPUT,
-				(*current_cmd)->input_order))
-		{
-			ft_putendl_fd("minishell: malloc for input redirection file", 2);
-			return (free_commands(*command_list), 0);
-		}
+		ft_putendl_fd("minishell: missing input file", 2);
+		return (free_commands(*command_list), 0);
 	}
-	else
+	
+	(*current_cmd)->red_order++;
+	(*current_cmd)->input_order = (*current_cmd)->red_order;
+	if (!create_io_file(&(*current_cmd)->redirections,
+			next_token->value, redirect_type,
+			(*current_cmd)->input_order))
 	{
-		(*current_cmd)->red_order++;
-		(*current_cmd)->input_order = (*current_cmd)->red_order;
-		if (!create_io_file(&(*current_cmd)->redirections,
-				data->lexer->tokens[++(*i)], REDIRECT_HEREDOC,
-				(*current_cmd)->input_order))
-		{
-			ft_putendl_fd("minishell: malloc for delimeter", 2);
-			return (free_commands(*command_list), 0);
-		}
+		ft_putendl_fd("minishell: malloc for input redirection file", 2);
+		return (free_commands(*command_list), 0);
 	}
+	*current = next_token;
 	return (1);
 }

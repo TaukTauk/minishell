@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 11:06:22 by talin             #+#    #+#             */
-/*   Updated: 2025/03/06 12:14:33 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/14 10:39:19 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static int	tokenize_two_copy(char *input, int start, int *i, char **token)
 	return (1);
 }
 
-static char	*ft_tokenize_two_token(int start, int *i, char *input, t_data *data)
+char	*ft_tokenize_two_token(int start, int *i, char *input, t_data *data)
 {
 	char	*token;
 	int		in_quotes;
@@ -83,7 +83,7 @@ static char	*ft_tokenize_two_token(int start, int *i, char *input, t_data *data)
 	return (token);
 }
 
-int	ft_tokenize_two(t_lexer *lexer, char *input, int *i, t_data *data)
+int	ft_tokenize_two(t_lexer **lexer, char *input, int *i, t_data *data)
 {
 	char	*token;
 	char	quote;
@@ -99,14 +99,15 @@ int	ft_tokenize_two(t_lexer *lexer, char *input, int *i, t_data *data)
 	{
 		token = ft_tokenize_two_token(start, i, input, data);
 		if (!token)
-			return (free_lexer(lexer), 0);
-		add_token(lexer, token);
+			return (free_lexer(*lexer), *lexer = NULL, 0);
+		add_token(lexer, TKN_WORD, token);
 	}
 	else
 	{
 		data->status = 2;
 		ft_putendl_fd("minishell: unclosed quote", 2);
-		free_lexer(lexer);
+		free_lexer(*lexer);
+		*lexer = NULL;
 		return (0);
 	}
 	return (1);

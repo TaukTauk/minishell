@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_two.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 11:21:50 by talin             #+#    #+#             */
-/*   Updated: 2025/03/12 13:13:13 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/14 10:40:56 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,3 +54,34 @@ int	ft_is_only_space(char *input)
 		return (1);
 	return (0);
 }
+
+int	get_token_count(t_lexer *lexer)
+{
+	int		count;
+	t_lexer	*current;
+
+	count = 0;
+	current = lexer;
+	while (current)
+	{
+		count++;
+		current = current->next;
+	}
+	return (count);
+}
+
+t_lexer	*get_token_at_index(t_lexer *lexer, int index)
+{
+	t_lexer	*current;
+	int		i;
+
+	i = 0;
+	current = lexer;
+	while (current && i < index)
+	{
+		current = current->next;
+		i++;
+	}
+	return (current);
+}
+
