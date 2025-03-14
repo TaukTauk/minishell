@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 15:54:59 by talin             #+#    #+#             */
-/*   Updated: 2025/03/14 12:30:20 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/14 16:19:58 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,11 +159,14 @@ int ft_is_empty(char *str)
     return (1);
 }
 
-int expand_var(char **cmd, t_data *data, t_lexer **lexer)
+int expand_var(char **cmd, t_data *data, t_lexer **lexer, int *status)
 {
     char *expanded_cmd;
 
     expanded_cmd = expand_variable(*cmd, data);
+	if (strcmp(expanded_cmd, *cmd) != 0 && !ft_strchr(expanded_cmd, '\"')
+		&& !ft_strchr(expanded_cmd, '\''))
+		*status = 1;
     if (ft_contain_dollar_sign(*cmd) && ft_is_empty(expanded_cmd))
 	    (*lexer)->error = 1;
     if (expanded_cmd)
@@ -176,29 +179,116 @@ int expand_var(char **cmd, t_data *data, t_lexer **lexer)
         return (0);
 }
 
-int parameter_expansion(t_lexer *lexer, t_data *data)
+int	empty_or_not(char *token)
+{
+	int	i;
+
+	i = 0;
+	while (token[i])
+	{
+		if (!ft_isspace(token[i]))
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+void command_split(t_lexer **current, t_lexer **prev, t_lexer **lexer)
+{
+	int     i;
+	char    **token;
+	t_lexer	*temp;
+	t_lexer	*new_start;
+	t_lexer	*last_new;
+	t_lexer	*next_node;
+
+	token = ft_split_prime((*current)->value);
+	next_node = (*current)->next;
+	i = -1;
+	while (token[++i])
+	{
+		temp = new_lexer_node(TKN_WORD, token[i]);
+		if (i == 0)
+		{
+			if (*prev)
+				(*prev)->next = temp;
+			else
+				*lexer = temp;
+			new_start = temp;
+		}
+		else
+		{
+			if (last_new)
+				last_new->next = temp;
+		}
+		last_new = temp;
+	}
+	if (last_new)
+		last_new->next = next_node;
+	free((*current)->value);
+	free(*current);
+	*current = new_start;
+	free(token);
+}
+
+// void	command_split(t_lexer **current, t_lexer **prev)
+// {
+// 	int		i;
+// 	char	**token;
+// 	t_lexer	*temp;
+// 	t_lexer	*tempp;
+
+// 	token = ft_split_prime((*current)->value);
+// 	tempp = (*prev);
+// 	i = -1;
+// 	while (token[++i])
+// 	{
+// 		temp = new_lexer_node(TKN_WORD, token[i]);
+// 		if (!tempp)
+// 		{
+// 			free((*current)->value);
+// 			(*current)->value = token[i];
+// 			tempp = (*current);
+// 		}
+// 		else
+// 		{
+// 			tempp->next = temp;
+// 			tempp = tempp->next;
+// 		}
+// 	}
+// 	tempp = (*current)->next;
+// }
+
+int parameter_expansion(t_lexer **lexer, t_data *data)
 {
     t_lexer *current;
     t_lexer *prev;
+	int		status;
 
     if (!lexer)
         return (0);
-    current = lexer;
+    current = *lexer;
     prev = NULL;
     while (current)
     {
+		status = 0;
         if (prev && prev->token_type == TKN_RDHEREDOC)
         {
             prev = current;
             current = current->next;
             continue ;
         }
-        if (!expand_var(&(current->value), data, &current))
+        if (!expand_var(&(current->value), data, &current, &status))
             return (0);
-        prev = current;
-        current = current->next;
+		if (status && empty_or_not(current->value))
+			command_split(&current, &prev, lexer);
+		else
+		{
+        	prev = current;
+        	current = current->next;
+		}
     }
-    current = lexer;
+    current = *lexer;
     while (current)
     {
         remove_quote(&(current->value));

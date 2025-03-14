@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 11:35:12 by talin             #+#    #+#             */
-/*   Updated: 2025/03/14 11:51:43 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/14 15:28:53 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	handle_command_input(char *input, t_data *data)
 		// free_lexer(data->lexer);
 		return (1);
 	}
-	if (!parameter_expansion(data->lexer, data))
+	if (!parameter_expansion(&(data->lexer), data))
 	{
 		ft_printf("DEBUG: Parameter expansion failed\n");
 		// free_lexer(data->lexer);

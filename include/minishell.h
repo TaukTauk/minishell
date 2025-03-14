@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:38 by talin             #+#    #+#             */
-/*   Updated: 2025/03/14 12:27:20 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/14 15:28:37 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ char		*ft_strndup(const char *s, size_t n);
 void		add_token(t_lexer **lexer, int token_type, char *value);
 t_lexer		*tokenize(char *input, t_data *data);
 char		*ft_tokenize_two_token(int start, int *i, char *input, t_data *data);
+void	print_tokens(t_lexer *lexer);
 void		tokenize_three(char *input, int *i, int *in_quotes);
 t_lexer		*get_token_at_index(t_lexer *lexer, int index);
 int			get_token_count(t_lexer *lexer);
@@ -152,7 +153,7 @@ int			ft_parse_cmd_arg(t_command **command_list, \
 t_command **current_cmd, char *token);
 int			parse_tokens_statement(t_command **command_list,
 	t_command **current_cmd, t_lexer **current, t_data *data);
-int			parameter_expansion(t_lexer *tokens, t_data *data);
+int			parameter_expansion(t_lexer **tokens, t_data *data);
 int			execute_commands(t_data *data);
 int			execute_command(t_data *data);
 void		clear_pipeline(t_data *data, pid_t *pids, int **pipe_fds);

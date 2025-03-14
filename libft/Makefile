@@ -5,7 +5,7 @@ SRCS = ft_isdigit.c    ft_isprint.c  ft_memmove.c  ft_strlcat.c  ft_strnstr.c  f
       ft_strjoin.c ft_strtrim.c ft_split.c ft_itoa.c ft_strmapi.c ft_striteri.c ft_putchar_fd.c \
       ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c get_next_line_bonus.c get_next_line_utils_bonus.c \
 	  ft_parse.c ft_printf_char.c ft_printf_hex.c ft_printf_int.c ft_printf_ptr.c ft_printf_uint.c \
-	  ft_printf.c ft_put_util.c ft_util.c
+	  ft_printf.c ft_put_util.c ft_util.c ft_split_prime.c
 
 INCLUDE = libft.h
 
