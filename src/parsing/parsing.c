@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 15:27:03 by talin             #+#    #+#             */
-/*   Updated: 2025/03/14 11:23:37 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/15 17:34:55 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static void	parse_tokens_delimeter(t_command *command_list, t_data *data)
+static int	parse_tokens_delimeter(t_command *command_list, t_data *data)
 {
 	t_command		*tmp;
 	t_redirection	*file;
@@ -26,12 +26,16 @@ static void	parse_tokens_delimeter(t_command *command_list, t_data *data)
 			while (file)
 			{
 				if (file->type == REDIRECT_HEREDOC)
-					delimeter_read(file, tmp, data);
+				{
+					if (!delimeter_read(file, tmp, data))
+						return (0);
+				}
 				file = file->next;
 			}
 		}
 		tmp = tmp->next;
 	}
+	return (1);
 }
 
 t_command	*parse_tokens(t_lexer *lexer, t_data *data)
@@ -48,11 +52,15 @@ t_command	*parse_tokens(t_lexer *lexer, t_data *data)
 	while (current)
 	{
 		if (!parse_tokens_statement(&command_list, &current_cmd, &current, data))
-			return (NULL);
+			return (free_lexer(lexer), NULL);
 		current = current->next;
 	}
-	parse_tokens_delimeter(command_list, data);
-	return (command_list);
+	if (!parse_tokens_delimeter(command_list, data))
+	{
+		free_lexer(lexer);
+		return (free_commands(command_list), NULL);
+	}
+	return (free_lexer(lexer), command_list);
 }
 
 void	print_commands(t_command *cmd)

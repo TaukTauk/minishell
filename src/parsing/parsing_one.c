@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_one.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:36:53 by talin             #+#    #+#             */
-/*   Updated: 2025/03/14 11:37:22 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/15 17:13:45 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	create_io_file(t_redirection **file_list,
 		return (0);
 	new_file->file_name = ft_strdup(file_name);
 	if (!new_file->file_name)
-		return (free(new_file), 0);
+		return (0);
 	new_file->type = redirect_type;
 	new_file->order_value = order_num;
 	new_file->content = NULL;
@@ -83,7 +83,7 @@ int	add_argument(t_command *cmd, char *arg)
 	free(cmd->args);
 	new_args[arg_count] = ft_strdup(arg);
 	if (!new_args[arg_count])
-		return (free(new_args), 0);
+		return (0);
 	new_args[arg_count + 1] = NULL;
 	(cmd->args = new_args);
 	return (1);
@@ -114,26 +114,29 @@ t_lexer	*get_next_token(t_lexer *current)
 }
 
 int	ft_parse_in_red_two(t_command **command_list, 
-	t_command **current_cmd, t_lexer **current)
+	t_command **current_cmd, t_lexer **current, t_data *data)
 {
 	int			redirect_type;
 	t_lexer		*next_token;
 	
-	redirect_type = ((*current)->token_type == TKN_IN) ? 
-		REDIRECT_INPUT : REDIRECT_HEREDOC;
+	if ((*current)->token_type == TKN_IN)
+		redirect_type = REDIRECT_INPUT;
+	else
+		redirect_type = REDIRECT_HEREDOC;
 	next_token = get_next_token(*current);
 	if (!next_token || next_token->token_type != TKN_WORD)
 	{
+		data->status = 2;
 		ft_putendl_fd("minishell: missing input file", 2);
 		return (free_commands(*command_list), 0);
 	}
-	
 	(*current_cmd)->red_order++;
 	(*current_cmd)->input_order = (*current_cmd)->red_order;
 	if (!create_io_file(&(*current_cmd)->redirections,
 			next_token->value, redirect_type,
 			(*current_cmd)->input_order))
 	{
+		data->status = 2;
 		ft_putendl_fd("minishell: malloc for input redirection file", 2);
 		return (free_commands(*command_list), 0);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 11:24:20 by talin             #+#    #+#             */
-/*   Updated: 2025/03/12 13:11:36 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/15 22:30:09 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,12 @@ void	gen_env(t_data *data)
 	while (tmp)
 	{
 		data->env[i] = ft_multjoin((char *[]){tmp->key, "=", tmp->value,
-				NULL});
+			NULL});
 		if (!data->env[i])
 		{
-			free_envi(data->env, i);
-			printf("maloc here\n");
+			free_data(data);
+			perror("malloc");
+			exit(EXIT_FAILURE);
 		}
 		i++;
 		tmp = tmp->next;

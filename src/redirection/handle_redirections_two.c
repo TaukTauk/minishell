@@ -6,7 +6,7 @@
 /*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:52:57 by rick              #+#    #+#             */
-/*   Updated: 2025/03/13 21:44:29 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/15 17:34:14 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	delimeter_lines(t_redirection *delimeter, t_data *data)
 		if (g_delim_interrupt)
         {
             g_delim_interrupt = 0;
-            return (0);
+            return (free(line), 0);
         }
 		line = readline("> ");
 		if (!line)
@@ -49,13 +49,13 @@ int	delimeter_lines(t_redirection *delimeter, t_data *data)
 	}
 }
 
-void	delimeter_expand(t_redirection *delimeter, t_data *data)
+int	delimeter_expand(t_redirection *delimeter, t_data *data)
 {
 	char	*expand;
 	char	*temp;
 
 	if (!delimeter || !delimeter->content)
-		return ;
+		return (0);
 	expand = quote_expand(delimeter->content, data);
 	if (expand)
 	{
@@ -63,23 +63,26 @@ void	delimeter_expand(t_redirection *delimeter, t_data *data)
 		temp = ft_strjoin(expand, "\n");
 		free(expand);
 		delimeter->content = temp;
+		return (1);
 	}
 	else
 		ft_error("delimeter: failed to expand delimeter");
+	return (0);
 }
 
-void	delimeter_read(t_redirection *delimeter, t_command *command, t_data *data)
+int	delimeter_read(t_redirection *delimeter, t_command *command, t_data *data)
 {
 	if (!delimeter || !command || !command->redirections)
-		return ;
+		return (0);
 	if (!delimeter_content(delimeter))
-		return ;
+		return (0);
 	if (!delimeter_lines(delimeter, data))
 	{
-		printf("hello from deli read\n");
 		free(delimeter->content);
 		delimeter->content = NULL;
-		return ;
+		return (0);
 	}
-	delimeter_expand(delimeter, data);
+	if (!delimeter_expand(delimeter, data))
+		return (0);
+	return (1);
 }

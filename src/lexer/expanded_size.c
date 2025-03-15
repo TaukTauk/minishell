@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanded_size.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 10:32:25 by talin             #+#    #+#             */
-/*   Updated: 2025/03/14 11:11:22 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/14 22:29:59 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ size_t	calculate_expanded_size(const char *input, t_data *data)
 			if (!*ptr)
 			{
 				new_size++;
-				break;
+				break ;
 			}
 			if (*ptr == '$')
 			{
@@ -70,13 +70,13 @@ size_t	calculate_expanded_size(const char *input, t_data *data)
 				if (var_name[1])
 					new_size += ft_strlen(var_name) - 1;
 				free(var_name);
-				continue;
+				continue ;
 			}
 			char *var_value = get_env_value(data->env, var_name);
 			if (var_value)
 				new_size += ft_strlen(var_value);
 			free(var_name);
-			continue;
+			continue ;
 		}
 		new_size++;
 		ptr++;

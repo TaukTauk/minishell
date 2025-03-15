@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 10:38:39 by talin             #+#    #+#             */
-/*   Updated: 2025/03/14 11:44:34 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/15 20:34:03 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,6 @@ void	ft_free_io_file(t_redirection *file)
 			free(tmp);
 		tmp = next;
 	}
-	if (tmp)
-		free(tmp);
-	// ft_printf("Freed IO File\n");
 }
 
 void	free_commands(t_command *cmd)
@@ -41,6 +38,8 @@ void	free_commands(t_command *cmd)
 	t_command	*temp;
 	int			i;
 
+	if (!cmd)
+		return ;
 	while (cmd)
 	{
 		temp = cmd->next;
@@ -50,15 +49,18 @@ void	free_commands(t_command *cmd)
 		{
 			i = -1;
 			while (cmd->args[++i])
-				free(cmd->args[i]);
+			{
+				if (cmd->args[i])
+					free(cmd->args[i]);
+			}
 			free(cmd->args);
 		}
 		if (cmd->redirections)
 			ft_free_io_file(cmd->redirections);
 		free(cmd);
 		cmd = temp;
-		// ft_printf("Freed Command\n");
 	}
+	cmd = NULL;
 }
 
 void	free_lexer(t_lexer *lexer)
@@ -74,8 +76,12 @@ void	free_lexer(t_lexer *lexer)
 		next = tmp->next;
 		if (tmp->value)
 			free(tmp->value);
-		free(tmp);
+		if (tmp)
+		{
+			free(tmp);
+			tmp = NULL;
+		}
 		tmp = next;
 	}
-	free(lexer);
+	lexer = NULL;
 }

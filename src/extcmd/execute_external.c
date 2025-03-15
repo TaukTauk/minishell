@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_external.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:37:48 by rick              #+#    #+#             */
-/*   Updated: 2025/03/14 11:33:53 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/15 21:39:13 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ void	execve_cmd(char *cmd, char **s_cmd, char **envp, t_data *data)
 	pid = fork();
 	if (pid == -1)
 	{
-		 free(path);
+		free(path);
         ft_putstr_fd("minishell: fork: ", STDERR_FILENO);
         ft_putstr_fd(strerror(errno), STDERR_FILENO);
         ft_putstr_fd("\n", STDERR_FILENO);
@@ -160,7 +160,6 @@ void	execve_cmd(char *cmd, char **s_cmd, char **envp, t_data *data)
             }
 			if (path)
             	free(path);
-            free_command_lexer_in_exec(data);
             exit(data->status);
         }
 	}

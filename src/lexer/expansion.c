@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 15:54:59 by talin             #+#    #+#             */
-/*   Updated: 2025/03/14 16:19:58 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/14 22:46:22 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,6 +203,8 @@ void command_split(t_lexer **current, t_lexer **prev, t_lexer **lexer)
 	t_lexer	*next_node;
 
 	token = ft_split_prime((*current)->value);
+	if (!token)
+		return ;
 	next_node = (*current)->next;
 	i = -1;
 	while (token[++i])
@@ -279,7 +281,7 @@ int parameter_expansion(t_lexer **lexer, t_data *data)
             continue ;
         }
         if (!expand_var(&(current->value), data, &current, &status))
-            return (0);
+            return (free_lexer(*lexer), 0);
 		if (status && empty_or_not(current->value))
 			command_split(&current, &prev, lexer);
 		else

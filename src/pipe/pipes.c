@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:45:08 by rick              #+#    #+#             */
-/*   Updated: 2025/03/13 11:27:53 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/15 22:10:00 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	set_up_pipes(t_data *data, int **pipe_fds)
 		if (pipe(pipe_fds[i]) == -1)
 		{
 			ft_putstr_fd("minishell: pipe creation failed\n", 2);
+			free_data(data);
 			exit(1);
 		}
 		i++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 09:50:51 by talin             #+#    #+#             */
-/*   Updated: 2025/03/14 11:45:17 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/14 21:16:16 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,20 +63,6 @@ int	get_token_type(char *token)
 	else
 		return (TKN_WORD);
 }
-
-// void	free_lexer(t_lexer *lexer)
-// {
-// 	t_lexer	*temp;
-
-// 	while (lexer)
-// 	{
-// 		temp = lexer;
-// 		lexer = lexer->next;
-// 		if (temp->value)
-// 			free(temp->value);
-// 		free(temp);
-// 	}
-// }
 
 t_lexer	*tokenize(char *input, t_data *data)
 {

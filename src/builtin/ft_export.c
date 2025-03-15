@@ -6,7 +6,7 @@
 /*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 15:12:01 by talin             #+#    #+#             */
-/*   Updated: 2025/03/12 22:38:05 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/15 20:15:44 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,10 @@ static void	export_env(t_envp **envp, char *arg, t_data **data)
 		ft_putstr_fd(arg, STDERR_FILENO);
 		ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
 		(*data)->status = 1;
-		free(key);
-		free(value);
+		if (key)
+			free(key);
+		if (value)
+			free(value);
 		return ;
 	}
 	current = *envp;

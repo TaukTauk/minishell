@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 11:35:12 by talin             #+#    #+#             */
-/*   Updated: 2025/03/14 15:28:53 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/15 22:25:31 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,35 +65,26 @@ int	handle_command_input(char *input, t_data *data)
 		add_history(input);
 	input[ft_strcspn(input, "\n")] = '\0';
 	data->lexer = tokenize(input, data);
-	// print_tokens(data->lexer);
 	if (!data->lexer)
 	{
-		ft_printf("DEBUG: Tokenization failed\n");
 		return (1);
 	}
 	if (sanitize_tokens(data->lexer, data))
 	{
-		ft_printf("DEBUG: Token sanitization failed\n");
-		// free_lexer(data->lexer);
 		return (1);
 	}
 	if (!parameter_expansion(&(data->lexer), data))
 	{
-		ft_printf("DEBUG: Parameter expansion failed\n");
-		// free_lexer(data->lexer);
 		return (1);
 	}
 	data->commands = parse_tokens(data->lexer, data);
 	if (!data->commands)
 	{
-		// ft_printf("DEBUG: Parsing tokens failed\n");
-		// free_lexer(data->lexer);
 		return (1);
 	}
 	data->cmd_count = count_commands(data);
-	// print_commands(data->commands);
 	execute_commands(data);
-	// free_data(data);
+	free_commands(data->commands);
 	return (1);
 }
 
@@ -124,7 +115,6 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
-	(void)env;
 	init_shell(&data, env);
 	while (1)
 	{
@@ -135,21 +125,18 @@ int	main(int ac, char **av, char **env)
 		input = readline("minishell > ");
 		if (!input)
 		{
-			printf("DEBUG: Received NULL input\n");
-			free_env(&data);
 			ft_putendl_fd("exit", STDOUT_FILENO);
 			break ;
 		}
 		if (handle_command_input(input, &data) < 0)
 		{
-			printf("DEBUG: handle_command_input returned < 0\n");
+			free(input);
 			break ;
 		}
 		free(input);
 	}
 	free_env(&data);
 	rl_clear_history();
-	free(data.envp);
 	return (0);
 }
 

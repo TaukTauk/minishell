@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_builtin.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:36:35 by rick              #+#    #+#             */
-/*   Updated: 2025/03/12 14:35:12 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/15 20:11:57 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ void	ft_pwd(void)
 	buf = getcwd(NULL, 0);
 	if (buf != NULL)
 	{
-		printf("%s\n", buf);
+		ft_putstr_fd(buf, 1);
+		write(1, "\n", 1);
 		free(buf);
 	}
 	else

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:47:44 by talin             #+#    #+#             */
-/*   Updated: 2025/03/05 13:51:21 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/15 20:36:55 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ static unsigned char	exit_status(char *str, t_data *data)
 		i++;
 	num = exit_overflow(str, &i, data);
 	num *= sign;
+	free_data(data);
 	return (num % 256);
 }
 
@@ -91,16 +92,19 @@ int	ft_exit(t_command *command, t_data *data)
 		ft_putstr_fd("exit\n", STDOUT_FILENO);
 	if (!command->args[1])
 	{
+		free_data(data);
 		exit(data->status);
 	}
 	if (!exit_valid_argument(command->args[1]))
 	{
 		error_numeric(command->args[1], data);
+		free_data(data);
 		exit(2);
 	}
 	if (command->args[2])
 	{
 		error_args(command->args[0], data);
+		free_data(data);
 		exit(1);
 	}
 	exit(exit_status(command->args[1], data));

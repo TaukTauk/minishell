@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:38 by talin             #+#    #+#             */
-/*   Updated: 2025/03/14 15:28:37 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/15 17:38:46 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,16 +141,16 @@ int			sanitize_tokens(t_lexer *lexer, t_data *data);
 char		*expand_variable(char *input, t_data *data);
 int			ft_parse_pipe(t_command **command_list, t_command **current_cmd);
 int			ft_parse_in_red_two(t_command **command_list, 
-	t_command **current_cmd, t_lexer **current);
+	t_command **current_cmd, t_lexer **current, t_data *data);
 t_lexer		*get_next_token(t_lexer *current);
-// int			ft_parse_in_red(t_command **command_list, \
-// t_command **current_cmd, int *i, t_data *data);
+int			ft_parse_in_red(t_command **command_list,
+	t_command **current_cmd, t_lexer **current, t_data *data);
 int			ft_parse_out_red_two(t_command **command_list,
 	t_command **current_cmd, t_lexer **current, t_data *data);
 int			ft_parse_out_red(t_command **command_list,
 	t_command **current_cmd, t_lexer **current, t_data *data);
 int			ft_parse_cmd_arg(t_command **command_list, \
-t_command **current_cmd, char *token);
+t_command **current_cmd, char *token, t_data *data);
 int			parse_tokens_statement(t_command **command_list,
 	t_command **current_cmd, t_lexer **current, t_data *data);
 int			parameter_expansion(t_lexer **tokens, t_data *data);
@@ -196,8 +196,8 @@ void		error_delimeter(char *delimiter);
 int			delimeter_content(t_redirection *delimeter);
 int			delimeter_append(t_redirection *delimeter, char *line);
 int			delimeter_lines(t_redirection *delimeter, t_data *data);
-void		delimeter_expand(t_redirection *delimeter, t_data *data);
-void		delimeter_read(t_redirection *delimeter,
+int			delimeter_expand(t_redirection *delimeter, t_data *data);
+int 		delimeter_read(t_redirection *delimeter,
 				t_command *command, t_data *data);
 int			ft_echo(t_command *command, t_data *data);
 int			ft_cd(t_command *command, t_data *data);
