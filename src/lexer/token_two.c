@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_two.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 11:06:22 by talin             #+#    #+#             */
-/*   Updated: 2025/03/14 10:39:19 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/17 12:48:18 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,7 @@ int	ft_tokenize_two(t_lexer **lexer, char *input, int *i, t_data *data)
 		data->status = 2;
 		ft_putendl_fd("minishell: unclosed quote", 2);
 		free_lexer(*lexer);
-		*lexer = NULL;
-		return (0);
+		return (*lexer = NULL, 0);
 	}
 	return (1);
 }

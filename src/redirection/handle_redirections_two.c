@@ -3,37 +3,37 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redirections_two.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:52:57 by rick              #+#    #+#             */
-/*   Updated: 2025/03/15 17:34:14 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/17 13:26:09 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void handle_sigint_delim(int sig)
+void	handle_sigint_delim(int sig)
 {
-    (void)sig;
-    g_delim_interrupt = 1;
+	(void)sig;
+	g_delim_interrupt = 1;
 	ioctl(STDIN_FILENO, TIOCSTI, "\n");
 	rl_on_new_line();
-    rl_replace_line("", 0);
+	rl_replace_line("", 0);
 }
 
 int	delimeter_lines(t_redirection *delimeter, t_data *data)
 {
 	char	*line;
-	(void)data;
 
+	(void)data;
 	while (1)
 	{
 		signal(SIGINT, handle_sigint_delim);
 		if (g_delim_interrupt)
-        {
-            g_delim_interrupt = 0;
-            return (free(line), 0);
-        }
+		{
+			g_delim_interrupt = 0;
+			return (0);
+		}
 		line = readline("> ");
 		if (!line)
 		{

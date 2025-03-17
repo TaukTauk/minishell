@@ -3,33 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_two.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:35:52 by talin             #+#    #+#             */
-/*   Updated: 2025/03/15 17:38:20 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/17 12:56:59 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-int	ft_parse_in_red(t_command **command_list,
-	t_command **current_cmd, t_lexer **current, t_data *data)
-{
-	if (!*current_cmd)
-	{
-		*command_list = create_command();
-		if (!*command_list)
-		{
-			ft_putendl_fd("minishell: failed to allocate memory for command", 2);
-			data->status = 2;
-			return (free_commands(*command_list), 0);
-		}
-		*current_cmd = *command_list;
-	}
-	if (!ft_parse_in_red_two(command_list, current_cmd, current, data))
-		return (0);
-	return (1);
-}
 
 int	ft_parse_out_red_two(t_command **command_list,
 	t_command **current_cmd, t_lexer **current, t_data *data)
@@ -58,8 +39,7 @@ int	ft_parse_out_red_two(t_command **command_list,
 		ft_putendl_fd("minishell: malloc for output redirection file", 2);
 		return (free_commands(*command_list), 0);
 	}
-	*current = next_token;
-	return (1);
+	return (*current = next_token, 1);
 }
 
 int	ft_parse_out_red(t_command **command_list,
@@ -71,14 +51,14 @@ int	ft_parse_out_red(t_command **command_list,
 		if (!*command_list)
 		{
 			data->status = 2;
-			ft_putendl_fd("minishell: failed to allocate memory for command", 2);
+			ft_putendl_fd
+				("minishell: failed to allocate memory for command", 2);
 			return (free_commands(*command_list), 0);
 		}
 		*current_cmd = *command_list;
 	}
 	if (!ft_parse_out_red_two(command_list, current_cmd, current, data))
 		return (0);
-	
 	return (1);
 }
 
@@ -90,9 +70,9 @@ int	ft_parse_cmd_arg(t_command **command_list,
 		*command_list = create_command();
 		if (!*command_list)
 		{
-			data->status = 2;
-			ft_putendl_fd("minishell: failed to allocate memory for command", 2);
-			return (free_commands(*command_list), 0);
+			ft_putendl_fd
+				("minishell: failed to allocate memory for command", 2);
+			return (data->status = 2, free_commands(*command_list), 0);
 		}
 		*current_cmd = *command_list;
 	}
@@ -112,10 +92,20 @@ int	ft_parse_cmd_arg(t_command **command_list,
 	return (1);
 }
 
+static int	ft_parse_command_arg(t_command **command_list,
+	t_command **current_cmd, t_lexer **current, t_data *data)
+{
+	if (!(*current)->error)
+		if (!ft_parse_cmd_arg(command_list, current_cmd,
+				(*current)->value, data))
+			return (0);
+	return (1);
+}
+
 int	parse_tokens_statement(t_command **command_list,
 	t_command **current_cmd, t_lexer **current, t_data *data)
 {
-	int token_type;
+	int	token_type;
 
 	if (!*current)
 		return (1);
@@ -136,10 +126,7 @@ int	parse_tokens_statement(t_command **command_list,
 			return (0);
 	}
 	else if (token_type == TKN_WORD)
-	{
-		if (!(*current)->error)
-			if (!ft_parse_cmd_arg(command_list, current_cmd, (*current)->value, data))
-				return (0);
-	}
+		if (ft_parse_command_arg(command_list, current_cmd, current, data) == 0)
+			return (0);
 	return (1);
 }

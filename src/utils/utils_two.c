@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_two.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 11:21:50 by talin             #+#    #+#             */
-/*   Updated: 2025/03/14 10:40:56 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/17 13:23:34 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,4 +84,3 @@ t_lexer	*get_token_at_index(t_lexer *lexer, int index)
 	}
 	return (current);
 }
-

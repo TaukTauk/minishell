@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free_two.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 11:19:18 by talin             #+#    #+#             */
-/*   Updated: 2025/03/15 22:30:27 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/17 08:55:35 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void	free_io_file(t_redirection *file)
 			free(tmp);
 		}
 	}
-	// ft_printf("Freed IO File\n");
 }
 
 void	free_command(t_command *cmd)
@@ -57,7 +56,6 @@ void	free_command(t_command *cmd)
 			free(tmp);
 		}
 	}
-	// printf("Freed command\n");
 }
 
 void	free_envp(t_envp *envp)
@@ -72,7 +70,6 @@ void	free_envp(t_envp *envp)
 		free(tmp->value);
 		free(tmp);
 	}
-	// ft_printf("Freed ENVP\n");
 }
 
 void	free_data(t_data *data)

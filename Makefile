@@ -12,14 +12,15 @@ SRCS = main.c
 
 SRCS_PREFIXED = $(addprefix $(SRC_PATH), $(SRCS))
 
-SRCS_BUILTIN = ft_echo.c ft_exit.c ft_export.c  \
-				ft_unset.c execute_builtin.c ft_cd.c ft_cd_two.c
+SRCS_BUILTIN = ft_echo.c ft_exit.c ft_export.c  ft_get_path_utils.c \
+				ft_unset.c execute_builtin.c ft_cd.c ft_cd_two.c ft_export_utils.c
 SRCS_BUILTIN_PREFIXED = $(addprefix $(BUILTIN_PATH), $(SRCS_BUILTIN))
 
-SRCS_EXTCMD = execute_external.c execute.c ft_get_path.c
+SRCS_EXTCMD = execute_external.c execute.c ft_get_path.c execute_utils.c
 SRCS_EXTCMD_PREFIXED = $(addprefix $(EXTCMD_PATH), $(SRCS_EXTCMD))
 
-SRCS_LEXER = expanded_size.c expansion_one.c expansion.c remove_quote.c sanitize.c token_four.c token_three.c token_two.c token.c
+SRCS_LEXER = expanded_size.c expansion_one.c expansion.c remove_quote.c sanitize.c sanitize_utils.c \
+				token_four.c token_three.c token_two.c token.c expanded_utils.c expansion_utils.c
 SRCS_LEXER_PREFIXED = $(addprefix $(LEXER_PATH), $(SRCS_LEXER))
 
 SRCS_PARSING = parsing_one.c parsing_two.c parsing.c
@@ -35,7 +36,7 @@ SRCS_REDIRECTION_PREFIXED = $(addprefix $(REDIRECTION_PATH), $(SRCS_REDIRECTION)
 SRCS_SIGNAL = signal.c
 SRCS_SIGNAL_PREFIXED = $(addprefix $(SIGNAL_PATH), $(SRCS_SIGNAL))
 
-SRCS_UTILS = error.c exit_status.c free_env.c free_two.c free.c get_env.c handle_err.c init_shell.c utils_two.c utils.c global.c
+SRCS_UTILS = error.c exit_status.c free_env.c free_two.c free.c get_env.c handle_err.c init_shell.c utils_two.c utils.c
 SRCS_UTILS_PREFIXED = $(addprefix $(UTILS_PATH), $(SRCS_UTILS))
 
 INCLUDE = include/minishell.h

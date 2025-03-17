@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_redirection.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:44:06 by rick              #+#    #+#             */
-/*   Updated: 2025/03/13 22:27:07 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/17 13:12:53 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,14 @@ int	handle_input_file(t_redirection *redir, t_command *command, t_data *data)
 	return (0);
 }
 
+static void	pid_zero_exit(int *fd, t_redirection *redir)
+{
+	close(fd[0]);
+	ft_putstr_fd(redir->content, fd[1]);
+	close(fd[1]);
+	exit(0);
+}
+
 int	handle_heredoc(t_redirection *redir, t_command *command, t_data *data)
 {
 	int		fd[2];
@@ -65,12 +73,7 @@ int	handle_heredoc(t_redirection *redir, t_command *command, t_data *data)
 	if (pid == -1)
 		return (close(fd[0]), close(fd[1]), 1);
 	if (pid == 0)
-	{
-		close(fd[0]);
-		ft_putstr_fd(redir->content, fd[1]);
-		close(fd[1]);
-		exit(0);
-	}
+		pid_zero_exit(fd, redir);
 	else
 	{
 		close(fd[1]);

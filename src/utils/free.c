@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 10:38:39 by talin             #+#    #+#             */
-/*   Updated: 2025/03/15 20:34:03 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/17 13:18:18 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,8 @@ void	free_commands(t_command *cmd)
 		{
 			i = -1;
 			while (cmd->args[++i])
-			{
 				if (cmd->args[i])
 					free(cmd->args[i]);
-			}
 			free(cmd->args);
 		}
 		if (cmd->redirections)

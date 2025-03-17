@@ -3,44 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_one.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:36:53 by talin             #+#    #+#             */
-/*   Updated: 2025/03/15 17:13:45 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/17 12:57:52 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-int	create_io_file(t_redirection **file_list,
-		char *file_name, int redirect_type, int order_num)
-{
-	t_redirection	*new_file;
-	t_redirection	*last;
-
-	if (!file_name)
-		return (0);
-	new_file = malloc(sizeof(t_redirection));
-	if (!new_file)
-		return (0);
-	new_file->file_name = ft_strdup(file_name);
-	if (!new_file->file_name)
-		return (0);
-	new_file->type = redirect_type;
-	new_file->order_value = order_num;
-	new_file->content = NULL;
-	new_file->next = NULL;
-	if (!(*file_list))
-		*file_list = new_file;
-	else
-	{
-		last = *file_list;
-		while (last->next)
-			last = last->next;
-		last->next = new_file;
-	}
-	return (1);
-}
 
 t_command	*create_command(void)
 {
@@ -113,12 +83,12 @@ t_lexer	*get_next_token(t_lexer *current)
 	return (current->next);
 }
 
-int	ft_parse_in_red_two(t_command **command_list, 
+int	ft_parse_in_red_two(t_command **command_list,
 	t_command **current_cmd, t_lexer **current, t_data *data)
 {
 	int			redirect_type;
 	t_lexer		*next_token;
-	
+
 	if ((*current)->token_type == TKN_IN)
 		redirect_type = REDIRECT_INPUT;
 	else
@@ -140,6 +110,5 @@ int	ft_parse_in_red_two(t_command **command_list,
 		ft_putendl_fd("minishell: malloc for input redirection file", 2);
 		return (free_commands(*command_list), 0);
 	}
-	*current = next_token;
-	return (1);
+	return (*current = next_token, 1);
 }

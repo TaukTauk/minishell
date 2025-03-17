@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   output_redirection.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:48:02 by rick              #+#    #+#             */
-/*   Updated: 2025/03/13 12:57:51 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/17 11:40:32 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	handle_output_redirection(t_redirection *redir, t_command *command, t_data *data)
+int	handle_output_redirection(t_redirection *redir,
+	t_command *command, t_data *data)
 {
 	int	flags;
 	int	fd;

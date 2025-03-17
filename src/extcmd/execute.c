@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:22:58 by talin             #+#    #+#             */
-/*   Updated: 2025/03/13 11:28:21 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/17 11:11:06 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,20 @@ void	restore_std_fds(int stdin_fd, int stdout_fd)
 // 	return (1);
 // }
 
-void	handle_sigint_two(int sig)
+static int	std_util(int *fd_stdin, int *fd_stdout, t_data *data)
 {
-	(void)sig;
-	write(1, "\n", 1);
-}
-
-void	handle_sigquit(int sig)
-{
-	(void)sig;
+	*fd_stdin = dup(STDIN_FILENO);
+	*fd_stdout = dup(STDOUT_FILENO);
+	if (*fd_stdin == -1 || *fd_stdout == -1)
+	{
+		if (*fd_stdin != -1)
+			close(*fd_stdin);
+		if (*fd_stdout != -1)
+			close(*fd_stdout);
+		data->status = 1;
+		return (-1);
+	}
+	return (1);
 }
 
 int	execute_command(t_data *data)
@@ -79,17 +84,8 @@ int	execute_command(t_data *data)
 		return (0);
 	signal(SIGINT, handle_sigint_two);
 	signal(SIGQUIT, handle_sigquit);
-	fd_stdin = dup(STDIN_FILENO);
-	fd_stdout = dup(STDOUT_FILENO);
-	if (fd_stdin == -1 || fd_stdout == -1)
-	{
-		if (fd_stdin != -1)
-			close(fd_stdin);
-		if (fd_stdout != -1)
-			close(fd_stdout);
-		data->status = 1;
+	if (std_util(&fd_stdin, &fd_stdout, data) == -1)
 		return (0);
-	}
 	if (handle_redirections(data->commands, data))
 	{
 		restore_std_fds(fd_stdin, fd_stdout);

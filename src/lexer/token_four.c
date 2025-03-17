@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_four.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 10:42:52 by talin             #+#    #+#             */
-/*   Updated: 2025/03/14 10:43:34 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/17 12:46:40 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int	ft_tokenize_one(t_lexer **lexer, char *input, int *i)
 		token[1] = input[(*i)++];
 		token[2] = '\0';
 		token_type = get_token_type(token);
-		add_token(lexer, token_type, token);
 	}
 	else
 	{
@@ -37,8 +36,8 @@ int	ft_tokenize_one(t_lexer **lexer, char *input, int *i)
 		token[0] = input[(*i)++];
 		token[1] = '\0';
 		token_type = get_token_type(token);
-		add_token(lexer, token_type, token);
 	}
+	add_token(lexer, token_type, token);
 	return (1);
 }
 

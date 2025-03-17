@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:38 by talin             #+#    #+#             */
-/*   Updated: 2025/03/15 17:38:46 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/17 12:33:21 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ typedef enum e_token_type
 	TKN_WORD
 }	t_token_type;
 
-typedef struct	s_lexer
+typedef struct s_lexer
 {
 	int				token_type;
 	char			*value;
@@ -114,8 +114,9 @@ size_t		ft_strnlen(const char *s, size_t max_len);
 char		*ft_strndup(const char *s, size_t n);
 void		add_token(t_lexer **lexer, int token_type, char *value);
 t_lexer		*tokenize(char *input, t_data *data);
-char		*ft_tokenize_two_token(int start, int *i, char *input, t_data *data);
-void	print_tokens(t_lexer *lexer);
+char		*ft_tokenize_two_token(int start,
+				int *i, char *input, t_data *data);
+void		print_tokens(t_lexer *lexer);
 void		tokenize_three(char *input, int *i, int *in_quotes);
 t_lexer		*get_token_at_index(t_lexer *lexer, int index);
 int			get_token_count(t_lexer *lexer);
@@ -125,7 +126,8 @@ void		add_token(t_lexer **lexer, int token_type, char *value);
 t_lexer		*new_lexer_node(int token_type, char *value);
 size_t		ft_strcspn(const char *str, const char *reject);
 int			ft_tokenize_four(t_lexer **lexer, char *input, t_data *data);
-int			ft_tokenize_three(t_lexer **lexer, char *input, int *i, t_data *data);
+int			ft_tokenize_three(t_lexer **lexer,
+				char *input, int *i, t_data *data);
 int			ft_tokenize_two(t_lexer **lexer, char *input, int *i, t_data *data);
 int			ft_tokenize_one(t_lexer **lexer, char *input, int *i);
 void		free_commands(t_command *cmd);
@@ -140,19 +142,19 @@ int			ft_strcmp(const char *s1, const char *s2);
 int			sanitize_tokens(t_lexer *lexer, t_data *data);
 char		*expand_variable(char *input, t_data *data);
 int			ft_parse_pipe(t_command **command_list, t_command **current_cmd);
-int			ft_parse_in_red_two(t_command **command_list, 
-	t_command **current_cmd, t_lexer **current, t_data *data);
+int			ft_parse_in_red_two(t_command **command_list,
+				t_command **current_cmd, t_lexer **current, t_data *data);
 t_lexer		*get_next_token(t_lexer *current);
 int			ft_parse_in_red(t_command **command_list,
-	t_command **current_cmd, t_lexer **current, t_data *data);
+				t_command **current_cmd, t_lexer **current, t_data *data);
 int			ft_parse_out_red_two(t_command **command_list,
-	t_command **current_cmd, t_lexer **current, t_data *data);
+				t_command **current_cmd, t_lexer **current, t_data *data);
 int			ft_parse_out_red(t_command **command_list,
-	t_command **current_cmd, t_lexer **current, t_data *data);
+				t_command **current_cmd, t_lexer **current, t_data *data);
 int			ft_parse_cmd_arg(t_command **command_list, \
 t_command **current_cmd, char *token, t_data *data);
 int			parse_tokens_statement(t_command **command_list,
-	t_command **current_cmd, t_lexer **current, t_data *data);
+				t_command **current_cmd, t_lexer **current, t_data *data);
 int			parameter_expansion(t_lexer **tokens, t_data *data);
 int			execute_commands(t_data *data);
 int			execute_command(t_data *data);
@@ -197,7 +199,7 @@ int			delimeter_content(t_redirection *delimeter);
 int			delimeter_append(t_redirection *delimeter, char *line);
 int			delimeter_lines(t_redirection *delimeter, t_data *data);
 int			delimeter_expand(t_redirection *delimeter, t_data *data);
-int 		delimeter_read(t_redirection *delimeter,
+int			delimeter_read(t_redirection *delimeter,
 				t_command *command, t_data *data);
 int			ft_echo(t_command *command, t_data *data);
 int			ft_cd(t_command *command, t_data *data);
@@ -238,7 +240,31 @@ void		update_shlvl(t_data *data);
 void		handle_sigint(int signum);
 int			ft_is_only_space(char *input);
 int			ft_check_exec_access(char *path);
-int			handle_heredoc(t_redirection *redir, t_command *command, t_data *data);
-int			handle_input_file(t_redirection *redir, t_command *command, t_data *data);
-int			handle_output_redirection(t_redirection *redir, t_command *command, t_data *data);
+int			handle_heredoc(t_redirection *redir,
+				t_command *command, t_data *data);
+int			handle_input_file(t_redirection *redir,
+				t_command *command, t_data *data);
+int			handle_output_redirection(t_redirection *redir,
+				t_command *command, t_data *data);
+int			is_valid_variable_name(const char *name);
+int			export_env_new(char *key, char *value,
+				t_envp **envp, t_data **data);
+int			export_env_search(t_envp *current, char *key, char *value);
+void		handle_sigquit(int sig);
+void		handle_sigint_two(int sig);
+char		*ft_get_exec_path(char *cmd, char **allpath, int i);
+char		*ft_get_home_path(char *cmd, char **envp);
+void		free_command_lexer_in_exec(t_data *data);
+int			ft_check_file_type(const char *path);
+int			is_directory_character(char *cmd);
+void		ft_error_directory(char *exec, t_data *data, int status);
+char		*ft_get_exec_path(char *cmd, char **allpath, int i);
+char		*ft_get_home_path(char *cmd, char **envp);
+int			ft_contain_dollar_sign(char *cmd);
+int			ft_is_empty(char *str);
+int			empty_or_not(char *token);
+int			expand_var(char **cmd, t_data *data, t_lexer **lexer, int *status);
+int			is_valid_redirection(t_lexer *token, t_lexer *next_token);
+int			check_unclosed_quotes(const char *token);
+int			is_metacharacter(t_lexer *token);
 #endif
