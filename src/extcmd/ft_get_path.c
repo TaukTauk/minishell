@@ -6,7 +6,7 @@
 /*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 15:18:50 by talin             #+#    #+#             */
-/*   Updated: 2025/03/17 11:16:34 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/17 15:15:27 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ char	*ft_get_path(char *cmd, char **envp, int i, t_data *data)
 {
 	if (!cmd)
 		return (NULL);
+	if (ft_strlen(cmd) < 1)
+		return (ft_strdup(cmd));
 	if (cmd[0] == '~')
 		return (root_directory(data, cmd, envp));
 	else if (is_directory_character(cmd))
