@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_two.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:35:52 by talin             #+#    #+#             */
-/*   Updated: 2025/03/17 12:56:59 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/19 13:21:31 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	ft_parse_out_red_two(t_command **command_list,
 		ft_putendl_fd("minishell: malloc for output redirection file", 2);
 		return (free_commands(*command_list), 0);
 	}
+	(*current_cmd)->redirections->error = next_token->error;
 	return (*current = next_token, 1);
 }
 

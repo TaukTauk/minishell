@@ -3,17 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   input_redirection.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:44:06 by rick              #+#    #+#             */
-/*   Updated: 2025/03/17 13:12:53 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/19 13:16:23 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static int	check_input_file_access(char *filename, t_data *data)
+static int	check_input_file_access(char *filename, t_data *data, t_redirection *redir)
 {
+	if (redir->error)
+	{
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(filename, STDERR_FILENO);
+		ft_putstr_fd(": ambiguous redirect\n", STDERR_FILENO);
+		data->status = 1;
+		return (1);
+	}
 	if (access(filename, F_OK) != 0)
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
@@ -37,7 +45,7 @@ int	handle_input_file(t_redirection *redir, t_command *command, t_data *data)
 {
 	int	fd;
 
-	if (check_input_file_access(redir->file_name, data))
+	if (check_input_file_access(redir->file_name, data, redir))
 		return (1);
 	if (redir->order_value != command->input_order)
 		return (0);

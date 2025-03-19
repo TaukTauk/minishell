@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redirections_two.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:52:57 by rick              #+#    #+#             */
-/*   Updated: 2025/03/17 13:26:09 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/19 12:43:20 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	delimeter_lines(t_redirection *delimeter, t_data *data)
 		signal(SIGINT, handle_sigint_delim);
 		if (g_delim_interrupt)
 		{
+			data->status = 130;
 			g_delim_interrupt = 0;
 			return (0);
 		}

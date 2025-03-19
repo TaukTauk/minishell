@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 11:35:12 by talin             #+#    #+#             */
-/*   Updated: 2025/03/17 14:46:05 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/19 12:45:16 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,11 @@ int	handle_command_input(char *input, t_data *data)
 	if (*input)
 		add_history(input);
 	input[ft_strcspn(input, "\n")] = '\0';
+	if (g_delim_interrupt)
+	{
+		data->status = 130;
+		g_delim_interrupt = 0;
+	}
 	data->lexer = tokenize(input, data);
 	if (!data->lexer)
 		return (1);
