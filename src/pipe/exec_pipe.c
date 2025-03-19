@@ -6,7 +6,7 @@
 /*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:51:07 by rick              #+#    #+#             */
-/*   Updated: 2025/03/15 22:22:39 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/19 21:19:06 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	execute_piped_command(t_command *command, t_data *data)
 		exit(data->status);
 	}
 	if (!command->args || !command->args[0])
-		return ;
+		exit(0);
 	cmd_path = ft_get_path(command->args[0], data->env, -1, data);
 	if (!cmd_path)
 	{

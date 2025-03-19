@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_two.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 11:21:50 by talin             #+#    #+#             */
-/*   Updated: 2025/03/17 13:23:34 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/19 22:42:24 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,17 @@ t_lexer	*get_token_at_index(t_lexer *lexer, int index)
 		i++;
 	}
 	return (current);
+}
+
+int	single_quote_token(char *value)
+{
+	int	i;
+
+	i = -1;
+	while (value[++i])
+	{
+		if (value[i] == '\'')
+			return (1);
+	}
+	return (0);
 }

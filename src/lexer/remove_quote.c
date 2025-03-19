@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   remove_quote.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 10:39:10 by talin             #+#    #+#             */
-/*   Updated: 2025/03/05 13:52:32 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/19 23:01:42 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,36 @@ static int	size_of_str_without_quote(char **str)
 		{
 			in_quote = 0;
 			quote_char = 0;
+			size -= 2;
 		}
-		else
-			size++;
+		size++;
 	}
 	return (size);
+}
+
+static int	in_quote_or_not(char *str)
+{
+	int	in_quote;
+	int	quote_char;
+	int	i;
+
+	i = -1;
+	in_quote = 0;
+	quote_char = 0;
+	while (str[++i])
+	{
+		if ((str[i] == '"' || str[i] == '\'') && !in_quote)
+		{
+			in_quote = 1;
+			quote_char = str[i];
+		}
+		else if (str[i] == quote_char && in_quote)
+		{
+			in_quote = 0;
+			quote_char = 0;
+		}
+	}
+	return (in_quote);
 }
 
 static void	copy_str_without_quote(char **clean_str, int in_quote,
@@ -49,6 +74,8 @@ static void	copy_str_without_quote(char **clean_str, int in_quote,
 
 	i = -1;
 	j = 0;
+	if (in_quote_or_not(*str))
+		return (ft_str_copy(*clean_str, *str));
 	while ((*str)[++i])
 	{
 		if (((*str)[i] == '"' || (*str)[i] == '\'') && !in_quote)
@@ -62,10 +89,7 @@ static void	copy_str_without_quote(char **clean_str, int in_quote,
 			quote_char = 0;
 		}
 		else
-		{
-			(*clean_str)[j] = (*str)[i];
-			j++;
-		}
+			(*clean_str)[j++] = (*str)[i];
 	}
 	(*clean_str)[j] = '\0';
 }
@@ -77,6 +101,8 @@ void	remove_quote(char **str)
 	char	quote_char;
 	int		in_quote;
 
+	if (!(*str))
+		return ;
 	size = size_of_str_without_quote(str);
 	clean_str = (char *)malloc(sizeof(char) * (size + 1));
 	if (!clean_str)

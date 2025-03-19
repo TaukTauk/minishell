@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_redirections_two.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 16:52:57 by rick              #+#    #+#             */
-/*   Updated: 2025/03/17 13:26:09 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/19 16:31:01 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	delimeter_lines(t_redirection *delimeter, t_data *data)
 		signal(SIGINT, handle_sigint_delim);
 		if (g_delim_interrupt)
 		{
+			data->status = 130;
 			g_delim_interrupt = 0;
 			return (0);
 		}
@@ -72,6 +73,8 @@ int	delimeter_expand(t_redirection *delimeter, t_data *data)
 
 int	delimeter_read(t_redirection *delimeter, t_command *command, t_data *data)
 {
+	char	*temp;
+
 	if (!delimeter || !command || !command->redirections)
 		return (0);
 	if (!delimeter_content(delimeter))
@@ -82,7 +85,16 @@ int	delimeter_read(t_redirection *delimeter, t_command *command, t_data *data)
 		delimeter->content = NULL;
 		return (0);
 	}
-	if (!delimeter_expand(delimeter, data))
-		return (0);
+	if (delimeter->expand == 0)
+	{
+		if (!delimeter_expand(delimeter, data))
+			return (0);
+	}
+	else
+	{
+		temp = ft_strjoin(delimeter->content, "\n");
+		free(delimeter->content);
+		delimeter->content = temp;
+	}
 	return (1);
 }

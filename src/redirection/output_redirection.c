@@ -3,14 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   output_redirection.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:48:02 by rick              #+#    #+#             */
-/*   Updated: 2025/03/17 11:40:32 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/19 22:59:47 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+void	error_output_redir(t_data *data, char *name)
+{
+	data->status = 1;
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(name, STDERR_FILENO);
+	ft_putstr_fd(": ambiguous redirect\n", STDERR_FILENO);
+}
+
+static int	flag_type(t_redirection *redir)
+{
+	int	flags;
+
+	if (redir->type == REDIRECT_APPEND)
+		flags = O_WRONLY | O_CREAT | O_APPEND;
+	else
+		flags = O_WRONLY | O_CREAT | O_TRUNC;
+	return (flags);
+}
 
 int	handle_output_redirection(t_redirection *redir,
 	t_command *command, t_data *data)
@@ -18,10 +37,9 @@ int	handle_output_redirection(t_redirection *redir,
 	int	flags;
 	int	fd;
 
-	if (redir->type == REDIRECT_APPEND)
-		flags = O_WRONLY | O_CREAT | O_APPEND;
-	else
-		flags = O_WRONLY | O_CREAT | O_TRUNC;
+	flags = flag_type(redir);
+	if (redir->error == 1)
+		return (error_output_redir(data, redir->file_name), 1);
 	fd = open(redir->file_name, flags, 0644);
 	if (fd == -1)
 	{

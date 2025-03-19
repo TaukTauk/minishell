@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 11:35:12 by talin             #+#    #+#             */
-/*   Updated: 2025/03/17 13:30:35 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/19 21:38:56 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,11 @@ int	handle_command_input(char *input, t_data *data)
 	if (*input)
 		add_history(input);
 	input[ft_strcspn(input, "\n")] = '\0';
+	if (g_delim_interrupt)
+	{
+		data->status = 130;
+		g_delim_interrupt = 0;
+	}
 	data->lexer = tokenize(input, data);
 	if (!data->lexer)
 		return (1);
@@ -62,7 +67,7 @@ static void	minishell(t_data *data)
 		gen_env(data);
 		signal(SIGINT, handle_sigint);
 		signal(SIGQUIT, SIG_IGN);
-		input = readline("minishell > ");
+		input = readline("minishell $ ");
 		if (!input)
 		{
 			ft_putendl_fd("exit", STDOUT_FILENO);
@@ -89,33 +94,3 @@ int	main(int ac, char **av, char **env)
 	rl_clear_history();
 	return (EXIT_SUCCESS);
 }
-
-// void	print_tokens(t_lexer *lexer)
-// {
-// 	t_lexer	*current;
-
-// 	if (!lexer)
-// 		return ;
-// 	current = lexer;
-// 	while (current)
-// 	{
-// 		if (current->value)
-// 		{
-// 			printf("[{%s}, ", current->value);
-// 			if (current->token_type == TKN_IN)
-// 				printf("{type: %s}] ", "infile");
-// 			else if (current->token_type == TKN_OUT)
-// 				printf("{type: %s}] ", "outfile");
-// 			else if (current->token_type == TKN_RDAPPEND)
-// 				printf("{type: %s}] ", "outfileappend");
-// 			else if (current->token_type == TKN_RDHEREDOC)
-// 				printf("{type: %s}] ", "heredoc");
-// 			else if (current->token_type == TKN_WORD)
-// 				printf("{type: %s}] ", "word");
-// 			else if (current->token_type == TKN_PIPE)
-// 				printf("{type: %s}] ", "pipe");
-// 			printf("\n");
-// 		}
-// 		current = current->next;
-// 	}
-// }

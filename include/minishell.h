@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:38 by talin             #+#    #+#             */
-/*   Updated: 2025/03/17 12:33:21 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/19 22:56:33 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_lexer
 	int				token_type;
 	char			*value;
 	int				error;
+	int				expand;
 	struct s_lexer	*next;
 }	t_lexer;
 
@@ -65,6 +66,8 @@ typedef struct s_redirection
 	char					*file_name;
 	char					*content;
 	int						order_value;
+	int						error;
+	int						expand;
 	struct s_redirection	*next;
 }	t_redirection;
 
@@ -267,4 +270,8 @@ int			expand_var(char **cmd, t_data *data, t_lexer **lexer, int *status);
 int			is_valid_redirection(t_lexer *token, t_lexer *next_token);
 int			check_unclosed_quotes(const char *token);
 int			is_metacharacter(t_lexer *token);
+int			single_quote_token(char *value);
+void		ft_str_copy(char *dest, const char *src);
+void		ft_error_in_red_two(t_data *data, t_command **command_list);
+void		error_out_red_two(t_data *data, t_command **command_list);
 #endif
