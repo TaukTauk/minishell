@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:44:06 by rick              #+#    #+#             */
-/*   Updated: 2025/03/19 13:16:23 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/19 14:22:59 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	check_input_file_access(char *filename, t_data *data, t_redirection *redir)
 {
-	if (redir->error)
+	if (redir->error == 1)
 	{
 		ft_putstr_fd("minishell: ", STDERR_FILENO);
 		ft_putstr_fd(filename, STDERR_FILENO);

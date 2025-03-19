@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:22:58 by talin             #+#    #+#             */
-/*   Updated: 2025/03/17 11:11:06 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/19 14:03:37 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,7 @@ int	execute_command(t_data *data)
 	int	fd_stdin;
 	int	fd_stdout;
 
-	if (!data || !data->commands
-		|| !data->commands->args || !data->commands->args[0])
+	if (!data || !data->commands)
 		return (0);
 	signal(SIGINT, handle_sigint_two);
 	signal(SIGQUIT, handle_sigquit);

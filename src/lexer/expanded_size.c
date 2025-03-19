@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 10:32:25 by talin             #+#    #+#             */
-/*   Updated: 2025/03/19 13:12:37 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/19 14:21:41 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,12 @@ int	expand_var(char **cmd, t_data *data, t_lexer **lexer, int *status)
 		&& !ft_strchr(expanded_cmd, '\''))
 		*status = 1;
 	if (ft_contain_dollar_sign(*cmd) && ft_is_empty(expanded_cmd))
+	{
+		*status = 2;
+		free(expanded_cmd);
 		(*lexer)->error = 1;
+		return (1);
+	}
 	if (expanded_cmd)
 	{
 		free(*cmd);

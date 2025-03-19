@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 15:54:59 by talin             #+#    #+#             */
-/*   Updated: 2025/03/19 13:14:25 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/19 14:21:16 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static int	splitter(t_lexer **current, t_lexer **prev,
 {
 	char	**token;
 
-	if (status && empty_or_not((*current)->value))
+	if (status == 1 && empty_or_not((*current)->value))
 	{
 		token = ft_split_prime((*current)->value);
 		if (!token)

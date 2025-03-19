@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 11:35:12 by talin             #+#    #+#             */
-/*   Updated: 2025/03/19 12:45:16 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/19 13:40:14 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ static void	minishell(t_data *data)
 		gen_env(data);
 		signal(SIGINT, handle_sigint);
 		signal(SIGQUIT, SIG_IGN);
-		input = readline("minishell > ");
+		input = readline("minishell $ ");
 		if (!input)
 		{
 			ft_putendl_fd("exit", STDOUT_FILENO);
