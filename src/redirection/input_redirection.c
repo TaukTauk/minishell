@@ -6,13 +6,14 @@
 /*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:44:06 by rick              #+#    #+#             */
-/*   Updated: 2025/03/19 21:34:41 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/19 22:57:28 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-static int	check_input_file_access(char *filename, t_data *data, t_redirection *redir)
+static int	check_input_file_access(char *filename,
+	t_data *data, t_redirection *redir)
 {
 	if (redir->error == 1)
 	{

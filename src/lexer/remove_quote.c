@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   remove_quote.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 10:39:10 by talin             #+#    #+#             */
-/*   Updated: 2025/03/19 14:55:47 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/19 23:01:42 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,7 @@ static void	copy_str_without_quote(char **clean_str, int in_quote,
 	i = -1;
 	j = 0;
 	if (in_quote_or_not(*str))
-	{
-		ft_strcpy(*clean_str, *str);
-		return ;
-	}
+		return (ft_str_copy(*clean_str, *str));
 	while ((*str)[++i])
 	{
 		if (((*str)[i] == '"' || (*str)[i] == '\'') && !in_quote)
@@ -92,10 +89,7 @@ static void	copy_str_without_quote(char **clean_str, int in_quote,
 			quote_char = 0;
 		}
 		else
-		{
-			(*clean_str)[j] = (*str)[i];
-			j++;
-		}
+			(*clean_str)[j++] = (*str)[i];
 	}
 	(*clean_str)[j] = '\0';
 }
@@ -107,6 +101,8 @@ void	remove_quote(char **str)
 	char	quote_char;
 	int		in_quote;
 
+	if (!(*str))
+		return ;
 	size = size_of_str_without_quote(str);
 	clean_str = (char *)malloc(sizeof(char) * (size + 1));
 	if (!clean_str)

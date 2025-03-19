@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_one.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:36:53 by talin             #+#    #+#             */
-/*   Updated: 2025/03/19 16:25:42 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/19 22:53:32 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,11 +105,7 @@ int	ft_parse_in_red_two(t_command **command_list,
 	if (!create_io_file(&(*current_cmd)->redirections,
 			next_token->value, redirect_type,
 			(*current_cmd)->input_order))
-	{
-		data->status = 2;
-		ft_putendl_fd("minishell: malloc for input redirection file", 2);
-		return (free_commands(*command_list), 0);
-	}
+		return (ft_error_in_red_two(data, command_list), 0);
 	(*current_cmd)->redirections->error = next_token->error;
 	(*current_cmd)->redirections->expand = next_token->expand;
 	return (*current = next_token, 1);

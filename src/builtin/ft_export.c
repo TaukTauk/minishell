@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 15:12:01 by talin             #+#    #+#             */
-/*   Updated: 2025/03/19 14:34:02 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/19 22:08:18 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,10 @@ void	ft_export(t_command *commands, t_data *data)
 		while (current)
 		{
 			printf("declare -x ");
-			printf("%s=\"%s\"\n", current->key, current->value);
+			printf("%s", current->key);
+			if (current->value)
+				printf("=\"%s\"", current->value);
+			printf("\n");
 			current = current->next;
 		}
 	}
