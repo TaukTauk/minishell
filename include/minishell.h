@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:38 by talin             #+#    #+#             */
-/*   Updated: 2025/03/19 12:54:51 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/19 16:24:45 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_lexer
 	int				token_type;
 	char			*value;
 	int				error;
+	int				expand;
 	struct s_lexer	*next;
 }	t_lexer;
 
@@ -66,6 +67,7 @@ typedef struct s_redirection
 	char					*content;
 	int						order_value;
 	int						error;
+	int						expand;
 	struct s_redirection	*next;
 }	t_redirection;
 

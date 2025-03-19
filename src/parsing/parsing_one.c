@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:36:53 by talin             #+#    #+#             */
-/*   Updated: 2025/03/19 14:23:40 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/19 16:25:42 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,5 +111,6 @@ int	ft_parse_in_red_two(t_command **command_list,
 		return (free_commands(*command_list), 0);
 	}
 	(*current_cmd)->redirections->error = next_token->error;
+	(*current_cmd)->redirections->expand = next_token->expand;
 	return (*current = next_token, 1);
 }
