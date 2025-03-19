@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:22:58 by talin             #+#    #+#             */
-/*   Updated: 2025/03/19 14:03:37 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/19 20:42:06 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,42 +21,6 @@ void	restore_std_fds(int stdin_fd, int stdout_fd)
 		perror("Failed to restore stdout");
 	close(stdout_fd);
 }
-
-// void	restore_std_fds(int fd_stdin, int fd_stdout)
-// {
-// 	dup2(fd_stdin, STDIN_FILENO);
-// 	dup2(fd_stdout, STDOUT_FILENO);
-// 	close(fd_stdin);
-// 	close(fd_stdout);
-// }
-
-// int	execute_command(t_data *data)
-// {
-// 	int	fd_stdin;
-// 	int	fd_stdout;
-
-// 	if (!data || !data->commands || !data->commands->args
-// 		|| !data->commands->args[0])
-// 		return (0);
-// 	fd_stdin = dup(STDIN_FILENO);
-// 	fd_stdout = dup(STDOUT_FILENO);
-// 	if (fd_stdin == -1 || fd_stdout == -1)
-// 	{
-// 		if (fd_stdin != -1)
-// 			close(fd_stdin);
-// 		data->status = 1;
-// 		return (0);
-// 	}
-// 	if (handle_redirections(data->commands, data))
-// 		return (restore_std_fds(fd_stdin, fd_stdout), 0);
-// 	if (data->commands->builtin)
-// 		execute_builtin(data->commands, data);
-// 	else
-// 		execve_cmd(data->commands->cmd, data->commands->args, data->env, data);
-// 	restore_std_fds(fd_stdin, fd_stdout);
-// 	cleanup_redirections(data->commands);
-// 	return (1);
-// }
 
 static int	std_util(int *fd_stdin, int *fd_stdout, t_data *data)
 {

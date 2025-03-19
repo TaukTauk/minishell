@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_two.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:35:52 by talin             #+#    #+#             */
-/*   Updated: 2025/03/19 13:21:31 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/19 20:29:00 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,9 +97,25 @@ static int	ft_parse_command_arg(t_command **command_list,
 	t_command **current_cmd, t_lexer **current, t_data *data)
 {
 	if (!(*current)->error)
+	{
 		if (!ft_parse_cmd_arg(command_list, current_cmd,
 				(*current)->value, data))
 			return (0);
+	}
+	else
+	{
+		if (!*current_cmd)
+		{
+			*command_list = create_command();
+			if (!*command_list)
+			{
+				ft_putendl_fd
+					("minishell: failed to allocate memory for command", 2);
+				return (data->status = 2, free_commands(*command_list), 0);
+			}
+			*current_cmd = *command_list;
+		}
+	}
 	return (1);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   output_redirection.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:48:02 by rick              #+#    #+#             */
-/*   Updated: 2025/03/19 13:24:52 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/19 20:38:09 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	handle_output_redirection(t_redirection *redir,
 		flags = O_WRONLY | O_CREAT | O_APPEND;
 	else
 		flags = O_WRONLY | O_CREAT | O_TRUNC;
-	if (redir->error)
+	if (redir->error == 1)
 		return (error_output_redir(data, redir->file_name), 1);
 	fd = open(redir->file_name, flags, 0644);
 	if (fd == -1)

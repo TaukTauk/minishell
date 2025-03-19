@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_redirection.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:44:06 by rick              #+#    #+#             */
-/*   Updated: 2025/03/19 14:22:59 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/19 21:34:41 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,22 @@ int	handle_input_file(t_redirection *redir, t_command *command, t_data *data)
 
 static void	pid_zero_exit(int *fd, t_redirection *redir)
 {
+	size_t	len;
+	ssize_t	written;
+
 	close(fd[0]);
-	ft_putstr_fd(redir->content, fd[1]);
+	len = ft_strlen(redir->content);
+	written = write(fd[1], redir->content, len);
 	close(fd[1]);
+	if (written == -1)
+		exit(1);
 	exit(0);
 }
 
 int	handle_heredoc(t_redirection *redir, t_command *command, t_data *data)
 {
 	int		fd[2];
+	int		std_in;
 	pid_t	pid;
 
 	if (redir->order_value != command->input_order)
@@ -79,17 +86,17 @@ int	handle_heredoc(t_redirection *redir, t_command *command, t_data *data)
 		return (ft_error("minishell: pipe failed"), 1);
 	pid = fork();
 	if (pid == -1)
-		return (close(fd[0]), close(fd[1]), 1);
+		return (close_err(fd[0], fd[1]), 1);
 	if (pid == 0)
 		pid_zero_exit(fd, redir);
 	else
 	{
 		close(fd[1]);
-		if (command->fd_in != -1)
-			close(command->fd_in);
-		command->fd_in = fd[0];
-		if (dup2(command->fd_in, STDIN_FILENO) == -1)
-			return (close(command->fd_in), 1);
+		std_in = dup(STDIN_FILENO);
+		if (std_in == -1)
+			return (close(fd[0]), 1);
+		if (dup2(fd[0], STDIN_FILENO) == -1)
+			return (close_both(fd[0], std_in), 1);
 		update_exit_status(pid, fd, data);
 		return (0);
 	}

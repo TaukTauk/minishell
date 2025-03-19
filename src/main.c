@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 11:35:12 by talin             #+#    #+#             */
-/*   Updated: 2025/03/19 13:40:14 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/19 21:38:56 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,33 +94,3 @@ int	main(int ac, char **av, char **env)
 	rl_clear_history();
 	return (EXIT_SUCCESS);
 }
-
-// void	print_tokens(t_lexer *lexer)
-// {
-// 	t_lexer	*current;
-
-// 	if (!lexer)
-// 		return ;
-// 	current = lexer;
-// 	while (current)
-// 	{
-// 		if (current->value)
-// 		{
-// 			printf("[{%s}, ", current->value);
-// 			if (current->token_type == TKN_IN)
-// 				printf("{type: %s}] ", "infile");
-// 			else if (current->token_type == TKN_OUT)
-// 				printf("{type: %s}] ", "outfile");
-// 			else if (current->token_type == TKN_RDAPPEND)
-// 				printf("{type: %s}] ", "outfileappend");
-// 			else if (current->token_type == TKN_RDHEREDOC)
-// 				printf("{type: %s}] ", "heredoc");
-// 			else if (current->token_type == TKN_WORD)
-// 				printf("{type: %s}] ", "word");
-// 			else if (current->token_type == TKN_PIPE)
-// 				printf("{type: %s}] ", "pipe");
-// 			printf("\n");
-// 		}
-// 		current = current->next;
-// 	}
-// }
