@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:47:44 by talin             #+#    #+#             */
-/*   Updated: 2025/03/15 20:36:55 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/20 15:58:08 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ int	ft_exit(t_command *command, t_data *data)
 	fd = dup(STDOUT_FILENO);
 	if (isatty(fd))
 		ft_putstr_fd("exit\n", STDOUT_FILENO);
+	close(fd);
 	if (!command->args[1])
 	{
 		free_data(data);

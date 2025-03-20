@@ -6,11 +6,19 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 15:27:03 by talin             #+#    #+#             */
-/*   Updated: 2025/03/20 13:21:18 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/20 14:48:51 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+static void	create_io_file_support(t_redirection **new_file)
+{
+	(*new_file)->content = NULL;
+	(*new_file)->next = NULL;
+	(*new_file)->error = 0;
+	(*new_file)->expand = 0;
+}
 
 int	create_io_file(t_redirection **file_list,
 		char *file_name, int redirect_type, int order_num)
@@ -28,10 +36,7 @@ int	create_io_file(t_redirection **file_list,
 		return (0);
 	new_file->type = redirect_type;
 	new_file->order_value = order_num;
-	new_file->content = NULL;
-	new_file->next = NULL;
-	new_file->error = 0;
-	new_file->expand = 0;
+	create_io_file_support(&new_file);
 	if (!(*file_list))
 		*file_list = new_file;
 	else
