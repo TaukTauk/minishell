@@ -6,7 +6,7 @@
 /*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:45:08 by rick              #+#    #+#             */
-/*   Updated: 2025/03/20 20:59:05 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/20 22:05:39 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,10 @@ void	create_pipelines(t_data *data, pid_t *pids, int **pipe_fds)
 			break ;
 		}
 		if (pids[i] == 0)
+		{
+			setup_child_signals();
 			run_piped_command(data, pipe_fds, i);
+		}
 		i++;
 	}
 }

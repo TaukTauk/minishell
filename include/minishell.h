@@ -6,7 +6,7 @@
 /*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:38 by talin             #+#    #+#             */
-/*   Updated: 2025/03/20 21:23:08 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/20 22:04:34 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -278,5 +278,6 @@ void		restore_std_fds(int *stdin_fd, int *stdout_fd);
 int			execute_builtin_pipe(t_command *commands, t_data *data);
 int			ft_exit_pipe(t_command *command, t_data *data);
 int			exit_valid_argument(const char *str);
-
+void		setup_parent_signals(void);
+void		setup_child_signals(void);
 #endif
