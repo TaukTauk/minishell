@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 11:35:12 by talin             #+#    #+#             */
-/*   Updated: 2025/03/20 15:36:04 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/20 16:04:06 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static void	minishell(t_data *data)
 		g_delim_interrupt = 0;
 		gen_env(data);
 		signal(SIGINT, handle_sigint);
-		signal(SIGQUIT, SIG_IGN);	
+		signal(SIGQUIT, SIG_IGN);
 		input = readline("minishell $ ");
 		if (!input)
 		{
