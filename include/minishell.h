@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:38 by talin             #+#    #+#             */
-/*   Updated: 2025/03/20 13:19:07 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/20 16:56:53 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,8 @@ void		close_both(int fd1, int fd2);
 void		write_pipe(int fd[2], t_command *command);
 void		execute_in_child(char *cmd_path, t_command *command, t_data *data);
 void		execute_piped_command(t_command *command, t_data *data);
-int			execute_builtin(t_command *commands, t_data *data);
+int			execute_builtin(t_command *commands, t_data *data,
+				int *fd_in, int *fd_out);
 void		ft_free_arr(char **arr);
 char		*ft_getenv(char *name, char **envp);
 int			ft_check_set_unset(char **envp);
@@ -204,7 +205,7 @@ int			delimeter_read(t_redirection *delimeter,
 				t_command *command, t_data *data);
 int			ft_echo(t_command *command, t_data *data);
 int			ft_cd(t_command *command, t_data *data);
-int			ft_exit(t_command *command, t_data *data);
+int			ft_exit(t_command *command, t_data *data, int *fd_in, int *fd_out);
 void		error_args(char *command, t_data *data);
 void		error_not_found(char *path, t_data *data);
 void		error_permission(char *command, t_data *data);
@@ -273,4 +274,9 @@ void		ft_str_copy(char *dest, const char *src);
 void		ft_error_in_red_two(t_data *data, t_command **command_list);
 void		error_out_red_two(t_data *data, t_command **command_list);
 int			empty_directory(char *dest_path);
+void		restore_std_fds(int *stdin_fd, int *stdout_fd);
+int			execute_builtin_pipe(t_command *commands, t_data *data);
+int			ft_exit_pipe(t_command *command, t_data *data);
+int			exit_valid_argument(const char *str);
+
 #endif

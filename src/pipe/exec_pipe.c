@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:51:07 by rick              #+#    #+#             */
-/*   Updated: 2025/03/19 21:19:06 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/20 16:37:42 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	execute_piped_command(t_command *command, t_data *data)
 		exit (1);
 	if (command->builtin)
 	{
-		execute_builtin(command, data);
+		execute_builtin_pipe(command, data);
 		exit(data->status);
 	}
 	if (!command->args || !command->args[0])

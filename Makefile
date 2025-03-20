@@ -12,7 +12,7 @@ SRCS = main.c
 
 SRCS_PREFIXED = $(addprefix $(SRC_PATH), $(SRCS))
 
-SRCS_BUILTIN = ft_echo.c ft_exit.c ft_export.c  ft_get_path_utils.c \
+SRCS_BUILTIN = ft_echo.c ft_exit.c ft_export.c  ft_get_path_utils.c ft_exit_utils.c \
 				ft_unset.c execute_builtin.c ft_cd.c ft_cd_two.c ft_export_utils.c
 SRCS_BUILTIN_PREFIXED = $(addprefix $(BUILTIN_PATH), $(SRCS_BUILTIN))
 

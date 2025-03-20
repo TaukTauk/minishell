@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_builtin.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:36:35 by rick              #+#    #+#             */
-/*   Updated: 2025/03/15 20:11:57 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/20 16:38:29 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	ft_pwd(void)
 		perror("getcwd");
 }
 
-int	execute_builtin(t_command *commands, t_data *data)
+int	execute_builtin(t_command *commands, t_data *data, int *fd_in, int *fd_out)
 {
 	if (ft_strcmp(commands->cmd, "env") == 0)
 		return (ft_env(commands, data), 1);
@@ -64,6 +64,25 @@ int	execute_builtin(t_command *commands, t_data *data)
 	else if (ft_strcmp(commands->cmd, "unset") == 0)
 		return (ft_unset(commands, data), 1);
 	else if (ft_strcmp(commands->cmd, "exit") == 0)
-		return (ft_exit(commands, data), 1);
+		return (ft_exit(commands, data, fd_in, fd_out), 1);
+	return (1);
+}
+
+int	execute_builtin_pipe(t_command *commands, t_data *data)
+{
+	if (ft_strcmp(commands->cmd, "env") == 0)
+		return (ft_env(commands, data), 1);
+	else if (ft_strcmp(commands->cmd, "echo") == 0)
+		return (ft_echo(commands, data), 1);
+	else if (ft_strcmp(commands->cmd, "cd") == 0)
+		return (ft_cd(commands, data), 1);
+	else if (ft_strcmp(commands->cmd, "pwd") == 0)
+		return (ft_pwd(), 1);
+	else if (ft_strcmp(commands->cmd, "export") == 0)
+		return (ft_export(commands, data), 1);
+	else if (ft_strcmp(commands->cmd, "unset") == 0)
+		return (ft_unset(commands, data), 1);
+	else if (ft_strcmp(commands->cmd, "exit") == 0)
+		return (ft_exit_pipe(commands, data), 1);
 	return (1);
 }

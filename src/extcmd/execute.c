@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:22:58 by talin             #+#    #+#             */
-/*   Updated: 2025/03/20 16:02:52 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/20 16:31:58 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	restore_std_fds(int stdin_fd, int stdout_fd)
+void	restore_std_fds(int *stdin_fd, int *stdout_fd)
 {
-	if (dup2(stdin_fd, STDIN_FILENO) == -1)
+	if (dup2(*stdin_fd, STDIN_FILENO) == -1)
 		perror("Failed to restore stdin");
-	close(stdin_fd);
-	if (dup2(stdout_fd, STDOUT_FILENO) == -1)
+	close(*stdin_fd);
+	if (dup2(*stdout_fd, STDOUT_FILENO) == -1)
 		perror("Failed to restore stdout");
-	close(stdout_fd);
+	close(*stdout_fd);
 }
 
 static int	std_util(int *fd_stdin, int *fd_stdout, t_data *data)
@@ -51,14 +51,14 @@ int	execute_command(t_data *data)
 		return (0);
 	if (handle_redirections(data->commands, data))
 	{
-		restore_std_fds(fd_stdin, fd_stdout);
+		restore_std_fds(&fd_stdin, &fd_stdout);
 		return (0);
 	}
 	if (data->commands->builtin)
-		execute_builtin(data->commands, data);
+		execute_builtin(data->commands, data, &fd_stdin, &fd_stdout);
 	else
 		execve_cmd(data->commands->cmd, data->commands->args, data->env, data);
-	restore_std_fds(fd_stdin, fd_stdout);
+	restore_std_fds(&fd_stdin, &fd_stdout);
 	cleanup_redirections(data->commands);
 	return (1);
 }
