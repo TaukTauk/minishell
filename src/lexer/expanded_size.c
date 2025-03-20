@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanded_size.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 10:32:25 by talin             #+#    #+#             */
-/*   Updated: 2025/03/19 21:37:31 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/20 13:35:37 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	expand_var(char **cmd, t_data *data, t_lexer **lexer, int *status)
 	char	*expanded_cmd;
 
 	expanded_cmd = expand_variable(*cmd, data);
-	if (strcmp(expanded_cmd, *cmd) != 0 && !ft_strchr(expanded_cmd, '\"')
+	if (ft_strcmp(expanded_cmd, *cmd) != 0 && !ft_strchr(expanded_cmd, '\"')
 		&& !ft_strchr(expanded_cmd, '\''))
 		*status = 1;
 	if (ft_contain_dollar_sign(*cmd) && ft_is_empty(expanded_cmd))

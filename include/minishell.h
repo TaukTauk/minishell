@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:38 by talin             #+#    #+#             */
-/*   Updated: 2025/03/19 22:56:33 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/20 13:19:07 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,6 @@ void		add_token(t_lexer **lexer, int token_type, char *value);
 t_lexer		*tokenize(char *input, t_data *data);
 char		*ft_tokenize_two_token(int start,
 				int *i, char *input, t_data *data);
-void		print_tokens(t_lexer *lexer);
 void		tokenize_three(char *input, int *i, int *in_quotes);
 t_lexer		*get_token_at_index(t_lexer *lexer, int index);
 int			get_token_count(t_lexer *lexer);
@@ -135,7 +134,6 @@ int			ft_tokenize_two(t_lexer **lexer, char *input, int *i, t_data *data);
 int			ft_tokenize_one(t_lexer **lexer, char *input, int *i);
 void		free_commands(t_command *cmd);
 void		ft_free_io_file(t_redirection *file);
-void		print_commands(t_command *cmd);
 t_command	*parse_tokens(t_lexer *lexer, t_data *data);
 int			add_argument(t_command *cmd, char *arg);
 t_command	*create_command(void);
@@ -274,4 +272,5 @@ int			single_quote_token(char *value);
 void		ft_str_copy(char *dest, const char *src);
 void		ft_error_in_red_two(t_data *data, t_command **command_list);
 void		error_out_red_two(t_data *data, t_command **command_list);
+int			empty_directory(char *dest_path);
 #endif

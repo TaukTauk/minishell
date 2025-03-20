@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_status.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:46:50 by rick              #+#    #+#             */
-/*   Updated: 2025/03/17 13:16:02 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/20 12:59:43 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ static void	handle_execution_status_two(int status)
 		ft_signal_error("Floating point exception (core dumped)\n");
 	else if (status == SIGSEGV)
 		ft_signal_error("Segmentation fault (core dumped)\n");
-	else if (status == SIGPIPE)
-		ft_signal_error("Broken pipe\n");
 	else if (status == SIGALRM)
 		ft_signal_error("Alarm clock\n");
 	else if (status == SIGTTIN)

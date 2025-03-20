@@ -44,7 +44,7 @@ INCLUDE = include/minishell.h
 NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror #-g3 -fsanitize=address
 LDFLAGS = -lreadline -lncurses
 
 LIBFT_PATH = libft/

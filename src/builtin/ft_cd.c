@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 09:57:12 by talin             #+#    #+#             */
-/*   Updated: 2025/03/12 14:47:04 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/20 13:14:06 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ static int	validate_path(char *dest_path, t_data *data)
 {
 	struct stat	path_stat;
 
+	if (empty_directory(dest_path))
+		return (0);
 	if (stat(dest_path, &path_stat) == -1)
 	{
 		if (access(dest_path, F_OK) == -1)
@@ -98,6 +100,8 @@ int	ft_cd(t_command *command, t_data *data)
 	}
 	dest_path = get_destination_path(command, data);
 	if (!dest_path)
+		return (1);
+	if (empty_directory(dest_path))
 		return (1);
 	if (chdir(dest_path) == -1)
 	{

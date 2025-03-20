@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 09:01:12 by juhtoo-h          #+#    #+#             */
-/*   Updated: 2025/03/19 14:33:43 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/20 13:36:30 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@ int	export_env_search(t_envp *current, char *key, char *value)
 {
 	while (current)
 	{
-		if (strcmp(current->key, key) == 0)
+		if (ft_strcmp(current->key, key) == 0)
 		{
 			if (value)
 			{
 				free(current->value);
-				current->value = strdup(value);
+				current->value = ft_strdup(value);
 			}
 			free(key);
 			free(value);
