@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_status.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:46:50 by rick              #+#    #+#             */
-/*   Updated: 2025/03/20 15:22:12 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/20 21:22:48 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,13 @@ void	handle_execution_status(pid_t pid, t_data *data)
 		handle_execution_status_two(status);
 }
 
-void	update_exit_status(pid_t pid, int fd[2], t_data *data)
+void	update_exit_status(pid_t pid, int fd[2], t_data *data, int std_in)
 {
 	int		status;
 
 	waitpid(pid, &status, 0);
 	close(fd[0]);
+	close(std_in);
 	if (WIFEXITED(status))
 		data->status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))

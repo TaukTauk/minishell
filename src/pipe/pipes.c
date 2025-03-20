@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:45:08 by rick              #+#    #+#             */
-/*   Updated: 2025/03/20 16:46:15 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/20 20:59:05 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,10 @@ void	setup_child_pipes(t_data *data, int **pipe_fds, int i)
 	if (i > 0)
 	{
 		dup2(pipe_fds[i - 1][0], STDIN_FILENO);
-		close(pipe_fds[i - 1][1]);
 	}
 	if (i < data->cmd_count - 1)
 	{
 		dup2(pipe_fds[i][1], STDOUT_FILENO);
-		close(pipe_fds[i][0]);
 	}
 }
 

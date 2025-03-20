@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:51:07 by rick              #+#    #+#             */
-/*   Updated: 2025/03/20 16:37:42 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/20 21:35:53 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,15 @@
 void	close_both(int fd1, int fd2)
 {
 	if (fd1 != -1)
+	{
 		close(fd1);
+		fd1 = -1;
+	}
 	if (fd2 != -1)
+	{
 		close(fd2);
+		fd2 = -1;
+	}
 }
 
 void	write_pipe(int fd[2], t_command *command)
@@ -31,11 +37,13 @@ void	write_pipe(int fd[2], t_command *command)
 	{
 		if (current->order_value == command->input_order)
 		{
-			close(fd[0]);
+			if (fd[0] != -1)
+				close(fd[0]);
 			len = ft_strlen(current->content);
 			written = write(fd[1], current->content, len);
 			write(fd[1], "\n", 1);
 			close(fd[1]);
+			fd[1] = -1;
 			if (written == -1)
 				exit(1);
 			exit(0);

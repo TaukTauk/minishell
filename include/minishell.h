@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:38 by talin             #+#    #+#             */
-/*   Updated: 2025/03/20 16:56:53 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/20 21:23:08 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,7 +171,7 @@ char		*ft_getenv(char *name, char **envp);
 int			ft_check_set_unset(char **envp);
 char		*ft_get_path(char *cmd, char **envp, int i, t_data *data);
 void		execve_cmd(char *cmd, char **s_cmd, char **envp, t_data *data);
-void		update_exit_status(pid_t pid, int fd[2], t_data *data);
+void		update_exit_status(pid_t pid, int fd[2], t_data *data, int std_in);
 void		handle_execution_status(pid_t pid, t_data *data);
 void		print_err_nofile(char *filename, t_data *data);
 void		close_err(int fd1, int fd2);

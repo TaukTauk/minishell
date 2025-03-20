@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 15:22:58 by talin             #+#    #+#             */
-/*   Updated: 2025/03/20 16:31:58 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/20 21:32:20 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,14 @@ void	restore_std_fds(int *stdin_fd, int *stdout_fd)
 {
 	if (dup2(*stdin_fd, STDIN_FILENO) == -1)
 		perror("Failed to restore stdin");
-	close(*stdin_fd);
+	if (*stdin_fd != -1)
+		close(*stdin_fd);
+	*stdin_fd = -1;
 	if (dup2(*stdout_fd, STDOUT_FILENO) == -1)
 		perror("Failed to restore stdout");
-	close(*stdout_fd);
+	if (*stdout_fd != -1)
+		close(*stdout_fd);
+	*stdout_fd = -1;
 }
 
 static int	std_util(int *fd_stdin, int *fd_stdout, t_data *data)
@@ -29,9 +33,15 @@ static int	std_util(int *fd_stdin, int *fd_stdout, t_data *data)
 	if (*fd_stdin == -1 || *fd_stdout == -1)
 	{
 		if (*fd_stdin != -1)
+		{
 			close(*fd_stdin);
+			*fd_stdin = -1;
+		}
 		if (*fd_stdout != -1)
+		{
 			close(*fd_stdout);
+			*fd_stdin = -1;
+		}
 		data->status = 1;
 		return (-1);
 	}
