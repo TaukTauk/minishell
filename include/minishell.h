@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:38 by talin             #+#    #+#             */
-/*   Updated: 2025/03/21 13:55:16 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/21 16:50:54 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ int			create_io_file(t_redirection **file_list, char *file_name,
 				int redirect_type, int order_num);
 int			ft_strcmp(const char *s1, const char *s2);
 int			sanitize_tokens(t_lexer *lexer, t_data *data);
-char		*expand_variable(char *input, t_data *data);
+char		*expand_variable(char *input, t_data *data, int *quote);
 int			ft_parse_pipe(t_command **command_list, t_command **current_cmd);
 int			ft_parse_in_red_two(t_command **command_list,
 				t_command **current_cmd, t_lexer **current, t_data *data);
@@ -222,7 +222,7 @@ void		ft_quote_handle_size(const char *ptr, int *inside_single_quote,
 				int *inside_double_quote);
 size_t		calculate_expanded_size(const char *input, t_data *data);
 void		ft_quote_handle(char **ptr, int *inside_single_quote,
-				int *inside_double_quote);
+				int *inside_double_quote, int *quote);
 void		get_value(char **ptr, t_data *data, char **output_ptr);
 int			ft_is_valid_name_character(const char c);
 char		*get_env_value(char *env[], const char *var_name);
