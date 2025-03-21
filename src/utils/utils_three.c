@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/19 22:48:03 by rick              #+#    #+#             */
-/*   Updated: 2025/03/20 13:13:38 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/21 13:36:28 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,13 @@ int	empty_directory(char *dest_path)
 	if (ft_strlen(dest_path) <= 0)
 		return (1);
 	return (0);
+}
+
+void	ft_quote_handle_size(const char *ptr, int *inside_single_quote,
+		int *inside_double_quote)
+{
+	if (*ptr == '\'' && !(*inside_double_quote))
+		*inside_single_quote = !(*inside_single_quote);
+	if (*ptr == '\"' && !(*inside_single_quote))
+		*inside_double_quote = !(*inside_double_quote);
 }

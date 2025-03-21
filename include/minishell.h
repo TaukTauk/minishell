@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:34:38 by talin             #+#    #+#             */
-/*   Updated: 2025/03/20 22:04:34 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/21 13:55:16 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -218,6 +218,8 @@ int			update_pwd(t_data *data, const char *old_pwd);
 void		error_numeric(char *command, t_data *data);
 void		ft_export(t_command *commands, t_data *data);
 void		ft_unset(t_command *commands, t_data *data);
+void		ft_quote_handle_size(const char *ptr, int *inside_single_quote,
+				int *inside_double_quote);
 size_t		calculate_expanded_size(const char *input, t_data *data);
 void		ft_quote_handle(char **ptr, int *inside_single_quote,
 				int *inside_double_quote);
@@ -239,6 +241,7 @@ void		add_env(t_data *data, const char *key, const char *value, int sign);
 void		gen_env(t_data *data);
 void		init_shell(t_data *data, char **envp);
 void		update_shlvl(t_data *data);
+int			count_of_dollar(char *str);
 void		handle_sigint(int signum);
 int			ft_is_only_space(char *input);
 int			ft_check_exec_access(char *path);
@@ -280,4 +283,6 @@ int			ft_exit_pipe(t_command *command, t_data *data);
 int			exit_valid_argument(const char *str);
 void		setup_parent_signals(void);
 void		setup_child_signals(void);
+void		increasing_size(size_t *new_size, const char **ptr,
+				int inside_double_quote, int inside_single_quote);
 #endif

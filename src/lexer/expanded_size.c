@@ -6,7 +6,7 @@
 /*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 10:32:25 by talin             #+#    #+#             */
-/*   Updated: 2025/03/20 13:35:37 by talin            ###   ########.fr       */
+/*   Updated: 2025/03/21 13:50:30 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,10 @@ int	expand_var(char **cmd, t_data *data, t_lexer **lexer, int *status)
 	char	*expanded_cmd;
 
 	expanded_cmd = expand_variable(*cmd, data);
-	if (ft_strcmp(expanded_cmd, *cmd) != 0 && !ft_strchr(expanded_cmd, '\"')
-		&& !ft_strchr(expanded_cmd, '\''))
+	if ((count_of_dollar(expanded_cmd) != count_of_dollar(*cmd)) && \
+	ft_strcmp(expanded_cmd, *cmd) != 0 && \
+	!ft_strchr(expanded_cmd, '\"') && \
+	!ft_strchr(expanded_cmd, '\''))
 		*status = 1;
 	if (ft_contain_dollar_sign(*cmd) && ft_is_empty(expanded_cmd))
 	{
@@ -46,6 +48,24 @@ void	ft_quote_handle(char **ptr, int *inside_single_quote,
 		*inside_double_quote = !(*inside_double_quote);
 }
 
+static void	copying_quote(char **ptr, char **output_ptr,
+		int *inside_single_quote, int *inside_double_quote)
+{
+	if (**ptr)
+	{
+		if (!(**ptr == '\'' || **ptr == '\"'))
+			*(*output_ptr)++ = *(*ptr)++;
+		else
+		{
+			if (((**ptr == '\'' && *inside_double_quote) || \
+			(**ptr == '\"' && *inside_single_quote)))
+				*(*output_ptr)++ = *(*ptr)++;
+			else
+				(*ptr)++;
+		}
+	}
+}
+
 void	expand_variable_copy(char **ptr, t_data *data, char **output_ptr)
 {
 	int	inside_single_quote;
@@ -53,7 +73,7 @@ void	expand_variable_copy(char **ptr, t_data *data, char **output_ptr)
 
 	inside_single_quote = 0;
 	inside_double_quote = 0;
-	while (*ptr && **ptr != '\0')
+	while (**ptr && **ptr != '\0')
 	{
 		if (**ptr == '\'' || **ptr == '\"')
 			ft_quote_handle(ptr, &inside_single_quote, &inside_double_quote);
@@ -64,8 +84,8 @@ void	expand_variable_copy(char **ptr, t_data *data, char **output_ptr)
 				break ;
 			continue ;
 		}
-		if (**ptr)
-			*(*output_ptr)++ = *(*ptr)++;
+		copying_quote(ptr, output_ptr, \
+		&inside_single_quote, &inside_double_quote);
 	}
 	*(*output_ptr) = '\0';
 }
