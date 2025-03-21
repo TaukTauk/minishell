@@ -12,7 +12,7 @@ SRCS = main.c
 
 SRCS_PREFIXED = $(addprefix $(SRC_PATH), $(SRCS))
 
-SRCS_BUILTIN = ft_echo.c ft_exit.c ft_export.c  ft_get_path_utils.c \
+SRCS_BUILTIN = ft_echo.c ft_exit.c ft_export.c  ft_get_path_utils.c ft_exit_utils.c \
 				ft_unset.c execute_builtin.c ft_cd.c ft_cd_two.c ft_export_utils.c
 SRCS_BUILTIN_PREFIXED = $(addprefix $(BUILTIN_PATH), $(SRCS_BUILTIN))
 
@@ -36,7 +36,7 @@ SRCS_REDIRECTION_PREFIXED = $(addprefix $(REDIRECTION_PATH), $(SRCS_REDIRECTION)
 SRCS_SIGNAL = signal.c
 SRCS_SIGNAL_PREFIXED = $(addprefix $(SIGNAL_PATH), $(SRCS_SIGNAL))
 
-SRCS_UTILS = error.c exit_status.c free_env.c free_two.c free.c get_env.c handle_err.c init_shell.c utils_two.c utils.c utils_three.c
+SRCS_UTILS = error.c exit_status.c free_env.c free_two.c free.c get_env.c handle_err.c init_shell.c utils_two.c utils.c utils_three.c utils_four.c
 SRCS_UTILS_PREFIXED = $(addprefix $(UTILS_PATH), $(SRCS_UTILS))
 
 INCLUDE = include/minishell.h
@@ -44,7 +44,7 @@ INCLUDE = include/minishell.h
 NAME = minishell
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror
 LDFLAGS = -lreadline -lncurses
 
 LIBFT_PATH = libft/
@@ -72,47 +72,47 @@ $(OBJS_DIR)%.o: $(SRC_PATH)%.c Makefile $(INCLUDE)
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@printf "\033[0;32mCompiling: $<\e[0m\n"
 
-$(OBJS_DIR)%.o: $(BUILTIN_PATH)%.c
+$(OBJS_DIR)%.o: $(BUILTIN_PATH)%.c Makefile $(INCLUDE)
 	@mkdir -p $(OBJS_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@printf "\033[0;32mCompiling: $<\e[0m\n"
 
-$(OBJS_DIR)%.o: $(EXTCMD_PATH)%.c
+$(OBJS_DIR)%.o: $(EXTCMD_PATH)%.c Makefile $(INCLUDE)
 	@mkdir -p $(OBJS_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@printf "\033[0;32mCompiling: $<\e[0m\n"
 
-$(OBJS_DIR)%.o: $(LEXER_PATH)%.c
+$(OBJS_DIR)%.o: $(LEXER_PATH)%.c Makefile $(INCLUDE)
 	@mkdir -p $(OBJS_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@printf "\033[0;32mCompiling: $<\e[0m\n"
 
-$(OBJS_DIR)%.o: $(PARSING_PATH)%.c
+$(OBJS_DIR)%.o: $(PARSING_PATH)%.c Makefile $(INCLUDE)
 	@mkdir -p $(OBJS_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@printf "\033[0;32mCompiling: $<\e[0m\n"
 
-$(OBJS_DIR)%.o: $(PIPE_PATH)%.c
+$(OBJS_DIR)%.o: $(PIPE_PATH)%.c Makefile $(INCLUDE)
 	@mkdir -p $(OBJS_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@printf "\033[0;32mCompiling: $<\e[0m\n"
 
-$(OBJS_DIR)%.o: $(REDIRECTION_PATH)%.c
+$(OBJS_DIR)%.o: $(REDIRECTION_PATH)%.c Makefile $(INCLUDE)
 	@mkdir -p $(OBJS_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@printf "\033[0;32mCompiling: $<\e[0m\n"
 
-$(OBJS_DIR)%.o: $(SIGNAL_PATH)%.c
+$(OBJS_DIR)%.o: $(SIGNAL_PATH)%.c Makefile $(INCLUDE)
 	@mkdir -p $(OBJS_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@printf "\033[0;32mCompiling: $<\e[0m\n"
 
-$(OBJS_DIR)%.o: $(UTILS_PATH)%.c
+$(OBJS_DIR)%.o: $(UTILS_PATH)%.c Makefile $(INCLUDE)
 	@mkdir -p $(OBJS_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@printf "\033[0;32mCompiling: $<\e[0m\n"
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJS) Makefile $(INCLUDE)
 	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT_LIB) -o $(NAME) $(LDFLAGS)
 	@printf "\n\033[0;32m$(NAME) compiled\n\e[0m"
 

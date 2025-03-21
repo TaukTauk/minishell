@@ -3,14 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 15:27:03 by talin             #+#    #+#             */
-/*   Updated: 2025/03/19 21:38:24 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/20 14:48:51 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+static void	create_io_file_support(t_redirection **new_file)
+{
+	(*new_file)->content = NULL;
+	(*new_file)->next = NULL;
+	(*new_file)->error = 0;
+	(*new_file)->expand = 0;
+}
 
 int	create_io_file(t_redirection **file_list,
 		char *file_name, int redirect_type, int order_num)
@@ -20,7 +28,7 @@ int	create_io_file(t_redirection **file_list,
 
 	if (!file_name)
 		return (0);
-	new_file = malloc(sizeof(t_redirection));
+	new_file = (t_redirection *)malloc(sizeof(t_redirection));
 	if (!new_file)
 		return (0);
 	new_file->file_name = ft_strdup(file_name);
@@ -28,8 +36,7 @@ int	create_io_file(t_redirection **file_list,
 		return (0);
 	new_file->type = redirect_type;
 	new_file->order_value = order_num;
-	new_file->content = NULL;
-	new_file->next = NULL;
+	create_io_file_support(&new_file);
 	if (!(*file_list))
 		*file_list = new_file;
 	else

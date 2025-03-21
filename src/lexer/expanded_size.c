@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanded_size.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 10:32:25 by talin             #+#    #+#             */
-/*   Updated: 2025/03/19 21:37:31 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/21 16:51:26 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,14 @@
 int	expand_var(char **cmd, t_data *data, t_lexer **lexer, int *status)
 {
 	char	*expanded_cmd;
+	int		quote;
 
-	expanded_cmd = expand_variable(*cmd, data);
-	if (strcmp(expanded_cmd, *cmd) != 0 && !ft_strchr(expanded_cmd, '\"')
-		&& !ft_strchr(expanded_cmd, '\''))
+	quote = 0;
+	expanded_cmd = expand_variable(*cmd, data, &quote);
+	if ((count_of_dollar(expanded_cmd) != count_of_dollar(*cmd)) && \
+	ft_strcmp(expanded_cmd, *cmd) != 0 && \
+	!ft_strchr(expanded_cmd, '\"') && \
+	!ft_strchr(expanded_cmd, '\'') && !quote)
 		*status = 1;
 	if (ft_contain_dollar_sign(*cmd) && ft_is_empty(expanded_cmd))
 	{
@@ -38,25 +42,45 @@ int	expand_var(char **cmd, t_data *data, t_lexer **lexer, int *status)
 }
 
 void	ft_quote_handle(char **ptr, int *inside_single_quote,
-		int *inside_double_quote)
+		int *inside_double_quote, int *quote)
 {
 	if (**ptr == '\'' && !(*inside_double_quote))
 		*inside_single_quote = !(*inside_single_quote);
 	if (**ptr == '\"' && !(*inside_single_quote))
 		*inside_double_quote = !(*inside_double_quote);
+	if (*inside_double_quote || *inside_single_quote)
+		*quote = 1;
 }
 
-void	expand_variable_copy(char **ptr, t_data *data, char **output_ptr)
+static void	copying_quote(char **ptr, char **output_ptr,
+		int *inside_single_quote, int *inside_double_quote)
+{
+	if (**ptr)
+	{
+		if (!(**ptr == '\'' || **ptr == '\"'))
+			*(*output_ptr)++ = *(*ptr)++;
+		else
+		{
+			if (((**ptr == '\'' && *inside_double_quote) || \
+			(**ptr == '\"' && *inside_single_quote)))
+				*(*output_ptr)++ = *(*ptr)++;
+			else
+				(*ptr)++;
+		}
+	}
+}
+
+void	expand_variable_copy(char **ptr, t_data *data, char **output_ptr, int *quote)
 {
 	int	inside_single_quote;
 	int	inside_double_quote;
 
 	inside_single_quote = 0;
 	inside_double_quote = 0;
-	while (*ptr && **ptr != '\0')
+	while (**ptr && **ptr != '\0')
 	{
 		if (**ptr == '\'' || **ptr == '\"')
-			ft_quote_handle(ptr, &inside_single_quote, &inside_double_quote);
+			ft_quote_handle(ptr, &inside_single_quote, &inside_double_quote, quote);
 		if (**ptr == '$' && !inside_single_quote)
 		{
 			get_value(ptr, data, output_ptr);
@@ -64,13 +88,13 @@ void	expand_variable_copy(char **ptr, t_data *data, char **output_ptr)
 				break ;
 			continue ;
 		}
-		if (**ptr)
-			*(*output_ptr)++ = *(*ptr)++;
+		copying_quote(ptr, output_ptr, \
+		&inside_single_quote, &inside_double_quote);
 	}
 	*(*output_ptr) = '\0';
 }
 
-char	*expand_variable(char *input, t_data *data)
+char	*expand_variable(char *input, t_data *data, int *quote)
 {
 	char	*expanded_str;
 	char	*ptr;
@@ -87,6 +111,6 @@ char	*expand_variable(char *input, t_data *data)
 		return (perror("malloc"), NULL);
 	ptr = input;
 	output_ptr = expanded_str;
-	expand_variable_copy(&ptr, data, &output_ptr);
+	expand_variable_copy(&ptr, data, &output_ptr, quote);
 	return (expanded_str);
 }

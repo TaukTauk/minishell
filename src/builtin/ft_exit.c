@@ -3,34 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:47:44 by talin             #+#    #+#             */
-/*   Updated: 2025/03/15 20:36:55 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/20 16:57:25 by juhtoo-h         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-static int	exit_valid_argument(const char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] && (str[i] == ' ' || str[i] == '\t'))
-		i++;
-	if (str[i] == '+' || str[i] == '-')
-		i++;
-	if (!str[i])
-		return (0);
-	while (str[i])
-	{
-		if (!ft_isdigit(str[i]))
-			return (0);
-		i++;
-	}
-	return (1);
-}
 
 static long long	exit_overflow(char *string, int *i, t_data *data)
 {
@@ -83,13 +63,49 @@ static unsigned char	exit_status(char *str, t_data *data)
 	return (num % 256);
 }
 
-int	ft_exit(t_command *command, t_data *data)
+static void	close_fds_all(int *fd_in, int *fd_out, t_command *command)
+{
+	restore_std_fds(fd_in, fd_out);
+	cleanup_redirections(command);
+}
+
+int	ft_exit(t_command *command, t_data *data, int *fd_in, int *fd_out)
+{
+	int	fd;
+
+	close_fds_all(fd_in, fd_out, command);
+	fd = dup(STDOUT_FILENO);
+	if (isatty(fd))
+		ft_putstr_fd("exit\n", STDOUT_FILENO);
+	close(fd);
+	if (!command->args[1])
+	{
+		free_data(data);
+		exit(data->status);
+	}
+	if (!exit_valid_argument(command->args[1]))
+	{
+		error_numeric(command->args[1], data);
+		free_data(data);
+		exit(2);
+	}
+	if (command->args[2])
+	{
+		error_args(command->args[0], data);
+		free_data(data);
+		exit(1);
+	}
+	exit(exit_status(command->args[1], data));
+}
+
+int	ft_exit_pipe(t_command *command, t_data *data)
 {
 	int	fd;
 
 	fd = dup(STDOUT_FILENO);
 	if (isatty(fd))
 		ft_putstr_fd("exit\n", STDOUT_FILENO);
+	close(fd);
 	if (!command->args[1])
 	{
 		free_data(data);

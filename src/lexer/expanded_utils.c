@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expanded_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 10:02:22 by juhtoo-h          #+#    #+#             */
-/*   Updated: 2025/03/17 11:45:06 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/21 13:57:17 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,16 +93,18 @@ size_t	calculate_expanded_size(const char *input, t_data *data)
 {
 	size_t		new_size;
 	const char	*ptr;
-	int			inside_single_quote;
+	int			single_quote;
+	int			double_quote;
 
-	inside_single_quote = 0;
+	single_quote = 0;
+	double_quote = 0;
 	new_size = 0;
 	ptr = input;
 	while (*ptr)
 	{
 		if (*ptr == '\'')
-			inside_single_quote = !inside_single_quote;
-		if (*ptr == '$' && !inside_single_quote)
+			ft_quote_handle_size(ptr, &single_quote, &double_quote);
+		if (*ptr == '$' && !single_quote)
 		{
 			ptr++;
 			if (dollar_sign_expand(&new_size, &ptr, data) == -1)
@@ -110,8 +112,7 @@ size_t	calculate_expanded_size(const char *input, t_data *data)
 			else
 				continue ;
 		}
-		new_size++;
-		ptr++;
+		increasing_size(&new_size, &ptr, double_quote, single_quote);
 	}
 	return (new_size + 1);
 }

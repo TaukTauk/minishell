@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 15:12:01 by talin             #+#    #+#             */
-/*   Updated: 2025/03/19 22:08:18 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/20 13:36:38 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static void	ft_equal(char **key, char **value, char *arg)
 	}
 	else
 	{
-		*key = strdup(arg);
+		*key = ft_strdup(arg);
 		*value = NULL;
 	}
 }

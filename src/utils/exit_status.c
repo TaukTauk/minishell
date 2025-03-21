@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_status.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: juhtoo-h <juhtoo-h@student.42.fr>          +#+  +:+       +#+        */
+/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/28 09:46:50 by rick              #+#    #+#             */
-/*   Updated: 2025/03/17 13:16:02 by juhtoo-h         ###   ########.fr       */
+/*   Updated: 2025/03/20 21:22:48 by rick             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ static void	handle_execution_status_two(int status)
 		ft_signal_error("Floating point exception (core dumped)\n");
 	else if (status == SIGSEGV)
 		ft_signal_error("Segmentation fault (core dumped)\n");
-	else if (status == SIGPIPE)
-		ft_signal_error("Broken pipe\n");
 	else if (status == SIGALRM)
 		ft_signal_error("Alarm clock\n");
 	else if (status == SIGTTIN)
@@ -68,12 +66,13 @@ void	handle_execution_status(pid_t pid, t_data *data)
 		handle_execution_status_two(status);
 }
 
-void	update_exit_status(pid_t pid, int fd[2], t_data *data)
+void	update_exit_status(pid_t pid, int fd[2], t_data *data, int std_in)
 {
 	int		status;
 
 	waitpid(pid, &status, 0);
 	close(fd[0]);
+	close(std_in);
 	if (WIFEXITED(status))
 		data->status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))

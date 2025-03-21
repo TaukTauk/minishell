@@ -3,43 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   remove_quote.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 10:39:10 by talin             #+#    #+#             */
-/*   Updated: 2025/03/19 23:01:42 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/20 15:17:13 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-static int	size_of_str_without_quote(char **str)
-{
-	int		size;
-	char	quote_char;
-	int		in_quote;
-	int		i;
-
-	size = 0;
-	i = -1;
-	in_quote = 0;
-	quote_char = 0;
-	while ((*str)[++i])
-	{
-		if (((*str)[i] == '"' || (*str)[i] == '\'') && !in_quote)
-		{
-			in_quote = 1;
-			quote_char = (*str)[i];
-		}
-		else if ((*str)[i] == quote_char && in_quote)
-		{
-			in_quote = 0;
-			quote_char = 0;
-			size -= 2;
-		}
-		size++;
-	}
-	return (size);
-}
 
 static int	in_quote_or_not(char *str)
 {
@@ -103,7 +74,7 @@ void	remove_quote(char **str)
 
 	if (!(*str))
 		return ;
-	size = size_of_str_without_quote(str);
+	size = (int)ft_strlen(*str);
 	clean_str = (char *)malloc(sizeof(char) * (size + 1));
 	if (!clean_str)
 		return ;

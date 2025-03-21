@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rick <rick@student.42.fr>                  +#+  +:+       +#+        */
+/*   By: talin <talin@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/22 15:54:59 by talin             #+#    #+#             */
-/*   Updated: 2025/03/19 23:02:28 by rick             ###   ########.fr       */
+/*   Updated: 2025/03/21 16:52:25 by talin            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,8 +115,6 @@ int	parameter_expansion(t_lexer **lexer, t_data *data)
 				single_quote_token(current->value))
 				current->expand = 1;
 		}
-		if (current->value)
-			remove_quote(&(current->value));
 		prev = current;
 		current = current->next;
 	}
